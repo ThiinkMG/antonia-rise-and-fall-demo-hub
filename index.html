@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Antonia Codex</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=UnifrakturMaguntia&display=swap">
+<style>
+/* Layout: a gilded manuscript. Mucha-arched tarot cards on vellum, Roman inscription caps, blackletter initials. One column on phones, wider grids on desktop. */
+:root{
+  --vellum:#F1E5C9; --vellum-deep:#E3CFA4; --vellum-card:#F8EFDB;
+  --ink:#2A1C11; --ink-soft:#5B4630; --rule:#B79A63;
+  --gilt:#A77A22; --gilt-light:#DDBB6E; --gilt-pale:#F0DDA6;
+  --clay:#A24E2B; --wine:#7A2620; --sage:#56705A; --lapis:#2D4670; --night:#1D1826;
+  --display:"Cinzel Decorative","Cinzel","Trajan Pro",Georgia,serif;
+  --caps:"Cinzel","Trajan Pro",Georgia,serif;
+  --body:"Cormorant Garamond","EB Garamond",Garamond,Georgia,serif;
+  --initial:"UnifrakturMaguntia","Old English Text MT",Georgia,serif;
+  --shadow:0 1px 0 rgba(255,250,235,.7) inset,0 10px 24px -14px rgba(42,28,17,.55);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{
+  margin:0; color:var(--ink); font-family:var(--body); font-size:19px; line-height:1.5;
+  background-color:var(--vellum);
+  background-image:
+    radial-gradient(ellipse at 50% -10%,rgba(221,187,110,.35),transparent 60%),
+    radial-gradient(ellipse at 50% 120%,rgba(162,78,43,.14),transparent 55%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .25 0 0 0 0 .12 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-attachment:fixed;
+}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gilt);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+
+/* ---------- top bar ---------- */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--night)}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--night);color:var(--gilt-pale);border-bottom:3px double var(--gilt)}
+.bar-in{max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:12px;min-height:56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.back{display:inline-flex;align-items:center;gap:6px;background:none;border:1px solid rgba(221,187,110,.45);border-radius:999px;padding:6px 14px 6px 10px;cursor:pointer;font-family:var(--caps);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gilt-pale);min-height:36px}
+.back[hidden]{display:none}
+.back:hover{background:rgba(221,187,110,.12)}
+.brand{font-family:var(--caps);font-weight:700;letter-spacing:.32em;font-size:.82rem;text-transform:uppercase;margin-right:auto;white-space:nowrap;cursor:pointer;background:none;border:0;padding:0}
+.brand span{color:var(--gilt-light)}
+.crumb{font-family:var(--caps);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;opacity:.75;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.meander{height:12px;background:
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12'%3E%3Cpath d='M0 11H22V1H6V7H14V4' fill='none' stroke='%23A77A22' stroke-width='1.6'/%3E%3C/svg%3E") repeat-x;opacity:.8}
+
+/* ---------- hero ---------- */
+.hero{text-align:center;padding-block:40px 18px;position:relative}
+.hero .eyebrow{font-family:var(--caps);letter-spacing:.38em;text-transform:uppercase;font-size:.72rem;color:var(--clay)}
+.hero h1{font-family:var(--display);font-weight:700;font-size:clamp(2.6rem,9vw,5.2rem);line-height:1;margin:.25em 0 .1em;letter-spacing:.04em;
+  background:linear-gradient(180deg,#7a5212 0%,#c79a3d 45%,#7a5212 52%,#b88a33 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-wrap:balance}
+.hero .sub{font-family:var(--caps);letter-spacing:.2em;font-size:.86rem;text-transform:uppercase;color:var(--ink-soft)}
+.hero p.lede{max-width:34em;margin:18px auto 0;font-size:1.12rem;font-style:italic;color:var(--ink-soft)}
+.flourish{display:block;margin:14px auto 0;width:min(320px,80%);height:auto}
+
+/* ---------- section headings ---------- */
+.shelf{margin-top:34px}
+.shelf-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+.shelf-head h2{font-family:var(--caps);font-weight:700;font-size:1.3rem;letter-spacing:.18em;text-transform:uppercase;margin:0;white-space:nowrap}
+.shelf-head .line{flex:1;height:1px;background:linear-gradient(90deg,var(--rule),transparent)}
+.shelf-head .count{font-family:var(--caps);font-size:.72rem;letter-spacing:.14em;color:var(--ink-soft);white-space:nowrap}
+.shelf-note{margin:0 0 18px;color:var(--ink-soft);font-style:italic;max-width:40em}
+
+/* ---------- card grid ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:26px 18px}
+@media(min-width:720px){.grid{grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:34px 26px}}
+.tile{background:none;border:0;padding:0;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:10px;min-width:0}
+.tile .card{position:relative;aspect-ratio:2/3;max-width:100%;border-radius:12px;box-shadow:var(--shadow);transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
+.tile .card svg{display:block;width:100%;height:100%;border-radius:12px}
+.tile:hover .card,.tile:focus-visible .card{transform:translateY(-6px) rotate(-.6deg);box-shadow:0 18px 30px -14px rgba(42,28,17,.6)}
+.tile .ribbon{position:absolute;top:12px;right:-6px;font-family:var(--caps);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;padding:4px 10px 4px 12px;color:#fff;background:var(--wine);clip-path:polygon(8px 0,100% 0,100% 100%,8px 100%,0 50%);box-shadow:0 2px 4px rgba(0,0,0,.25)}
+.ribbon.open{background:var(--sage)} .ribbon.next{background:var(--clay)} .ribbon.planned{background:var(--lapis)} .ribbon.rework{background:var(--wine)} .ribbon.soon{background:#6b5a44}
+.tile .name{font-family:var(--caps);font-weight:700;font-size:1rem;letter-spacing:.06em;line-height:1.2;text-wrap:balance}
+.tile .desc{font-size:1rem;line-height:1.35;color:var(--ink-soft);margin-top:-4px}
+
+/* ---------- sheet (coming soon) ---------- */
+.sheet{position:fixed;inset:0;z-index:40;display:grid;place-items:end center;background:rgba(29,24,38,.55);padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+.sheet[hidden]{display:none}
+.sheet-card{background:var(--vellum-card);border:1px solid var(--rule);border-radius:16px;max-width:520px;width:100%;padding:22px 22px 18px;box-shadow:0 20px 50px -20px rgba(0,0,0,.6);position:relative}
+@media(min-width:720px){.sheet{place-items:center}}
+.sheet-card h3{font-family:var(--caps);letter-spacing:.08em;margin:0 0 4px;font-size:1.3rem}
+.sheet-card .st{font-family:var(--caps);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--clay)}
+.sheet-card p{margin:.6em 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border-radius:999px;border:1px solid var(--gilt);background:linear-gradient(180deg,#f6e3b0,#dcb866);color:var(--ink);font-family:var(--caps);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:.75rem;cursor:pointer;box-shadow:0 1px 0 #fff6 inset,0 4px 10px -6px rgba(42,28,17,.6)}
+.btn.ghost{background:transparent}
+.btn:disabled{opacity:.4;cursor:default}
+
+/* ---------- storybook ---------- */
+.book-stage{display:flex;flex-direction:column;align-items:center;gap:16px;padding-top:24px}
+.book{position:relative;width:100%;max-width:1000px;perspective:1800px}
+.spread{display:grid;grid-template-columns:1fr;background:var(--vellum-card);border:1px solid var(--rule);border-radius:6px 14px 14px 6px;box-shadow:0 30px 50px -30px rgba(29,24,38,.75),0 0 0 6px var(--night),0 0 0 7px var(--gilt);overflow:hidden;min-height:520px}
+@media(min-width:860px){.spread{grid-template-columns:1fr 1.25fr;border-radius:14px}}
+.leaf-art{position:relative;background:var(--night);color:var(--gilt-pale);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px;gap:10px;text-align:center;min-height:220px}
+.leaf-art svg{width:min(230px,60%);height:auto}
+.leaf-art .num{font-family:var(--caps);letter-spacing:.3em;font-size:.72rem;text-transform:uppercase;color:var(--gilt-light)}
+.leaf-art h2{font-family:var(--display);font-size:clamp(1.5rem,4vw,2.2rem);margin:0;line-height:1.1;color:var(--gilt-pale);text-wrap:balance}
+.leaf-text{padding:26px 24px 30px;position:relative;min-width:0}
+@media(min-width:860px){.leaf-text{padding:44px 48px}}
+.leaf-text p{margin:0 0 1em;font-size:1.16rem;line-height:1.6;max-width:36em}
+.leaf-text p:first-of-type::first-letter{font-family:var(--initial);float:left;font-size:4.2em;line-height:.82;padding:.06em .1em 0 0;color:var(--wine)}
+.leaf-text .foot{display:flex;justify-content:space-between;font-family:var(--caps);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);border-top:1px solid var(--rule);padding-top:10px;margin-top:20px}
+.turn-out{animation:turnOut .32s ease-in forwards;transform-origin:left center}
+.turn-in{animation:turnIn .42s cubic-bezier(.2,.8,.2,1)}
+.turn-out.rev{transform-origin:right center;animation-name:turnOutRev}
+.turn-in.rev{animation-name:turnInRev}
+@keyframes turnOut{to{transform:rotateY(-70deg);opacity:0}}
+@keyframes turnIn{from{transform:rotateY(55deg);opacity:0}to{transform:none;opacity:1}}
+@keyframes turnOutRev{to{transform:rotateY(70deg);opacity:0}}
+@keyframes turnInRev{from{transform:rotateY(-55deg);opacity:0}to{transform:none;opacity:1}}
+.book-nav{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center}
+.pips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.pip{width:34px;height:34px;border-radius:50%;border:1px solid var(--gilt);background:transparent;font-family:var(--caps);font-size:.7rem;cursor:pointer;display:grid;place-items:center;padding:0}
+.pip[aria-current="true"]{background:var(--night);color:var(--gilt-light)}
+.book-intro{text-align:center;max-width:36em;margin:0 auto;color:var(--ink-soft);font-style:italic}
+
+/* ---------- deck ---------- */
+.deck-stage{overflow-x:clip;display:flex;flex-direction:column;align-items:center;gap:22px;padding-top:30px;text-align:center}
+.fan{position:relative;width:min(340px,86vw);height:min(380px,96vw);margin-bottom:8px;cursor:pointer;background:none;border:0;padding:0}
+.fan .fc{position:absolute;left:50%;bottom:6px;width:52%;aspect-ratio:2/3;transform-origin:50% 100%;transition:transform .5s cubic-bezier(.2,.8,.2,1);border-radius:12px;box-shadow:var(--shadow)}
+.fan .fc svg{width:100%;height:100%;display:block;border-radius:12px}
+.fan:hover .fc,.fan:focus-visible .fc{transition-duration:.35s}
+.deck-stage h2{font-family:var(--display);font-size:clamp(1.8rem,6vw,2.8rem);margin:0;color:var(--wine)}
+.deck-stage p{margin:0;max-width:30em;color:var(--ink-soft);font-style:italic}
+
+/* ---------- roster ---------- */
+.roster-head{text-align:center;padding-top:26px}
+.roster-head h2{font-family:var(--display);font-size:clamp(1.7rem,5.5vw,2.6rem);margin:0;color:var(--wine)}
+.roster-head p{color:var(--ink-soft);font-style:italic;margin:.3em auto 22px;max-width:34em}
+.tier{font-family:var(--caps);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--clay);margin-top:-6px}
+
+/* ---------- profile ---------- */
+.profile{margin-top:22px;background:var(--vellum-card);border:1px solid var(--rule);border-radius:14px;box-shadow:0 26px 50px -34px rgba(29,24,38,.8);overflow:hidden;position:relative}
+.profile::after{content:"";position:absolute;inset:8px;border:1px solid rgba(167,122,34,.45);border-radius:10px;pointer-events:none}
+.p-grid{display:grid;grid-template-columns:1fr;gap:0}
+@media(min-width:820px){.p-grid{grid-template-columns:minmax(260px,340px) 1fr}}
+.p-side{background:var(--night);color:var(--gilt-pale);padding:28px 22px;display:flex;flex-direction:column;align-items:center;gap:16px}
+.p-side .card{width:min(240px,70%);aspect-ratio:2/3;border-radius:12px;box-shadow:0 0 0 1px var(--gilt),0 16px 30px -14px #000}
+.p-side .card svg{width:100%;height:100%;display:block;border-radius:12px}
+.p-side blockquote{margin:0;font-style:italic;font-size:1.08rem;text-align:center;max-width:20em;color:var(--gilt-pale)}
+.p-side blockquote cite{display:block;font-style:normal;font-family:var(--caps);font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;margin-top:8px;color:var(--gilt-light)}
+.facts{width:100%;max-width:280px;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:.98rem;border-top:1px solid rgba(221,187,110,.35);padding-top:14px}
+.facts dt{font-family:var(--caps);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gilt-light);padding-top:4px}
+.facts dd{margin:0}
+.p-main{padding:28px 22px 34px;min-width:0}
+@media(min-width:820px){.p-main{padding:40px 46px}}
+.p-main .tier{margin:0}
+.p-main h2{font-family:var(--display);font-size:clamp(2rem,6vw,3.1rem);margin:.1em 0 0;line-height:1.05;color:var(--ink)}
+.p-main .epithet{font-family:var(--caps);font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin:.5em 0 0}
+.orn{display:block;width:180px;height:auto;margin:16px 0 4px}
+.p-main h3{font-family:var(--caps);font-size:.86rem;letter-spacing:.2em;text-transform:uppercase;margin:22px 0 6px;color:var(--wine)}
+.p-main p{margin:0 0 .8em;max-width:38em}
+.traits{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+.traits li{display:grid;grid-template-columns:18px 1fr;gap:8px;align-items:baseline}
+.traits li::before{content:"";width:8px;height:8px;transform:rotate(45deg);background:var(--gilt);margin-left:3px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:4px 14px 4px 6px;border-radius:999px;border:1px solid var(--rule);background:#fff8;cursor:pointer;font-size:1rem}
+.chip .dot{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-family:var(--caps);font-size:.7rem;color:#fff}
+.chip small{color:var(--ink-soft);font-style:italic}
+.chaplinks{display:flex;flex-wrap:wrap;gap:8px}
+.chaplink{font-family:var(--caps);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--gilt);border-radius:6px;padding:8px 12px;background:transparent;cursor:pointer;min-height:40px}
+.seal{position:absolute;right:22px;bottom:18px;width:74px;height:74px;opacity:.95}
+@media(max-width:819px){.seal{width:58px;height:58px;right:16px;bottom:14px}}
+.p-nav{display:flex;justify-content:space-between;gap:12px;margin-top:20px;flex-wrap:wrap}
+
+.colophon{margin-top:48px;text-align:center;font-size:.92rem;color:var(--ink-soft)}
+.colophon b{font-family:var(--caps);font-weight:600;letter-spacing:.14em;font-size:.72rem;text-transform:uppercase}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<header class="bar">
+  <div class="bar-in">
+    <button class="back" id="back" hidden aria-label="Back"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M9 2 4 7l5 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Back</button>
+    <button class="brand" id="brand">Antonia <span>Codex</span></button>
+    <span class="crumb" id="crumb"></span>
+  </div>
+  <div class="meander" aria-hidden="true"></div>
+</header>
+
+<main class="wrap" id="app"></main>
+
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="sheet-card">
+    <div class="st" id="sheetStatus"></div>
+    <h3 id="sheetTitle"></h3>
+    <p id="sheetBody"></p>
+    <p id="sheetPlan" style="color:var(--ink-soft);font-style:italic"></p>
+    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:10px"><button class="btn" id="sheetClose">Close</button></div>
+  </div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const C = {sage:"#56705A",lapis:"#2D4670",wine:"#7A2620",clay:"#A24E2B",night:"#1D1826",umber:"#4A3826",teal:"#2F5F63",plum:"#4B2E4F"};
+
+const LIBRARY = {
+  games:[
+    {id:"siege",num:"I",name:"The Siege of Lysa",desc:"Break the walls, then bargain from strength.",status:"next",statusLabel:"Next up",color:C.wine,emblem:"siege",
+     body:"A short siege battle of about three minutes. Place your troops, break walls and towers, and use your general's ability at the right moment. Every gain strengthens your hand, so you can stop at any point and demand terms.",
+     plan:"First v2 demo. Waiting on the design answers."},
+    {id:"bastion",num:"II",name:"The Bastion",desc:"Build the defence that holds while you sleep.",status:"planned",statusLabel:"Planned",color:C.lapis,emblem:"shield",
+     body:"Replaces the Steward's written rules. Lay out walls, towers, garrisons and traps, then pick one stance (Hold, Pay tribute or Counter-attack). Your layout defends you while you are offline.",
+     plan:"Planned after the siege demo."},
+    {id:"vassal",num:"III",name:"The Vassal",desc:"Set tribute, earn loyalty, or face revolt.",status:"planned",statusLabel:"Planned",color:C.clay,emblem:"crown",
+     body:"After a siege, set tribute between 5 and 30 percent. Fair rule builds loyalty; greed breeds a War of Liberation. Add more vassals and feel the strain of overstretch.",
+     plan:"Planned. Completes the Rise and Fall loop with the siege."},
+    {id:"oath",num:"IV",name:"Oath Stones",desc:"Keep your word, or break it for a windfall.",status:"rework",statusLabel:"Reworking",color:C.sage,emblem:"stones",
+     body:"Pacts with four neighbours across eight seasons. Each remembers betrayal in its own way, and broken oaths scar the land.",
+     plan:"The v1 version is archived. It will be redesigned after the core loop."},
+    {id:"granary",num:"V",name:"Shared Granaries",desc:"Take too much, and the valley turns on you.",status:"rework",statusLabel:"Reworking",color:C.teal,emblem:"wheat",
+     body:"Four kingdoms harvest one valley that regrows each season. Greed spreads, and an empty valley never recovers.",
+     plan:"The v1 version is archived. It will be redesigned after the core loop."},
+    {id:"ranks",num:"VI",name:"City of Five Ranks",desc:"Raise peasants to patricians with care.",status:"planned",statusLabel:"Planned",color:C.umber,emblem:"ranks",
+     body:"Supply your citizens and they climb from Peasants to Plebeians, Artisans, Equites and Patricians, unlocking new troops. No region supplies everything.",
+     plan:"Planned."}
+  ],
+  codex:[
+    {id:"book",num:"VII",name:"The Book of Providence",desc:"Your mother tells the story of Book One.",status:"open",statusLabel:"Open",color:C.night,emblem:"book",route:"book"},
+    {id:"deck",num:"VIII",name:"The Character Deck",desc:"The gods, the empire, and you.",status:"open",statusLabel:"Open",color:C.plum,emblem:"cards",route:"deck"},
+    {id:"world",num:"IX",name:"The Known World",desc:"Orthys above, Antonia between, the Hollow below.",status:"soon",statusLabel:"Coming soon",color:C.lapis,emblem:"realms",
+     body:"An interactive map of the three realms, the empires and the Free Leagues.",plan:"Coming soon."},
+    {id:"factions",num:"X",name:"Powers of Book One",desc:"Friends, enemies and everyone between.",status:"soon",statusLabel:"Coming soon",color:C.wine,emblem:"banner",
+     body:"The Choir of the Tongue, the Senate of Remia, the Oathwardens, the Ashen Choir, the Unbound and the Free Leagues.",plan:"Coming soon."}
+  ]
+};
+
+const BOOK = [
+ {num:"Prologue",title:"The Book Opens",emblem:"book",text:"Hush, little one. Listen. Here in the Hollow Palace, where no sun has ever risen, your mother has one gift left to give you: the truth, or as much of it as the Book will show. This is the Book of Providence. Its pages never end, and they write themselves for whoever asks. I asked it about you. Every word it gives me is what may be, not what must be. So listen, and remember, because soon you must go where I cannot follow."},
+ {num:"Chapter I",title:"The Body of Toaa",emblem:"toaa",text:"Before the first dawn there was only Toaa, “The One Above All,” whose true name no tongue may shape. Whoever tries is unmade and forgotten, as if never born. Toaa needed nothing. Yet Toaa gave of himself. From his body and his spit, or so we say, for our minds can grasp no better, came the Living Clay. From the clay came the world, its mountains and seas, and the beasts that roamed it long before any god drew breath. Then Toaa shaped Cassius in his own image. Toaa does not err, yet the likeness was not perfect, and the Book is silent on why. After Cassius came his brothers and sisters, and each was given a domain: the fields and the harvest, the deep sea, love, war, death, and powers the Book has not yet named. To Cassius, the eldest, Toaa gave the Wheel and the teaching of the clay. Cassius bowed and believed himself chosen to rule. He did not see that a gift from Toaa is never only a gift."},
+ {num:"Chapter II",title:"The Chain of Devotion",emblem:"chain",text:"The gods were great, but they were not free. Each owed worship to Toaa, as a river owes its water to the sea. And worship must come from somewhere. So Cassius sat at the Wheel and shaped the first humans. He longed to be as perfect as Toaa, and he wanted his creations perfect too. But they came out as flawed as their maker, or worse. They grew arrogant and corrupt, and Cassius in his fury drowned them all in a great flood. Then Toaa wept. Where that single tear fell, the Book says, something waited to be born. From that day Toaa made a promise no one heard. Cassius tried again with his wife, Hemera, and together they shaped a second age of mortals, each with a heart made to believe. Mortals prayed to the gods, the gods prayed to Toaa, and the chain held. In those days the cities kept the Concord of Many Altars. They swore oaths on sacred clay and honored every god in turn. It was a golden age, my child. Golden ages are the first thing the Book teaches us to mourn."},
+ {num:"Chapter III",title:"The Envious Son",emblem:"aerickleus",text:"Of all the children of Cassius and Hemera, the fairest was Aerickleus of the golden tongue, whose words could light loyalty in any heart. Yet he burned with envy. His father's temples were vast, and his father's love seemed always to go to his brothers and sisters. So Aerickleus wrapped himself in a mortal's shape and walked among men as a wandering hero. He slew beasts, broke sieges and saved cities. The mortals sang his name, and their songs filled him like wine. One song was not enough. Neither were a hundred. He wanted more."},
+ {num:"Chapter IV",title:"Tears of Toaa",emblem:"persephi",text:"In the city of Remia he found me: Persephi, a farmer's daughter, or so I believed. My parents had long prayed to Toaa for a child and been given none. Then my mother was shown a vision of water sleeping under our field, and she begged my father to dig. He dug a well, she drank from it, and I was born. I did not know then what I was. Even now the Book will not say it plainly. I first saw him in the market, a wandering hero standing on a cart, boasting of the beasts he had slain and the cities he had saved. He saw me in the crowd and lost his place in his own story. Later, when we were alone, he showed me what he truly was: a god. We fell in love. Something in me that I did not yet understand made my belief worth more to him than a thousand temples. Even that was not enough. Then I saw his arrogance, and his cruelty to anyone who would not kneel. When I turned away, he would not let me go. He stole me off from my father's fields and kept me in his halls. There I wept and prayed, and Toaa answered with a gift: a child. You. Then Aerickleus made Remia bow to him alone. At his side stood Corvus, his dearest friend and most faithful believer. The prayers of Remia no longer rose to the gods, and the chain of devotion broke."},
+ {num:"Chapter V",title:"The Fall into the Hollow",emblem:"hollow",text:"Cassius felt the chain break. Without Remia's prayers, he could not pay what he owed to Toaa. His anger shook Orthys. He tore away part of his son's godhood and hurled Aerickleus into the deepest pit of the Hollow, bound there for all eternity. Me he locked in this palace, far from him, where no god or mortal could reach me. But Cassius did not know I already carried you, the child Toaa gave me in my captivity. Toaa's miraculous child: that is what the world will call you. Who your father is, the Book will tell you when you are ready to bear it."},
+ {num:"Chapter VI",title:"The Voice of Corvus",emblem:"corvus",text:"Cassius took much from Aerickleus, but not all of it. What godhood remained kept his golden tongue alive, and from the depths of the Hollow it still reaches the one who never stopped believing: Corvus, now emperor of Remia in his master's name. Through Corvus, Aerickleus speaks and commands. The legions march, the Choir of the Tongue preaches, and city after city is made to kneel. Every prayer they take feeds the prisoner below. When he is strong enough, he will break his chains, cast down Cassius, defy even Toaa and rule the world as its emperor."},
+ {num:"Chapter VII",title:"Sent Away",emblem:"you",text:"The Book turns its pages and shows me what waits for you. Your father would claim you. Cassius would destroy you. Corvus would use you. You are the weight that can tip the scales of heaven and earth, and so every hand will reach for you. I cannot keep you here, where the Hollow would swallow you, and I cannot follow you into the light. So I will send you up, my child, before anyone learns you exist. Do not hate me for it. The pages are still writing. What they show is only what may be. What will be is yours to choose."}
+];
+
+const CHARS = [
+ {id:"toaa",num:"0",name:"Toaa",tier:"Above all",epithet:"“The One Above All”",color:C.night,emblem:"toaa",
+  quote:"Whoever tries is unmade and forgotten, as if never born.",quoteBy:"The Book of Providence, Chapter I",
+  facts:[["Realm","Beyond all realms"],["Worshipped by","The gods themselves"],["Temples","None. Mortals build it none."]],
+  overview:"Toaa made existence itself and shaped the Living Clay from which the world was formed. Its true name erases anyone who tries to speak it. Good and evil do not concern it.",
+  role:"Every god owes worship to Toaa, as a river owes its water to the sea. When that chain of devotion breaks, the world begins to fray.",
+  traits:["Has vowed never to interfere directly","Gives only through nudges, miracles and chains of events","Speaks through the Book of Providence","Called he, they or it"],
+  bonds:[["cassius","Shaped in its image"],["persephi","Answered her prayers"],["you","Gave you as a gift"]],chapters:[1,2,4]},
+ {id:"cassius",num:"I",name:"Cassius",tier:"God of Orthys",epithet:"King of the gods · Keeper of the Wheel",color:C.lapis,emblem:"cassius",
+  quote:"He did not see that a gift from Toaa is never only a gift.",quoteBy:"The Book of Providence, Chapter I",
+  facts:[["Realm","Orthys"],["Holds","The Wheel"],["Rank","Firstborn of the gods"]],
+  overview:"The eldest of the gods, shaped in Toaa's image, though the likeness was not perfect and the Book is silent on why. To him Toaa gave the Wheel and the teaching of the clay.",
+  role:"Cassius shapes the world anew each age, which is why every season brings a new map. He guards a secret only a few gods know.",
+  traits:["Longs to be as perfect as Toaa","Drowned the first, flawed mortals in a great flood","With Hemera shaped the second age of mortals","Cast Aerickleus into the Pit"],
+  bonds:[["hemera","His wife"],["aerickleus","His son"],["toaa","Owes it worship"]],chapters:[1,2,5]},
+ {id:"hemera",num:"II",name:"Hemera",tier:"Goddess of Orthys",epithet:"Wife of Cassius",color:C.sage,emblem:"hemera",
+  quote:"Together they shaped a second age of mortals, each with a heart made to believe.",quoteBy:"The Book of Providence, Chapter II",
+  facts:[["Realm","Orthys"],["Shaped","The second age of mortals"],["Child","Aerickleus"]],
+  overview:"Queen beside Cassius in Orthys. With him she shaped the second age of mortals, who prayed to the gods and kept the chain of devotion whole.",
+  role:"The mortals of the Concord, who honoured every god in turn, are her work as much as Cassius's.",
+  traits:["Co-maker of believing mortals","Mother of Aerickleus","Honoured at the altars of the Concord"],
+  bonds:[["cassius","Her husband"],["aerickleus","Her son"]],chapters:[2,3]},
+ {id:"aerickleus",num:"III",name:"Aerickleus",tier:"Chained god",epithet:"The Golden Tongue",color:C.clay,emblem:"aerickleus",
+  quote:"One song was not enough. Neither were a hundred. He wanted more.",quoteBy:"The Book of Providence, Chapter III",
+  facts:[["Realm","The Pit, deepest part of the Hollow"],["Faith","The Aerinant Remisan Orthodoxy"],["Followers","Reminants"]],
+  overview:"The fairest child of Cassius and Hemera, whose words could light loyalty in any heart. Burning with envy, he walked among mortals as a wandering hero, then made the city of Remia worship him alone.",
+  role:"Chained in the Pit, he still speaks through Corvus. Every city the empire takes feeds him, until he is strong enough to break free.",
+  traits:["Persuasion beyond any mortal's","Envy of his brothers and sisters","Stole Persephi from her father's fields","Partly stripped of his godhood"],
+  bonds:[["corvus","His voice in the world"],["persephi","Took her captive"],["cassius","His father"]],chapters:[3,4,5,6]},
+ {id:"persephi",num:"IV",name:"Persephi",tier:"Your mother",epithet:"Keeper of the Book",color:C.teal,emblem:"persephi",
+  quote:"What they show is only what may be. What will be is yours to choose.",quoteBy:"The Book of Providence, Chapter VII",
+  facts:[["Realm","The Hollow Palace"],["Holds","The Book of Providence"],["Born of","A well her father dug"]],
+  overview:"A farmer's daughter, born after her mother drank from a well shown to her in a vision. There is more to her than she knows. Her belief was worth more to a god than a thousand temples.",
+  role:"Locked in the Hollow Palace, where no god or mortal can reach her, she reads you the Book and sends you up into the light.",
+  traits:["Her belief carries a power no one can explain","Turned away from a god's cruelty","Narrates the Book of Providence"],
+  bonds:[["you","Her child"],["aerickleus","Her captor"],["toaa","Heard her prayers"]],chapters:[0,4,5,7]},
+ {id:"corvus",num:"V",name:"Corvus",tier:"The enemy",epithet:"Proxy Emperor of Remia",color:C.wine,emblem:"corvus",
+  quote:"The empire is his. The voice is not.",quoteBy:"Powers of Book One",
+  facts:[["Seat","Remia, heart of the empire"],["Rules","The Remian Empire"],["Serves","Aerickleus"]],
+  overview:"Aerickleus's oldest friend and truest believer. He stood beside the Golden Tongue when Remia bowed, and never stopped believing.",
+  role:"As emperor he sends the legions and the Choir of the Tongue to make city after city kneel. Freeing Remia ends the season.",
+  traits:["Unshakeable faith in his master","Commands the Remian legions","Speaks with a voice that is not his own"],
+  bonds:[["aerickleus","His master and friend"],["you","Would use you"]],chapters:[4,6,7]},
+ {id:"you",num:"VI",name:"You",tier:"The player",epithet:"Toaa's miraculous child",color:C.plum,emblem:"you",
+  quote:"You are the weight that can tip the scales of heaven and earth.",quoteBy:"The Book of Providence, Chapter VII",
+  facts:[["Born in","The Hollow Palace"],["Sent to","Antonia, the middle realm"],["Goal","Claim your birthright"]],
+  overview:"Persephi's child, born in the Hollow and sent up into the light before anyone learns you exist. Who your father is, the Book will tell you when you are ready to bear it.",
+  role:"Every power in Antonia will reach for you. Rise as a god among the gods, or as emperor of Antonia.",
+  traits:["Born in the prison under the world","Starts as the smallest power on the map","Every choice is yours: the pages are still writing"],
+  bonds:[["persephi","Your mother"],["cassius","Would destroy you"],["corvus","Would use you"]],chapters:[5,7]}
+];
+
+/* ================= SVG ART ================= */
+const GOLD="#E2C27A", GOLD2="#B98A2C";
+function emblem(k){
+  const s=`fill="none" stroke="${GOLD}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"`;
+  const f=`fill="${GOLD}"`;
+  switch(k){
+    case "siege": return `<g ${s}><path d="M-34 30V-12h10v-8h8v8h8v-8h8v8h8v-8h8v8h10V30Z"/><path d="M-10 30V8a10 10 0 0 1 20 0v22"/><path d="M-44 36L22-34M44 36L-22-34"/></g><path d="M22-34l-8 2 6 6zM-22-34l8 2-6 6z" ${f}/>`;
+    case "shield": return `<g ${s}><path d="M0-36 30-26V0c0 20-14 32-30 38C-16 32-30 20-30 0v-26Z"/><path d="M0-24v52M-20-6h40"/></g>`;
+    case "crown": return `<g ${s}><path d="M-28-6-18-30-6-14 0-34 6-14 18-30 28-6Z"/><path d="M-28 0h56"/><path d="M0 2v30M-22 14h44M-22 14l-8 14h16zM22 14l-8 14h16z"/></g>`;
+    case "stones": return `<g ${s}><path d="M-36 34V-14q0-16 14-16t14 16v48ZM8 34V-22q0-16 14-16t14 16v56Z"/><path d="M-22-6l4 8-6 8 4 10M22-14l-4 10 6 8-4 12"/></g><path d="M-44 36h88" ${s}/>`;
+    case "wheat": return `<g ${s}><path d="M0 38V-30M0 38-18 4M0 38 18 4"/></g>${[-24,-12,0,12].map(y=>`<ellipse cx="-7" cy="${y}" rx="5" ry="9" transform="rotate(-30 -7 ${y})" ${f}/><ellipse cx="7" cy="${y}" rx="5" ry="9" transform="rotate(30 7 ${y})" ${f}/>`).join("")}<ellipse cx="0" cy="-36" rx="4" ry="8" ${f}/>`;
+    case "ranks": return `<g ${s}>${[0,1,2,3,4].map(i=>`<rect x="${-38+i*8}" y="${26-i*14}" width="${76-i*16}" height="12" rx="1"/>`).join("")}</g>`;
+    case "book": return `<g ${s}><path d="M0-22C-14-32-30-32-40-28v52c10-4 26-4 40 6 14-10 30-10 40-6v-52C30-32 14-32 0-22Z"/><path d="M0-22v52"/><path d="M-30-14q12-2 22 3M-30-2q12-2 22 3M-30 10q12-2 22 3M8-11q10-5 22-3M8 1q10-5 22-3M8 13q10-5 22-3"/></g>`;
+    case "cards": return `<g ${s}><rect x="-30" y="-30" width="34" height="52" rx="4" transform="rotate(-16 -13 -4)"/><rect x="-17" y="-34" width="34" height="52" rx="4"/><rect x="-4" y="-30" width="34" height="52" rx="4" transform="rotate(16 13 -4)"/></g><circle cx="0" cy="-8" r="6" ${f}/>`;
+    case "realms": return `<g ${s}><circle r="36"/><path d="M-34-12h68M-34 12h68"/><path d="M-18-26l6 6 6-8 6 8 6-6 6 6"/></g><circle cx="0" cy="24" r="4" ${f}/>`;
+    case "banner": return `<g ${s}><path d="M-20-38v78"/><path d="M-20-34h44l-10 14 10 14h-44"/></g><circle cx="-20" cy="-40" r="4" ${f}/>`;
+    case "toaa": return `<g ${s}><circle r="14"/><circle r="26" stroke-dasharray="2 6"/><circle r="38" stroke-opacity=".55"/></g>${Array.from({length:12},(_,i)=>`<path d="M0-44V-52" transform="rotate(${i*30})" stroke="${GOLD}" stroke-width="3" stroke-linecap="round"/>`).join("")}`;
+    case "cassius": return `<g ${s}><circle r="34"/><circle r="8"/>${Array.from({length:8},(_,i)=>`<path d="M0-8V-34" transform="rotate(${i*45})"/>`).join("")}<path d="M-40 40h80"/></g>`;
+    case "hemera": return `<g ${s}><path d="M-30 14a30 30 0 0 1 60 0"/><path d="M-42 14h84M-30 26h60"/>${[-60,-30,0,30,60].map(a=>`<path d="M0-24V-38" transform="rotate(${a} 0 14)"/>`).join("")}</g>`;
+    case "aerickleus": return `<g ${s}><path d="M0-40C14-22 18-8 10 4 6 10-6 10-10 4-18-8-14-22 0-40Z"/><path d="M0-20c6 8 6 16 0 22-6-6-6-14 0-22Z"/><ellipse cx="-16" cy="26" rx="10" ry="7"/><ellipse cx="0" cy="26" rx="10" ry="7"/><ellipse cx="16" cy="26" rx="10" ry="7"/></g>`;
+    case "persephi": return `<g ${s}><path d="M0-40C10-26 16-16 16-8a16 16 0 0 1-32 0C-16-16-10-26 0-40Z"/><path d="M-30 18h60M-26 18v20M26 18v20M-26 38h52"/><path d="M-30 18q30-12 60 0"/></g>`;
+    case "corvus": return `<g ${s}><path d="M-34 6C-20-10 0-14 14-10l18-4-12 10c4 10-2 22-16 26l-24 2 8-10-22-4Z"/><circle cx="12" cy="-2" r="2.5" fill="${GOLD}"/></g><path d="M-30-34l6 8 6-10 6 10 6-8" ${s}/>`;
+    case "you": return `<g ${s}><path d="M-36 38a36 36 0 0 1 72 0"/><path d="M0 26V-14"/></g><path d="M0-42 6-26 22-24 9-14 13 2 0-6-13 2-9-14-22-24-6-26Z" ${f}/>`;
+    case "chain": return `<g ${s}><ellipse cx="-22" cy="0" rx="14" ry="9"/><ellipse cx="0" cy="0" rx="14" ry="9"/><ellipse cx="22" cy="0" rx="14" ry="9"/></g><path d="M0-40v14M0 26v14" ${s}/>`;
+    case "hollow": return `<g ${s}><path d="M-40-30h80"/><path d="M-30-30 0 36 30-30"/><path d="M-14-6h28M-6 14h12"/></g>`;
+  }
+  return "";
+}
+let uid=0;
+function cardSVG(item,opts={}){
+  const id="g"+(uid++); const col=item.color;
+  const numeral=item.num??"";
+  return `<svg viewBox="0 0 200 300" role="img" aria-label="${esc(item.name)} card" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="${id}h" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#F7E6B2" stop-opacity=".55"/><stop offset=".55" stop-color="${col}" stop-opacity="0"/></radialGradient>
+    <linearGradient id="${id}b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${col}"/><stop offset="1" stop-color="#140f1a"/></linearGradient>
+    <linearGradient id="${id}g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F3DB9A"/><stop offset=".5" stop-color="${GOLD2}"/><stop offset="1" stop-color="#F0D592"/></linearGradient>
+  </defs>
+  <rect x="1" y="1" width="198" height="298" rx="12" fill="#F4E7C8" stroke="url(#${id}g)" stroke-width="2"/>
+  <path d="M14 286V112a86 86 0 0 1 172 0v174Z" fill="url(#${id}b)" stroke="url(#${id}g)" stroke-width="3"/>
+  <path d="M22 280V113a78 78 0 0 1 156 0v167Z" fill="none" stroke="${GOLD}" stroke-opacity=".45" stroke-width="1"/>
+  <circle cx="100" cy="128" r="66" fill="url(#${id}h)"/>
+  <circle cx="100" cy="128" r="58" fill="none" stroke="${GOLD}" stroke-opacity=".55" stroke-width="1.2"/>
+  ${Array.from({length:24},(_,i)=>`<path d="M100 62v-10" transform="rotate(${i*15} 100 128)" stroke="${GOLD}" stroke-opacity=".5" stroke-width="1.4"/>`).join("")}
+  <g transform="translate(100 128)">${emblem(item.emblem)}</g>
+  <path d="M14 214q86-26 172 0" fill="none" stroke="${GOLD}" stroke-opacity=".35"/>
+  <path d="M28 236c18-14 30 6 44-6s22-4 28 6c6-10 14-18 28-6s26-8 44 6" fill="none" stroke="${GOLD}" stroke-opacity=".7" stroke-width="1.6"/>
+  <g transform="translate(100 260)"><rect x="-70" y="-14" width="140" height="28" rx="3" fill="#F4E7C8" stroke="url(#${id}g)" stroke-width="2"/>
+    <text text-anchor="middle" y="5" font-family="Cinzel,Georgia,serif" font-weight="700" font-size="${opts.label&&opts.label.length>14?10:12}" letter-spacing="1.5" fill="#2A1C11">${esc((opts.label||item.short||item.name).toUpperCase())}</text></g>
+  <g transform="translate(100 30)"><circle r="16" fill="#F4E7C8" stroke="url(#${id}g)" stroke-width="2"/><text text-anchor="middle" y="5" font-family="Cinzel,Georgia,serif" font-weight="700" font-size="${numeral.length>2?10:13}" fill="#7A2620">${numeral}</text></g>
+  <path d="M8 40q10-30 40-32M192 40q-10-30-40-32" fill="none" stroke="url(#${id}g)" stroke-width="2"/>
+  <circle cx="8" cy="40" r="3" fill="${GOLD2}"/><circle cx="192" cy="40" r="3" fill="${GOLD2}"/>
+</svg>`;
+}
+function backSVG(){
+  return `<svg viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="1" y="1" width="198" height="298" rx="12" fill="#1D1826" stroke="${GOLD2}" stroke-width="2"/><rect x="12" y="12" width="176" height="276" rx="8" fill="none" stroke="${GOLD}" stroke-opacity=".6"/>
+  ${Array.from({length:16},(_,i)=>`<path d="M100 150 L100 60" transform="rotate(${i*22.5} 100 150)" stroke="${GOLD}" stroke-opacity=".35"/>`).join("")}
+  <circle cx="100" cy="150" r="44" fill="none" stroke="${GOLD}" stroke-width="2"/><circle cx="100" cy="150" r="30" fill="none" stroke="${GOLD}" stroke-dasharray="3 5"/>
+  <text x="100" y="157" text-anchor="middle" font-family="Cinzel Decorative,Cinzel,Georgia,serif" font-size="22" fill="${GOLD}">A</text>
+  <text x="100" y="262" text-anchor="middle" font-family="Cinzel,Georgia,serif" font-size="10" letter-spacing="4" fill="${GOLD}">BOOK · ONE</text></svg>`;
+}
+const flourish=`<svg class="flourish" viewBox="0 0 320 30" aria-hidden="true"><path d="M10 15h110M200 15h110" stroke="#A77A22" stroke-width="1"/><path d="M120 15c10-12 24-12 30 0s20 12 30 0M140 15c6 8 14 8 20 0" fill="none" stroke="#A77A22" stroke-width="1.6"/><path d="M160 5l5 10-5 10-5-10z" fill="#A77A22"/><circle cx="10" cy="15" r="2.5" fill="#A77A22"/><circle cx="310" cy="15" r="2.5" fill="#A77A22"/></svg>`;
+function seal(letter){return `<svg class="seal" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 4c8 0 10 6 17 8s13-1 17 6-1 11 2 18 8 9 6 17-9 8-12 15 0 13-7 17-11-2-18 1-9 8-17 8-10-6-17-8-13 1-17-6 1-11-2-18-8-9-6-17 9-8 12-15 0-13 7-17 11 2 18-1 9-8 17-8z" fill="#7A2620"/><circle cx="50" cy="52" r="30" fill="none" stroke="#5a1a15" stroke-width="3"/><circle cx="50" cy="52" r="30" fill="none" stroke="#a8453b" stroke-width="1"/><text x="50" y="63" text-anchor="middle" font-family="UnifrakturMaguntia,Georgia,serif" font-size="34" fill="#E8B7A8">${letter}</text></svg>`}
+const ornSVG=`<svg class="orn" viewBox="0 0 180 14" aria-hidden="true"><path d="M0 7h70M110 7h70" stroke="#A77A22"/><path d="M70 7c6-8 14-8 20 0s14 8 20 0" fill="none" stroke="#A77A22" stroke-width="1.5"/><circle cx="90" cy="7" r="2.5" fill="#7A2620"/></svg>`;
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+
+/* ================= VIEWS ================= */
+const app=document.getElementById("app"), back=document.getElementById("back"), crumb=document.getElementById("crumb");
+let bookPage=0;
+
+function tile(item){
+  return `<button class="tile" data-id="${item.id}" aria-label="${esc(item.name)}: ${esc(item.desc)}">
+    <div class="card">${cardSVG(item,{label:item.short||shortName(item.name)})}<span class="ribbon ${item.status}">${esc(item.statusLabel)}</span></div>
+    <div class="name">${esc(item.name)}</div><div class="desc">${esc(item.desc)}</div></button>`;
+}
+function shortName(n){return n.replace(/^The /,"").split(" of ")[0]}
+
+function viewHome(){
+  crumb.textContent="";
+  app.innerHTML=`
+  <section class="hero">
+    <div class="eyebrow">Book One · The Rise and Fall</div>
+    <h1>Antonia</h1>
+    <div class="sub">The Demo Hall &amp; Codex</div>
+    ${flourish}
+    <p class="lede">Every playable demo and every page of lore, kept in one place. Choose a card to begin.</p>
+  </section>
+  <section class="shelf" aria-labelledby="h-games">
+    <div class="shelf-head"><h2 id="h-games">The Games</h2><span class="line"></span><span class="count">${LIBRARY.games.length} demos</span></div>
+    <p class="shelf-note">Each demo tests one mechanic of the full game. They are rebuilt one at a time.</p>
+    <div class="grid">${LIBRARY.games.map(tile).join("")}</div>
+  </section>
+  <section class="shelf" aria-labelledby="h-codex">
+    <div class="shelf-head"><h2 id="h-codex">The Codex</h2><span class="line"></span><span class="count">Story &amp; world</span></div>
+    <p class="shelf-note">The story, the characters and the world of Antonia.</p>
+    <div class="grid">${LIBRARY.codex.map(tile).join("")}</div>
+  </section>
+  <p class="colophon"><b>Antonia: The Rise and Fall</b><br>Thiink Media Graphics · Demo hall v2 · card art is placeholder</p>`;
+  app.querySelectorAll(".tile").forEach(b=>b.addEventListener("click",()=>openItem(b.dataset.id)));
+}
+function openItem(id){
+  const item=[...LIBRARY.games,...LIBRARY.codex].find(i=>i.id===id);
+  if(item.route){location.hash=item.route;return}
+  document.getElementById("sheetStatus").textContent=item.statusLabel;
+  document.getElementById("sheetTitle").textContent=item.name;
+  document.getElementById("sheetBody").textContent=item.body;
+  document.getElementById("sheetPlan").textContent=item.plan;
+  sheet.hidden=false; document.getElementById("sheetClose").focus();
+}
+const sheet=document.getElementById("sheet");
+document.getElementById("sheetClose").onclick=()=>sheet.hidden=true;
+sheet.addEventListener("click",e=>{if(e.target===sheet)sheet.hidden=true});
+
+function splitText(t){
+  const s=t.match(/[^.!?]+[.!?]+["”]?\s*/g)||[t];
+  if(s.length<6) return [t];
+  const out=[];const per=Math.ceil(s.length/Math.ceil(s.length/5));
+  for(let i=0;i<s.length;i+=per) out.push(s.slice(i,i+per).join("").trim());
+  return out;
+}
+function viewBook(n){
+  bookPage=Math.max(0,Math.min(BOOK.length-1,n|0));
+  crumb.textContent="The Book of Providence";
+  if(!app.querySelector(".book")){
+    app.innerHTML=`<div class="book-stage">
+      <p class="book-intro">Told by your mother, Persephi, in the Hollow Palace. Eight short pages.</p>
+      <div class="book" id="book"></div>
+      <div class="book-nav"><button class="btn ghost" id="prev">‹ Previous</button><div class="pips" id="pips"></div><button class="btn" id="next">Turn the page ›</button></div>
+    </div>`;
+    document.getElementById("prev").onclick=()=>turn(-1);
+    document.getElementById("next").onclick=()=>turn(1);
+    const bk=document.getElementById("book"); let sx=null;
+    bk.addEventListener("pointerdown",e=>{sx=e.clientX});
+    bk.addEventListener("pointerup",e=>{if(sx==null)return;const dx=e.clientX-sx;sx=null;if(Math.abs(dx)>50)turn(dx<0?1:-1)});
+  }
+  renderPage("");
+}
+function renderPage(dir){
+  const p=BOOK[bookPage], bk=document.getElementById("book");
+  bk.innerHTML=`<article class="spread ${dir?"turn-in "+(dir<0?"rev":""):""}" aria-live="polite">
+    <div class="leaf-art"><svg viewBox="-60 -60 120 120" aria-hidden="true"><circle r="56" fill="none" stroke="${GOLD}" stroke-opacity=".4"/>${emblem(p.emblem)}</svg>
+      <div class="num">${esc(p.num)}</div><h2>${esc(p.title)}</h2></div>
+    <div class="leaf-text">${splitText(p.text).map(x=>`<p>${esc(x)}</p>`).join("")}
+      <div class="foot"><span>${esc(p.num)}</span><span>Page ${bookPage+1} of ${BOOK.length}</span></div></div></article>`;
+  document.getElementById("pips").innerHTML=BOOK.map((b,i)=>`<button class="pip" aria-label="${esc(b.num)}: ${esc(b.title)}" aria-current="${i===bookPage}" data-i="${i}">${i===0?"P":["I","II","III","IV","V","VI","VII"][i-1]}</button>`).join("");
+  document.querySelectorAll(".pip").forEach(b=>b.onclick=()=>go(+b.dataset.i));
+  document.getElementById("prev").disabled=bookPage===0;
+  const nx=document.getElementById("next");
+  nx.textContent=bookPage===BOOK.length-1?"Meet the characters ›":"Turn the page ›";
+}
+function turn(d){
+  if(bookPage===BOOK.length-1&&d>0){location.hash="deck";return}
+  go(bookPage+d,d);
+}
+function go(n,d){
+  if(n<0||n>=BOOK.length||n===bookPage)return;
+  d=d||(n>bookPage?1:-1);
+  const sp=document.querySelector(".spread");
+  const done=()=>{bookPage=n;history.replaceState(null,"","#book-"+(n+1));renderPage(d)};
+  if(sp&&!matchMedia("(prefers-reduced-motion: reduce)").matches){sp.classList.add("turn-out");if(d<0)sp.classList.add("rev");setTimeout(done,300)}else done();
+}
+
+function viewDeck(){
+  crumb.textContent="The Character Deck";
+  const n=CHARS.length;
+  app.innerHTML=`<div class="deck-stage">
+    <h2>The Character Deck</h2>
+    <p>Seven cards: the One Above All, the gods of Orthys, the empire, your mother and you. Tap the deck to deal it.</p>
+    <button class="fan" id="fan" aria-label="Deal the character deck">${CHARS.map((c,i)=>`<div class="fc" style="transform:translateX(-50%) rotate(${i===n-1?0:(i-(n-2)/2)*9}deg)">${i===n-1?cardSVG(c,{label:c.name}):backSVG()}</div>`).join("")}</button>
+    <button class="btn" id="deal">Deal the deck</button>
+  </div>`;
+  const deal=()=>{
+    const fcs=[...document.querySelectorAll(".fc")];
+    fcs.forEach((el,i)=>{el.style.transform=`translateX(-50%) translateY(-24px) rotate(${i===n-1?0:(i-(n-2)/2)*16}deg)`});
+    setTimeout(()=>location.hash="characters",matchMedia("(prefers-reduced-motion: reduce)").matches?0:380);
+  };
+  document.getElementById("fan").onclick=deal; document.getElementById("deal").onclick=deal;
+}
+
+function viewRoster(){
+  crumb.textContent="Characters";
+  app.innerHTML=`<div class="roster-head"><h2>The Players of Book One</h2><p>Tap a card to open the full profile.</p></div>
+  <div class="grid">${CHARS.map(c=>`<button class="tile" data-id="${c.id}" aria-label="${esc(c.name)}, ${esc(c.epithet)}">
+    <div class="card">${cardSVG(c,{label:c.name})}</div>
+    <div class="tier">${esc(c.tier)}</div><div class="name">${esc(c.name)}</div><div class="desc">${esc(c.epithet.replace(/[“”]/g,""))}</div></button>`).join("")}</div>`;
+  app.querySelectorAll(".tile").forEach(b=>b.addEventListener("click",()=>location.hash="char-"+b.dataset.id));
+}
+
+function viewChar(id){
+  const i=CHARS.findIndex(c=>c.id===id); if(i<0){location.hash="characters";return}
+  const c=CHARS[i], prev=CHARS[(i-1+CHARS.length)%CHARS.length], next=CHARS[(i+1)%CHARS.length];
+  crumb.textContent=c.name;
+  const byId=x=>CHARS.find(k=>k.id===x);
+  app.innerHTML=`<article class="profile">
+   <div class="p-grid">
+    <aside class="p-side">
+      <div class="card">${cardSVG(c,{label:c.name})}</div>
+      <blockquote>“${esc(c.quote)}”<cite>${esc(c.quoteBy)}</cite></blockquote>
+      <dl class="facts">${c.facts.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl>
+    </aside>
+    <div class="p-main">
+      <p class="tier">${esc(c.tier)}</p>
+      <h2>${esc(c.name)}</h2>
+      <p class="epithet">${esc(c.epithet)}</p>
+      ${ornSVG}
+      <h3>Overview</h3><p>${esc(c.overview)}</p>
+      <h3>In Antonia</h3><p>${esc(c.role)}</p>
+      <h3>Marks</h3><ul class="traits">${c.traits.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>
+      <h3>Bound to</h3><div class="chips">${c.bonds.map(([bid,label])=>{const b=byId(bid);return `<button class="chip" data-go="char-${bid}"><span class="dot" style="background:${b.color}">${esc(b.name[0])}</span>${esc(b.name)} <small>${esc(label)}</small></button>`}).join("")}</div>
+      <h3>In the Book</h3><div class="chaplinks">${c.chapters.map(n=>`<button class="chaplink" data-go="book-${n+1}">${esc(BOOK[n].num)} · ${esc(BOOK[n].title)}</button>`).join("")}</div>
+      <div class="p-nav"><button class="btn ghost" data-go="char-${prev.id}">‹ ${esc(prev.name)}</button><button class="btn ghost" data-go="characters">All characters</button><button class="btn ghost" data-go="char-${next.id}">${esc(next.name)} ›</button></div>
+    </div>
+   </div>
+   ${seal(c.name[0])}
+  </article>`;
+  app.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>location.hash=b.dataset.go));
+}
+
+/* ================= ROUTER ================= */
+const PARENT={book:"",deck:"",characters:"deck",char:"characters"};
+function route(){
+  const h=(location.hash||"").slice(1);
+  sheet.hidden=true;
+  let parent=null;
+  if(!h||h==="hall"){viewHome();}
+  else if(h==="book"||h.startsWith("book-")){viewBook(h.startsWith("book-")?(+h.slice(5)-1):0);parent="";}
+  else if(h==="deck"){viewDeck();parent="";}
+  else if(h==="characters"){viewRoster();parent="deck";}
+  else if(h.startsWith("char-")){viewChar(h.slice(5));parent="characters";}
+  else {viewHome();}
+  back.hidden=parent===null; back.dataset.to=parent??"";
+  window.scrollTo({top:0});
+}
+back.onclick=()=>{location.hash=back.dataset.to||"hall"};
+document.getElementById("brand").onclick=()=>{location.hash="hall"};
+window.addEventListener("hashchange",()=>{ if(location.hash.startsWith("#book-")&&document.querySelector(".book")) { const n=+location.hash.slice(6)-1; if(n!==bookPage) go(n); return;} route(); });
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"&&!sheet.hidden){sheet.hidden=true;return}
+  if(document.querySelector(".book")){if(e.key==="ArrowRight")turn(1);if(e.key==="ArrowLeft")turn(-1)}
+});
+route();
+</script>
+
+</body>
+</html>
