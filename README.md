@@ -19,3 +19,7 @@ Art Nouveau × medieval × Greco-Roman: Mucha-arched cards with halos, blacklett
 ## Adding a demo
 
 Add an entry to `LIBRARY.games` in `index.html`. Give it a `route` once the demo is playable.
+
+## Demos
+
+- `siege/` · **The Siege of Lysa** (demo I): a three-minute siege. Break the walls, then bargain from strength.

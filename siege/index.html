@@ -1,0 +1,834 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Siege of Lysa</title>
+<meta name="description" content="Antonia demo I: a three-minute siege. Break the walls, then bargain from strength.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=UnifrakturMaguntia&display=swap">
+<style>
+:root{
+  --vellum:#F1E5C9;--vellum-deep:#E3CFA4;--vellum-card:#F8EFDB;
+  --ink:#2A1C11;--ink-soft:#5B4630;--rule:#B79A63;
+  --gilt:#A77A22;--gilt-light:#DDBB6E;--gilt-pale:#F0DDA6;
+  --clay:#A24E2B;--wine:#7A2620;--sage:#56705A;--lapis:#2D4670;--night:#1D1826;
+  --display:"Cinzel Decorative","Cinzel",Georgia,serif;
+  --caps:"Cinzel",Georgia,serif;
+  --body:"Cormorant Garamond",Garamond,Georgia,serif;
+  --initial:"UnifrakturMaguntia",Georgia,serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--night);color:var(--ink);font-family:var(--body);font-size:18px;overscroll-behavior:none}
+body{display:flex;flex-direction:column;height:100vh;height:100dvh;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--gilt-light);outline-offset:2px}
+
+/* top bar */
+.bar{background:var(--night);color:var(--gilt-pale);border-bottom:3px double var(--gilt);padding:6px 12px 8px;padding-top:calc(6px + env(safe-area-inset-top,0px))}
+.row{display:flex;align-items:center;gap:10px}
+.row+.row{margin-top:6px}
+.back{display:inline-flex;align-items:center;gap:4px;min-height:36px;padding:0 12px 0 8px;border-radius:999px;border:1px solid rgba(221,187,110,.45);background:none;color:var(--gilt-pale);font-family:var(--caps);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none}
+.title{flex:1;min-width:0;font-family:var(--caps);font-weight:700;letter-spacing:.2em;font-size:.78rem;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.title span{color:var(--gilt-light)}
+.clock{font-family:var(--caps);font-weight:700;font-size:1.2rem;min-width:3.2em;text-align:right;font-variant-numeric:tabular-nums}
+.clock.warn{color:#E8A38F}
+.levwrap{flex:1;min-width:0}
+.levlabel{font-family:var(--caps);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;opacity:.8;display:flex;justify-content:space-between}
+.levtrack{height:10px;margin-top:3px;border:1px solid var(--gilt);border-radius:6px;background:#2c2536;overflow:hidden}
+.levfill{height:100%;width:0;background:linear-gradient(90deg,#A77A22,#DDBB6E);transition:width .3s}
+.seals{display:flex;gap:4px}
+.sealx{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#3a3344;border:1px solid #6b5d48;color:#8d806b;font-family:var(--caps);font-size:.58rem;font-weight:700;transition:transform .3s}
+.sealx.on{background:var(--wine);border-color:var(--gilt-light);color:var(--gilt-pale);transform:scale(1.12)}
+.parley{min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--gilt-light);background:var(--wine);color:var(--gilt-pale);font-family:var(--caps);font-weight:700;letter-spacing:.12em;font-size:.72rem;text-transform:uppercase}
+.parley:disabled{opacity:.4;cursor:default}
+
+/* stage */
+#stage{flex:1;position:relative;min-height:0;background:#C49A62;overflow:hidden}
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.toast{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);width:min(92%,420px);background:rgba(248,239,219,.96);border:1px solid var(--rule);border-radius:12px;padding:8px 14px;font-size:1rem;line-height:1.3;text-align:center;box-shadow:0 8px 20px -10px rgba(0,0,0,.6);pointer-events:none;transition:opacity .35s}
+.toast[hidden]{display:block;opacity:0}
+.toast b{font-family:var(--caps);font-size:.8rem;letter-spacing:.06em}
+
+/* tray */
+.tray{background:var(--vellum);border-top:3px double var(--gilt);padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px));display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.tc{position:relative;min-height:70px;border-radius:10px;border:1px solid var(--rule);background:var(--vellum-card);padding:4px 2px 4px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:1px;box-shadow:0 1px 0 #fffaf0 inset,0 4px 10px -8px rgba(42,28,17,.6)}
+.tc svg{width:30px;height:30px}
+.tc .nm{font-family:var(--caps);font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.tc .ct{position:absolute;top:3px;right:5px;font-family:var(--caps);font-size:.7rem;font-weight:700;color:var(--wine)}
+.tc.sel{border-color:var(--gilt);background:var(--gilt-pale);box-shadow:0 0 0 2px var(--gilt) inset}
+.tc:disabled{opacity:.38;cursor:default}
+.tc.rally{background:var(--wine);color:var(--gilt-pale);border-color:var(--gilt-light)}
+.tc.rally .ct{color:var(--gilt-pale)}
+
+/* overlays */
+.ov{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:16px;background:rgba(29,24,38,.62)}
+.ov[hidden]{display:none}
+.scroll{position:relative;width:100%;max-width:440px;max-height:100%;overflow:auto;background:var(--vellum-card);border:1px solid var(--rule);border-radius:14px;padding:20px 20px 18px;box-shadow:0 20px 50px -18px rgba(0,0,0,.7)}
+.scroll::before{content:"";position:absolute;inset:6px;border:1px solid rgba(167,122,34,.35);border-radius:10px;pointer-events:none}
+.eyebrow{font-family:var(--caps);font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;color:var(--clay)}
+.scroll h2{font-family:var(--display);font-size:1.6rem;margin:.15em 0 .2em;color:var(--wine);line-height:1.1}
+.scroll h3{font-family:var(--caps);font-size:1rem;letter-spacing:.06em;margin:.8em 0 .3em}
+.scroll p{margin:.45em 0;line-height:1.35}
+.drop::first-letter{font-family:var(--initial);font-size:2.6em;float:left;line-height:.9;margin:.04em .08em 0 0;color:var(--wine)}
+.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}
+.choice{min-height:56px;border-radius:10px;border:1px solid var(--rule);background:var(--vellum);font-family:var(--caps);font-size:.78rem;font-weight:700;letter-spacing:.04em;padding:6px 4px;line-height:1.2}
+.choice small{display:block;font-family:var(--body);font-weight:500;font-size:.85rem;letter-spacing:0;color:var(--ink-soft)}
+.choice[aria-pressed="true"]{background:var(--gilt-pale);border-color:var(--gilt);box-shadow:0 0 0 2px var(--gilt) inset}
+.check{display:flex;align-items:center;gap:10px;min-height:44px;font-size:1rem}
+.check input{width:22px;height:22px;accent-color:var(--wine)}
+.btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:12px}
+.btn{min-height:46px;padding:0 18px;border-radius:999px;border:1px solid var(--gilt);background:var(--vellum);font-family:var(--caps);font-weight:700;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase}
+.btn.primary{background:var(--wine);color:var(--gilt-pale);border-color:var(--gilt-light)}
+.btn:disabled{opacity:.4;cursor:default}
+.stat{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dotted var(--rule);padding:5px 0;font-size:1rem}
+.stat b{font-family:var(--caps);font-size:.85rem}
+.slider{width:100%;accent-color:var(--wine);height:36px}
+.demand{font-family:var(--display);font-size:2rem;color:var(--wine);text-align:center;line-height:1}
+.mood{background:var(--vellum);border:1px solid var(--rule);border-radius:10px;padding:8px 12px;margin:8px 0;font-size:1rem}
+.envoy{font-style:italic;border-left:3px solid var(--wine);padding-left:10px;margin:10px 0}
+.waxseal{position:absolute;right:14px;top:12px;width:46px;height:46px}
+ul.tips{margin:.3em 0 .3em 1.1em;padding:0}
+ul.tips li{margin:.2em 0}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="row">
+    <a class="back" href="../#hall" aria-label="Back to the Demo Hall"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Hall</a>
+    <div class="title">Siege of <span>Lysa</span></div>
+    <div class="clock" id="clock" aria-label="Time left">2:30</div>
+  </div>
+  <div class="row">
+    <div class="levwrap">
+      <div class="levlabel"><span>Leverage</span><span id="levNum">0</span></div>
+      <div class="levtrack" role="meter" aria-label="Leverage" aria-valuemin="0" aria-valuemax="100" id="levMeter"><div class="levfill" id="levFill"></div></div>
+    </div>
+    <div class="seals" aria-label="Seals won">
+      <div class="sealx" id="seal1" title="Gate or wall broken">I</div>
+      <div class="sealx" id="seal2" title="Both towers down">II</div>
+      <div class="sealx" id="seal3" title="Council Hall reached">III</div>
+    </div>
+    <button class="parley" id="parleyBtn" disabled>Parley</button>
+  </div>
+</header>
+
+<main id="stage">
+  <canvas id="cv" aria-label="The battlefield. Lysa is at the top, your camp at the bottom."></canvas>
+  <div class="toast" id="toast" hidden></div>
+</main>
+
+<nav class="tray" id="tray" aria-label="Your army"></nav>
+
+<!-- intro -->
+<div class="ov" id="intro">
+  <div class="scroll" role="dialog" aria-modal="true" aria-labelledby="introTitle">
+    <div class="eyebrow">Demo I · Fight smart, then bargain</div>
+    <h2 id="introTitle">The Siege of Lysa</h2>
+    <p class="drop">Lysa has shut its gates under Remian banners. You have two and a half minutes and one army. Break what you can, then make them pay. A city that signs terms pays you every season. A city you burn pays you once.</p>
+    <h3>Lysa's strength</h3>
+    <div class="choices" id="levels">
+      <button class="choice" data-l="1" aria-pressed="false">I<small>Gentle</small></button>
+      <button class="choice" data-l="2" aria-pressed="true">II<small>Even</small></button>
+      <button class="choice" data-l="3" aria-pressed="false">III<small>Hard</small></button>
+    </div>
+    <label class="check"><input type="checkbox" id="scoutBox" checked> Send a scout first. Your first parley shows Lysa's true mood.</label>
+    <h3>How to play</h3>
+    <ul class="tips">
+      <li>Tap a troop card, then tap the ground below the red line.</li>
+      <li>Spears beat cavalry, cavalry beat archers, archers beat spears. Rams break walls.</li>
+      <li>Everything you break raises your <b>leverage</b>. Tap <b>Parley</b> at any time to demand tribute.</li>
+    </ul>
+    <div class="btns"><button class="btn primary" id="startBtn">Begin the siege</button></div>
+  </div>
+</div>
+
+<!-- parley -->
+<div class="ov" id="parley" hidden>
+  <div class="scroll" role="dialog" aria-modal="true" aria-labelledby="parleyTitle">
+    <svg class="waxseal" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 4c8 0 10 6 17 8s13-1 17 6-1 11 2 18 8 9 6 17-9 8-12 15 0 13-7 17-11-2-18 1-9 8-17 8-10-6-17-8-13 1-17-6 1-11-2-18-8-9-6-17 9-8 12-15 0-13 7-17 11 2 18-1 9-8 17-8z" fill="#7A2620"/><circle cx="50" cy="52" r="30" fill="none" stroke="#a8453b"/><text x="50" y="64" text-anchor="middle" font-family="UnifrakturMaguntia,Georgia,serif" font-size="34" fill="#E8B7A8">L</text></svg>
+    <div class="eyebrow" id="parleyEyebrow">Parley · the battle is paused</div>
+    <h2 id="parleyTitle">Lysa's council</h2>
+    <div id="parleyBody"></div>
+  </div>
+</div>
+
+<!-- result -->
+<div class="ov" id="result" hidden>
+  <div class="scroll" role="dialog" aria-modal="true" aria-labelledby="resTitle">
+    <div class="eyebrow" id="resEyebrow">The siege is over</div>
+    <h2 id="resTitle"></h2>
+    <p id="resText"></p>
+    <div id="resStats"></div>
+    <p id="resLesson" style="color:var(--ink-soft);font-style:italic"></p>
+    <div class="btns">
+      <button class="btn" id="copyBtn">Copy results</button>
+      <a class="btn" href="../#hall" style="display:inline-flex;align-items:center;text-decoration:none;color:inherit">Hall</a>
+      <button class="btn primary" id="againBtn">Play again</button>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+/* ===================== constants ===================== */
+const W=400,H=640,WALL_T=240,WALL_B=262,DEPLOY_Y=430,BATTLE=150,HORN=90,THERA=120;
+const COL={sand:"#D2AE74",sandDark:"#B98F57",road:"#C7A06A",stone:"#CDB088",stoneDark:"#9C7F59",stoneTop:"#E2CBA3",
+  clay:"#B8693E",clayHi:"#D08A5C",clayDark:"#8A4A2A",lapis:"#2D4670",lapisHi:"#4B6A9E",gilt:"#A77A22",giltHi:"#DDBB6E",
+  wine:"#7A2620",wineHi:"#A2463A",bronze:"#B08040",night:"#1D1826",ink:"#2A1C11",timber:"#6E4A2B",vellum:"#F8EFDB"};
+const TYPES={
+  spear :{name:"Spears", count:4,hp:230,dmg:15,rate:.9, range:14, speed:28,figs:5,r:13},
+  archer:{name:"Archers",count:3,hp:130,dmg:12,rate:1.1,range:105,speed:26,figs:4,r:12},
+  cav   :{name:"Cavalry",count:2,hp:210,dmg:19,rate:.8, range:14, speed:56,figs:3,r:14},
+  ram   :{name:"Rams",   count:2,hp:300,dmg:30,rate:1.6,range:10, speed:17,figs:1,r:14},
+  hero  :{name:"You",    count:1,hp:520,dmg:32,rate:.8, range:16, speed:34,figs:1,r:12},
+};
+const ORDER=["spear","archer","cav","ram","hero"];
+const BEATS={spear:"cav",cav:"archer",archer:"spear"};
+const LEVELS={1:{f:.8,will:2},2:{f:1,will:0},3:{f:1.25,will:-3}};
+
+/* ===================== state ===================== */
+let G=null, level=2, sel=null, last=0, raf=0;
+const cv=document.getElementById("cv"), ctx=cv.getContext("2d"), stage=document.getElementById("stage");
+let view={s:1,ox:0,oy:0,dpr:1};
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+
+function newGame(){
+  const f=LEVELS[level].f;
+  const S=[];
+  const seg=(id,kind,x0,x1,hp)=>S.push({id,kind,x0,x1,y0:WALL_T,y1:WALL_B,hp:hp*f,max:hp*f,cx:(x0+x1)/2,cy:(WALL_T+WALL_B)/2});
+  seg("wl1","wall",8,80,1000); seg("wl2","wall",120,165,1000); seg("gate","gate",165,235,1100); seg("wr1","wall",235,280,1000); seg("wr2","wall",320,392,1000);
+  S.push({id:"tL",kind:"tower",cx:100,cy:248,r:22,hp:800*f,max:800*f,rate:1,range:125,dmg:14*f,cd:0});
+  S.push({id:"tR",kind:"tower",cx:300,cy:248,r:22,hp:800*f,max:800*f,rate:1,range:125,dmg:14*f,cd:0});
+  S.push({id:"keep",kind:"keep",cx:200,cy:110,r:42,hp:3200*f,max:3200*f,rate:1.1,range:110,dmg:14*f,cd:0});
+  const U=[];
+  // garrison
+  [["spear",160,170],["spear",240,170],["archer",130,190],["archer",270,190],["cav",120,80],["cav",280,80]].forEach(([k,x,y])=>U.push(mkUnit(k,"d",x,y,f,true)));
+  const reserve={};ORDER.forEach(k=>reserve[k]=TYPES[k].count);
+  let totalHp=0;ORDER.forEach(k=>totalHp+=TYPES[k].hp*TYPES[k].count);
+  G={t:0,S,U,proj:[],parts:[],floats:[],reserve,totalHp,alarm:false,kills:0,lost:0,deployed:0,
+     parleys:0,refusals:0,scout:document.getElementById("scoutBox").checked?1:0,
+     theraSide:Math.random()<.5?-1:1,theraHere:false,horn:false,rallyUsed:false,
+     shake:0,over:false,musters:0,paused:true,tips:{},leverage:0,maxLev:0,hintAt:{}};
+  sel=null; buildTray(); updateHud();
+}
+function mkUnit(kind,team,x,y,f=1,idle=false){
+  const T=TYPES[kind];
+  const k=team==="d"?f:1;
+  return {kind,team,x,y,hp:T.hp*k,max:T.hp*k,dmg:T.dmg*k,rate:T.rate,range:T.range,speed:T.speed,figs:T.figs,r:T.r,cd:Math.random()*.5,
+    idle,rally:0,flash:0,phase:Math.random()*6,face:team==="a"?-1:1,target:null};
+}
+
+/* ===================== geometry ===================== */
+const isSeg=s=>s.kind==="wall"||s.kind==="gate";
+function distTo(u,s){
+  if(isSeg(s)){const dx=Math.max(s.x0-u.x,0,u.x-s.x1),dy=Math.max(s.y0-u.y,0,u.y-s.y1);return Math.hypot(dx,dy)}
+  return Math.max(0,Math.hypot(u.x-s.cx,u.y-s.cy)-s.r);
+}
+function approach(u,s){
+  if(isSeg(s)){return {x:Math.min(s.x1-6,Math.max(s.x0+6,u.x)),y:u.y>WALL_B?WALL_B+4:WALL_T-4}}
+  if(s.kind==="tower"){return {x:s.cx,y:u.y>s.cy?s.cy+s.r+2:s.cy-s.r-2}}
+  return {x:s.cx,y:s.cy};
+}
+const side=y=>y>=WALL_B-2?1:(y<=WALL_T+2?-1:0); // 1 outside, -1 inside
+function breaches(){
+  const b=[];
+  for(const s of G.S){if(s.hp>0)continue;
+    if(isSeg(s))b.push({cx:s.cx,half:(s.x1-s.x0)/2});
+    else if(s.kind==="tower")b.push({cx:s.cx,half:s.r});}
+  return b;
+}
+function inBreach(x,bs){return bs.some(b=>Math.abs(x-b.cx)<b.half-4)}
+function crossGoal(u,gy,bs){
+  // returns a waypoint when u must cross the wall to reach gy, null if no crossing needed, false if impossible
+  const su=side(u.y), sg=gy>WALL_B?1:(gy<WALL_T?-1:su);
+  if(su===sg||su===0&&inBreach(u.x,bs))return null;
+  if(!bs.length)return false;
+  let best=bs[0];for(const b of bs)if(Math.abs(b.cx-u.x)<Math.abs(best.cx-u.x))best=b;
+  if(Math.abs(u.x-best.cx)<best.half-6)return {x:u.x,y:sg>0?WALL_B+10:WALL_T-10};
+  return {x:best.cx,y:su>0?WALL_B+8:WALL_T-8};
+}
+
+/* ===================== AI ===================== */
+function enemiesOf(u){return G.U.filter(o=>o.team!==u.team&&o.hp>0&&!o.idle)}
+function pickTarget(u,bs){
+  if(u.kind!=="ram"){
+    let best=null,bd=1e9;
+    const aggro=u.team==="d"?999:(u.kind==="archer"?130:110);
+    for(const o of enemiesOf(u)){
+      if(u.team==="a"&&o.kind==="ram")continue;
+      let d=Math.hypot(o.x-u.x,o.y-u.y);
+      if(d>aggro)continue;
+      if(side(o.y)!==side(u.y)&&side(o.y)!==0&&side(u.y)!==0&&!bs.length)continue;
+      if(BEATS[u.kind]===o.kind)d-=50;
+      if(d<bd){bd=d;best=o}
+    }
+    if(best)return best;
+  }
+  if(u.team==="d")return null;
+  // structures
+  let pool=G.S.filter(s=>s.hp>0);
+  if(u.kind==="ram"){
+    const walls=pool.filter(s=>s.kind!=="keep");
+    if(walls.length&&!(bs.length>=2))pool=walls;
+  } else if(bs.length){pool=pool.filter(s=>!isSeg(s))}
+  let best=null,bd=1e9;
+  for(const s of pool){
+    let d=distTo(u,s);
+    if(s.kind==="gate"&&u.kind==="ram")d-=60;
+    if(s.kind==="keep"&&side(u.y)>0)d+=40;
+    if(d<bd){bd=d;best=s}
+  }
+  return best;
+}
+function damage(att,def){
+  let d=att.dmg*(0.9+Math.random()*.2)*(att.rally>0?1.6:1);
+  if(def.kind!==undefined&&def.team){
+    if(BEATS[att.kind]===def.kind)d*=att.kind==="archer"?1.6:2;
+  }
+  return d;
+}
+function structDamage(att,s){
+  const m=att.kind==="ram"?(s.kind==="keep"?.8:2):att.kind==="hero"?.6:att.kind==="archer"?.15:.25;
+  return att.dmg*m*(0.9+Math.random()*.2)*(att.rally>0?1.6:1);
+}
+function hitUnit(o,d,from){
+  o.hp-=d;o.flash=.12;
+  chips(o.x,o.y,o.team==="a"?COL.lapisHi:COL.wineHi,3);
+  if(o.hp<=0){
+    chips(o.x,o.y,COL.clay,12);
+    if(o.team==="d"){G.kills++;float(o.x,o.y-14,"+3")}
+    else G.lost++;
+  }
+}
+function hitStruct(s,d){
+  const was=s.hp;s.hp-=d;
+  dust(s.kind==="keep"||s.kind==="tower"?s.cx:Math.min(s.x1,Math.max(s.x0,s.cx+(Math.random()-.5)*(s.x1-s.x0))),s.cy,4);
+  if(was>0&&s.hp<=0){
+    s.hp=0;G.shake=.45;dust(s.cx,s.cy,30);
+    const gain={gate:20,wall:6,tower:14,keep:0}[s.kind];
+    if(gain)float(s.cx,s.cy-24,"+"+gain);
+    G.alarm=true;
+    if(s.kind==="gate")toast("<b>The gate is down.</b> Your troops pour in.");
+    if(s.kind==="tower")toast("<b>A tower falls.</b>");
+  }
+}
+function step(u,gx,gy,dt,bs){
+  const wp=crossGoal(u,gy,bs);
+  if(wp===false){return false}
+  const tx=wp?wp.x:gx,ty=wp?wp.y:gy;
+  const dx=tx-u.x,dy=ty-u.y,d=Math.hypot(dx,dy);
+  if(d<1)return true;
+  const sp=u.speed*(u.rally>0?1.25:1)*dt;
+  u.x+=dx/d*Math.min(sp,d);u.y+=dy/d*Math.min(sp,d);
+  if(Math.abs(dx)>2)u.face=dx>0?1:-1;
+  return true;
+}
+function update(dt){
+  if(G.paused||G.over)return;
+  G.t+=dt;
+  const bs=breaches();
+  // alarm: garrison wakes
+  if(!G.alarm&&G.U.some(u=>u.team==="a"&&u.hp>0&&u.y<WALL_B+40&&bs.length))G.alarm=true;
+  if(G.alarm)G.U.forEach(u=>{if(u.team==="d")u.idle=false});
+  // Thera
+  if(!G.horn&&G.t>=HORN){G.horn=true;toast("<b>A horn from the "+(G.theraSide<0?"west":"east")+".</b> Thera's relief army arrives in 30 seconds. Lysa will bargain harder once it does.",5)}
+  if(!G.theraHere&&G.t>=THERA){
+    G.theraHere=true;const x=G.theraSide<0?-10:W+10,f=LEVELS[level].f;
+    [["spear",360],["cav",390],["archer",340]].forEach(([k,y],i)=>G.U.push(mkUnit(k,"d",x,y+i*6,f)));
+    G.shake=.3;toast("<b>Thera's army has arrived.</b> Lysa takes heart.",4);
+  }
+  // the city musters fresh squads while the Council Hall stands
+  if(G.alarm&&G.musters<5&&G.S.find(s=>s.kind==="keep").hp>0){G.musterT=(G.musterT??14)-dt;
+    if(G.musterT<=0){G.musterT=18;G.musters++;const k=G.musters%2?"spear":"archer";G.U.push(mkUnit(k,"d",200+(Math.random()-.5)*60,150,LEVELS[level].f));float(200,140,"Lysa musters")}}
+  for(const u of G.U){
+    if(u.hp<=0)continue;
+    u.cd-=dt;u.flash=Math.max(0,u.flash-dt);
+    if(u.rally>0){u.rally-=dt;u.hp=Math.min(u.max,u.hp+u.max*.05*dt)}
+    if(u.idle)continue;
+    // retarget every so often
+    if(!u.target||u.target.hp<=0||(u.retarget=(u.retarget||0)-dt)<=0){u.target=pickTarget(u,bs);u.retarget=.6}
+    const t=u.target;
+    if(!t){ if(u.team==="d"&&!u.idle){/* hold */} continue }
+    const isU=!!t.team;
+    const d=isU?Math.max(0,Math.hypot(t.x-u.x,t.y-u.y)-t.r*.6):distTo(u,t);
+    const blocked=isU&&u.range<30&&side(t.y)*side(u.y)<0;
+    if(d<=u.range&&!blocked){
+      if(u.cd<=0){
+        u.cd=u.rate;
+        if(isU){
+          if(u.range>40)shoot(u.x,u.y-8,t.x,t.y-6,u.team);
+          else u.lunge=.15;
+          hitUnit(t,damage(u,t),u);
+        } else {
+          if(u.range>40)shoot(u.x,u.y-8,t.cx,t.cy-8,u.team);
+          else u.lunge=.15;
+          hitStruct(t,structDamage(u,t));
+          if(u.kind==="ram"){G.shake=Math.max(G.shake,.12)}
+        }
+      }
+    } else {
+      const g=isU?{x:t.x,y:t.y}:approach(u,t);
+      if(!step(u,g.x,g.y,dt,bs)){u.target=null;u.retarget=0;
+        // stuck behind walls: attack nearest wall instead
+        if(u.team==="a"){let best=null,bd=1e9;for(const s of G.S)if(s.hp>0&&s.kind!=="keep"){const dd=distTo(u,s);if(dd<bd){bd=dd;best=s}}u.target=best}
+      }
+    }
+    if(u.lunge)u.lunge=Math.max(0,u.lunge-dt);
+  }
+  // towers and keep shoot
+  for(const s of G.S){
+    if(s.hp<=0||!s.rate)continue;
+    s.cd-=dt;if(s.cd>0)continue;
+    let best=null,bd=s.range;
+    for(const u of G.U){if(u.team!=="a"||u.hp<=0)continue;const d=Math.hypot(u.x-s.cx,u.y-s.cy);if(d<bd){bd=d;best=u}}
+    if(best){s.cd=s.rate;shoot(s.cx,s.cy-(s.kind==="keep"?40:30),best.x,best.y-6,"d");hitUnit(best,s.dmg*(best.kind==="ram"?.5:1)*(0.9+Math.random()*.2))}
+  }
+  // separation
+  const live=G.U.filter(u=>u.hp>0);
+  for(let i=0;i<live.length;i++)for(let j=i+1;j<live.length;j++){
+    const a=live[i],b=live[j],dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||.01,m=(a.r+b.r)*.8;
+    if(d<m){const p=(m-d)/2,nx=dx/d,ny=dy/d;if(!a.idle){a.x-=nx*p;a.y-=ny*p}if(!b.idle){b.x+=nx*p;b.y+=ny*p}}
+  }
+  // keep out of walls except at breaches
+  for(const u of live){
+    u.x=Math.max(6,Math.min(W-6,u.x));u.y=Math.max(30,Math.min(H-8,u.y));
+    if(u.y>WALL_T-6&&u.y<WALL_B+6&&!inBreach(u.x,bs)){
+      // inside the wall band, not at a breach: push back to the side it came from
+      u.y=(u.team==="a"&&!u.wasIn)?WALL_B+6:(u.y<(WALL_T+WALL_B)/2?WALL_T-6:WALL_B+6);
+    }
+    u.wasIn=u.y<WALL_T;
+    for(const s of G.S){if(s.kind==="keep"&&s.hp>0||s.kind==="tower"&&s.hp>0){const d=Math.hypot(u.x-s.cx,u.y-s.cy),m=s.r+u.r*.5;if(d<m){u.x=s.cx+(u.x-s.cx)/d*m;u.y=s.cy+(u.y-s.cy)/d*m}}}
+  }
+  G.U=G.U.filter(u=>u.hp>0);
+  // effects
+  for(const p of G.proj)p.t+=dt; G.proj=G.proj.filter(p=>p.t<p.dur);
+  for(const p of G.parts){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=p.g*dt;p.life-=dt} G.parts=G.parts.filter(p=>p.life>0);
+  for(const f of G.floats){f.y-=18*dt;f.life-=dt} G.floats=G.floats.filter(f=>f.life>0);
+  G.shake=Math.max(0,G.shake-dt);
+  computeLeverage();
+  hints();
+  // end conditions
+  const keep=G.S.find(s=>s.kind==="keep");
+  if(keep.hp<=0)return finish("sack");
+  const armyLeft=G.U.some(u=>u.team==="a")||ORDER.some(k=>G.reserve[k]>0);
+  if(!armyLeft)return finalCall("Your army has fallen.");
+  if(G.t>=BATTLE)return finalCall("The clock has run out.");
+  updateHud();
+}
+
+/* ===================== leverage & will ===================== */
+function computeLeverage(){
+  let L=0;
+  for(const s of G.S){
+    if(s.kind==="keep")L+=(1-s.hp/s.max)*30;
+    else if(s.hp<=0)L+={gate:20,wall:6,tower:14}[s.kind];
+    else L+=(1-s.hp/s.max)*({gate:20,wall:6,tower:14}[s.kind])*.35;
+  }
+  L+=G.kills*3;
+  G.leverage=Math.min(100,Math.round(L));G.maxLev=Math.max(G.maxLev,G.leverage);
+}
+function seals(){
+  const bs=G.S.filter(s=>s.kind!=="keep"&&s.hp<=0).length>0;
+  const towers=G.S.filter(s=>s.kind==="tower"&&s.hp<=0).length===2;
+  const keep=G.S.find(s=>s.kind==="keep");
+  return [bs,towers,keep.hp<keep.max*.9];
+}
+function armyFrac(){
+  let hp=0;G.U.forEach(u=>{if(u.team==="a")hp+=u.hp});ORDER.forEach(k=>hp+=G.reserve[k]*TYPES[k].hp);
+  return hp/G.totalHp;
+}
+function will(){
+  const w=4+.35*G.leverage+6*armyFrac()-3*G.refusals-(G.theraHere?8:0)+LEVELS[level].will;
+  return Math.max(3,Math.min(40,Math.round(w)));
+}
+
+/* ===================== effects ===================== */
+function shoot(x,y,tx,ty,team){G.proj.push({x,y,tx,ty,t:0,dur:.35,team})}
+function chips(x,y,c,n){for(let i=0;i<n;i++)G.parts.push({x,y:y-6,vx:(Math.random()-.5)*90,vy:-40-Math.random()*60,g:220,life:.5+Math.random()*.3,c,s:1.5+Math.random()*2})}
+function dust(x,y,n){for(let i=0;i<n;i++)G.parts.push({x:x+(Math.random()-.5)*30,y:y+(Math.random()-.5)*10,vx:(Math.random()-.5)*50,vy:-10-Math.random()*40,g:10,life:.6+Math.random()*.6,c:Math.random()<.5?"rgba(210,185,140,.8)":"rgba(160,130,95,.7)",s:3+Math.random()*5})}
+function float(x,y,t){G.floats.push({x,y,t,life:1.2})}
+let toastT=0;
+function toast(html,secs=3.5){const el=document.getElementById("toast");el.innerHTML=html;el.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>el.hidden=true,secs*1000)}
+function hints(){
+  if(store.get("lysa-tips"))return;
+  const h=G.hintAt;
+  if(!h.a&&G.t>1.5&&G.deployed===0){h.a=1;toast("Tap a troop card, then tap the ground <b>below the red line</b>.",5)}
+  if(!h.b&&G.deployed>0&&G.t>8){h.b=1;toast("<b>Rams</b> break the gate. <b>Spears</b> guard them from cavalry.",5)}
+  if(!h.c&&G.leverage>=15){h.c=1;toast("Leverage is rising. Tap <b>Parley</b> any time to demand tribute.",5);store.set("lysa-tips","1")}
+}
+
+/* ===================== drawing ===================== */
+let ground=null;
+function makeGround(){
+  ground=[];let seed=7;const r=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  for(let i=0;i<140;i++)ground.push({x:r()*W,y:270+r()*(H-270),k:r()<.6?"tuft":"stone",s:.6+r()*.8});
+  for(let i=0;i<40;i++)ground.push({x:r()*W,y:30+r()*200,k:"tile",s:.6+r()*.8});
+}
+function resize(){
+  const r=stage.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1);
+  cv.width=Math.round(r.width*dpr);cv.height=Math.round(r.height*dpr);
+  const s=Math.min(r.width/W,r.height/H);
+  view={s,ox:(r.width-W*s)/2,oy:(r.height-H*s)/2,dpr,w:r.width,h:r.height};
+}
+function draw(){
+  const {s,ox,oy,dpr,w,h}=view;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.fillStyle="#BE9460";ctx.fillRect(0,0,w,h);
+  let sx=0,sy=0;if(G&&G.shake>0){sx=(Math.random()-.5)*G.shake*14;sy=(Math.random()-.5)*G.shake*14}
+  ctx.setTransform(dpr*s,0,0,dpr*s,dpr*(ox+sx),dpr*(oy+sy));
+  drawGround();
+  if(!G)return;
+  // y-sorted drawables
+  const list=[];
+  for(const st of G.S)list.push({y:st.kind==="keep"?st.cy+30:(isSeg(st)?WALL_B:st.cy+st.r*.6),f:()=>drawStruct(st)});
+  for(const u of G.U)list.push({y:u.y,f:()=>drawUnit(u)});
+  list.sort((a,b)=>a.y-b.y).forEach(o=>o.f());
+  // projectiles
+  for(const p of G.proj){const k=p.t/p.dur,x=p.x+(p.tx-p.x)*k,y=p.y+(p.ty-p.y)*k-Math.sin(k*Math.PI)*24;
+    const k2=Math.max(0,k-.08),x2=p.x+(p.tx-p.x)*k2,y2=p.y+(p.ty-p.y)*k2-Math.sin(k2*Math.PI)*24;
+    ctx.strokeStyle=p.team==="a"?"#2a2030":"#3a1a10";ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x,y);ctx.stroke()}
+  for(const p of G.parts){ctx.globalAlpha=Math.min(1,p.life*2);ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(p.x,p.y,p.s,0,7);ctx.fill()}
+  ctx.globalAlpha=1;
+  ctx.font="700 13px Cinzel,Georgia,serif";ctx.textAlign="center";
+  for(const f of G.floats){ctx.globalAlpha=Math.min(1,f.life*1.5);ctx.fillStyle="#5a3d0a";ctx.fillText(f.t,f.x+1,f.y+1);ctx.fillStyle=COL.giltHi;ctx.fillText(f.t,f.x,f.y)}
+  ctx.globalAlpha=1;
+  // Thera banner
+  if(G.horn&&!G.theraHere){const x=G.theraSide<0?14:W-14,a=.5+.5*Math.sin(G.t*6);ctx.fillStyle=`rgba(122,38,32,${.4+a*.5})`;
+    ctx.beginPath();ctx.moveTo(x,360);ctx.lineTo(x+(G.theraSide<0?16:-16),372);ctx.lineTo(x,384);ctx.fill();
+    ctx.fillStyle=COL.wine;ctx.font="700 10px Cinzel,Georgia,serif";ctx.textAlign=G.theraSide<0?"left":"right";ctx.fillText("Thera "+Math.ceil(THERA-G.t)+"s",G.theraSide<0?8:W-8,400)}
+}
+function drawGround(){
+  const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,"#C9A26A");g.addColorStop(.42,"#D4B07A");g.addColorStop(1,"#C79C63");
+  ctx.fillStyle=g;ctx.fillRect(-200,-200,W+400,H+400);
+  // inner city paving
+  ctx.fillStyle="#C8AC80";ctx.beginPath();ctx.moveTo(8,WALL_T);ctx.lineTo(392,WALL_T);ctx.lineTo(360,30);ctx.lineTo(40,30);ctx.closePath();ctx.fill();
+  ctx.strokeStyle="rgba(120,90,60,.18)";ctx.lineWidth=1;
+  for(let y=50;y<WALL_T;y+=22){ctx.beginPath();ctx.moveTo(30,y);ctx.lineTo(370,y);ctx.stroke()}
+  // road
+  ctx.fillStyle=COL.road;ctx.beginPath();ctx.moveTo(170,WALL_B);ctx.lineTo(230,WALL_B);ctx.lineTo(270,H+10);ctx.lineTo(130,H+10);ctx.closePath();ctx.fill();
+  ctx.strokeStyle="rgba(140,100,60,.25)";ctx.setLineDash([6,8]);ctx.beginPath();ctx.moveTo(185,WALL_B+6);ctx.lineTo(165,H);ctx.moveTo(215,WALL_B+6);ctx.lineTo(235,H);ctx.stroke();ctx.setLineDash([]);
+  for(const d of ground){
+    if(d.k==="tuft"){ctx.strokeStyle="rgba(90,110,70,.55)";ctx.lineWidth=1.2;ctx.beginPath();for(let i=-2;i<=2;i++){ctx.moveTo(d.x,d.y);ctx.lineTo(d.x+i*2*d.s,d.y-5*d.s)}ctx.stroke()}
+    else if(d.k==="stone"){ctx.fillStyle="rgba(150,120,85,.5)";ctx.beginPath();ctx.ellipse(d.x,d.y,3*d.s,2*d.s,0,0,7);ctx.fill()}
+    else{ctx.fillStyle="rgba(170,140,100,.35)";ctx.fillRect(d.x,d.y,6*d.s,4*d.s)}
+  }
+  // deploy zone
+  ctx.fillStyle=sel&&G&&!G.over?"rgba(45,70,112,.10)":"rgba(45,70,112,.05)";ctx.fillRect(0,DEPLOY_Y,W,H-DEPLOY_Y);
+  ctx.strokeStyle="rgba(122,38,32,.75)";ctx.lineWidth=1.5;ctx.setLineDash([8,6]);ctx.beginPath();ctx.moveTo(0,DEPLOY_Y);ctx.lineTo(W,DEPLOY_Y);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle="rgba(122,38,32,.8)";ctx.font="600 10px Cinzel,Georgia,serif";ctx.textAlign="left";ctx.fillText("YOUR CAMP · DEPLOY BELOW",8,DEPLOY_Y+14);
+  // camp tents
+  [[40,610],[360,612],[70,630],[330,632]].forEach(([x,y])=>{ctx.fillStyle="#EFE2C4";ctx.beginPath();ctx.moveTo(x-14,y);ctx.lineTo(x,y-18);ctx.lineTo(x+14,y);ctx.fill();ctx.fillStyle=COL.lapis;ctx.fillRect(x-1,y-24,2,8);ctx.beginPath();ctx.moveTo(x+1,y-24);ctx.lineTo(x+9,y-21);ctx.lineTo(x+1,y-18);ctx.fill()});
+}
+function shade(hex,k){const n=parseInt(hex.slice(1),16);let r=n>>16,g=n>>8&255,b=n&255;r=Math.round(r*k);g=Math.round(g*k);b=Math.round(b*k);return `rgb(${Math.min(255,r)},${Math.min(255,g)},${Math.min(255,b)})`}
+function cracks(x0,y0,w,h,k,seed){
+  if(k<.1)return;ctx.strokeStyle="rgba(60,40,25,.65)";ctx.lineWidth=1;let s=seed;const r=()=>(s=(s*9301+49297)%233280)/233280;
+  const n=Math.ceil(k*6);for(let i=0;i<n;i++){let x=x0+r()*w,y=y0+r()*h*.4;ctx.beginPath();ctx.moveTo(x,y);for(let j=0;j<3;j++){x+=(r()-.5)*10;y+=r()*h*.3;ctx.lineTo(x,y)}ctx.stroke()}
+}
+function drawStruct(s){
+  const k=1-s.hp/s.max;
+  if(isSeg(s)){
+    const w=s.x1-s.x0;
+    if(s.hp<=0){rubble(s.cx,WALL_B-6,w);return}
+    if(s.kind==="gate"){
+      // gatehouse
+      ctx.fillStyle=COL.stoneDark;ctx.fillRect(s.x0,WALL_T-20,10,WALL_B-WALL_T+20);ctx.fillRect(s.x1-10,WALL_T-20,10,WALL_B-WALL_T+20);
+      ctx.fillStyle=COL.stone;ctx.fillRect(s.x0,WALL_T-22,w,10);
+      for(let x=s.x0;x<s.x1;x+=10){ctx.fillStyle=COL.stoneTop;ctx.fillRect(x,WALL_T-30,6,8)}
+      ctx.fillStyle=COL.timber;ctx.beginPath();ctx.moveTo(s.x0+10,WALL_B);ctx.lineTo(s.x0+10,WALL_T-4);ctx.quadraticCurveTo(s.cx,WALL_T-26,s.x1-10,WALL_T-4);ctx.lineTo(s.x1-10,WALL_B);ctx.fill();
+      ctx.strokeStyle=COL.bronze;ctx.lineWidth=2;for(const y of [WALL_T+2,WALL_B-8]){ctx.beginPath();ctx.moveTo(s.x0+10,y);ctx.lineTo(s.x1-10,y);ctx.stroke()}
+      ctx.beginPath();ctx.moveTo(s.cx,WALL_T-14);ctx.lineTo(s.cx,WALL_B);ctx.stroke();
+      // eagle banner
+      ctx.fillStyle=COL.wine;ctx.fillRect(s.cx-7,WALL_T-48,14,18);ctx.fillStyle=COL.giltHi;ctx.beginPath();ctx.arc(s.cx,WALL_T-40,3,0,7);ctx.fill();
+      cracks(s.x0+10,WALL_T-10,w-20,WALL_B-WALL_T+10,k,s.x0);
+    } else {
+      ctx.fillStyle=COL.stoneDark;ctx.fillRect(s.x0,WALL_T-8,w,WALL_B-WALL_T+8);
+      ctx.fillStyle=COL.stone;ctx.fillRect(s.x0,WALL_T-14,w,WALL_B-WALL_T+4);
+      ctx.fillStyle=COL.stoneTop;for(let x=s.x0+2;x<s.x1-3;x+=9)ctx.fillRect(x,WALL_T-21,6,8);
+      ctx.strokeStyle="rgba(110,85,55,.35)";ctx.lineWidth=1;for(let y=WALL_T-8;y<WALL_B;y+=7){ctx.beginPath();ctx.moveTo(s.x0,y);ctx.lineTo(s.x1,y);ctx.stroke()}
+      cracks(s.x0,WALL_T-14,w,WALL_B-WALL_T+14,k,s.x0+3);
+    }
+    hpBar(s.cx,WALL_T-34,Math.min(48,w-6),s.hp/s.max,k>0);
+    return;
+  }
+  if(s.kind==="tower"){
+    if(s.hp<=0){rubble(s.cx,s.cy,s.r*2);return}
+    const top=s.cy-52;
+    ctx.fillStyle="rgba(60,40,20,.25)";ctx.beginPath();ctx.ellipse(s.cx,s.cy+10,s.r+4,8,0,0,7);ctx.fill();
+    ctx.fillStyle=COL.stoneDark;ctx.fillRect(s.cx-s.r,top,s.r*2,s.cy-top+8);
+    ctx.fillStyle=COL.stone;ctx.fillRect(s.cx-s.r+4,top,s.r*2-8,s.cy-top+8);
+    ctx.fillStyle=COL.stoneTop;ctx.beginPath();ctx.ellipse(s.cx,top,s.r,7,0,0,7);ctx.fill();
+    for(let i=-2;i<=2;i++){ctx.fillRect(s.cx+i*8-3,top-10,6,8)}
+    ctx.fillStyle=COL.wine;ctx.fillRect(s.cx-5,top+10,10,16);ctx.fillStyle=COL.giltHi;ctx.fillRect(s.cx-5,top+24,10,2);
+    // archer on top
+    ctx.fillStyle=COL.clay;ctx.beginPath();ctx.arc(s.cx,top-12,4,0,7);ctx.fill();
+    cracks(s.cx-s.r,top,s.r*2,s.cy-top,k,s.cx);
+    hpBar(s.cx,top-24,36,s.hp/s.max,k>0);
+    return;
+  }
+  // keep: council hall (temple)
+  const x=s.cx,y=s.cy,dead=s.hp<=0;
+  if(dead){rubble(x,y+20,90);return}
+  ctx.fillStyle="rgba(60,40,20,.25)";ctx.beginPath();ctx.ellipse(x,y+30,62,12,0,0,7);ctx.fill();
+  ctx.fillStyle=COL.stoneDark;ctx.fillRect(x-58,y+18,116,10);ctx.fillStyle=COL.stoneTop;ctx.fillRect(x-54,y+12,108,8);
+  ctx.fillStyle="#EADBC0";for(let i=0;i<6;i++){ctx.fillRect(x-48+i*18,y-24,8,36)}
+  ctx.fillStyle=COL.stoneTop;ctx.fillRect(x-56,y-32,112,9);
+  ctx.fillStyle=COL.wine;ctx.beginPath();ctx.moveTo(x-60,y-32);ctx.lineTo(x,y-62);ctx.lineTo(x+60,y-32);ctx.fill();
+  ctx.strokeStyle=COL.giltHi;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(x-50,y-35);ctx.lineTo(x,y-58);ctx.lineTo(x+50,y-35);ctx.stroke();
+  ctx.fillStyle=COL.giltHi;ctx.beginPath();ctx.arc(x,y-44,5,0,7);ctx.fill();
+  cracks(x-56,y-30,112,56,k,77);
+  if(k>.5){ctx.fillStyle="rgba(240,130,40,.6)";for(let i=0;i<5;i++){ctx.beginPath();ctx.arc(x-40+Math.random()*80,y-30+Math.random()*30,2+Math.random()*4,0,7);ctx.fill()}}
+  ctx.fillStyle=COL.ink;ctx.font="700 9px Cinzel,Georgia,serif";ctx.textAlign="center";ctx.fillText("COUNCIL HALL",x,y+40);
+  hpBar(x,y-74,60,s.hp/s.max,true);
+}
+function rubble(x,y,w){
+  ctx.fillStyle="rgba(120,95,65,.9)";
+  for(let i=0;i<9;i++){const px=x-w/2+((i*37)%w),py=y+((i*13)%10)-4;ctx.beginPath();ctx.ellipse(px,py,4+(i%3)*2,3+(i%2)*2,0,0,7);ctx.fill()}
+  ctx.fillStyle="rgba(205,176,136,.9)";for(let i=0;i<6;i++){const px=x-w/2+((i*53)%w),py=y+((i*7)%8)-6;ctx.fillRect(px,py,5,4)}
+}
+function hpBar(x,y,w,f,show){if(!show)return;ctx.fillStyle="rgba(29,24,38,.7)";ctx.fillRect(x-w/2-1,y-1,w+2,5);ctx.fillStyle=f>.5?"#8fbf6a":f>.25?"#DDBB6E":"#d0644a";ctx.fillRect(x-w/2,y,w*Math.max(0,f),3)}
+function drawUnit(u){
+  const T=TYPES[u.kind],n=Math.max(1,Math.ceil(T.figs*u.hp/u.max)),a=u.team==="a";
+  const shield=a?COL.lapis:COL.wine,rim=a?COL.giltHi:COL.bronze,crest=a?"#EFE6D2":"#1D1826";
+  const bob=Math.sin(G.t*8+u.phase)*1.2,lx=(u.lunge?u.face*4:0);
+  if(u.rally>0){ctx.strokeStyle="rgba(221,187,110,.85)";ctx.lineWidth=1.5;ctx.beginPath();ctx.ellipse(u.x,u.y+2,u.r+6,(u.r+6)*.45,0,0,7);ctx.stroke()}
+  if(u.kind==="hero"){
+    // Mucha halo ring on the ground
+    ctx.strokeStyle="rgba(221,187,110,.9)";ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(u.x,u.y+2,18,8,0,0,7);ctx.stroke();
+    for(let i=0;i<12;i++){const ang=i/12*Math.PI*2+G.t*.6;ctx.beginPath();ctx.moveTo(u.x+Math.cos(ang)*18,u.y+2+Math.sin(ang)*8);ctx.lineTo(u.x+Math.cos(ang)*22,u.y+2+Math.sin(ang)*10);ctx.stroke()}
+  }
+  const pos=formation(u.kind,n);
+  for(const [dx,dy] of pos){
+    const x=u.x+dx+lx,y=u.y+dy;
+    ctx.fillStyle="rgba(60,40,20,.28)";ctx.beginPath();ctx.ellipse(x,y+2,u.kind==="cav"?8:u.kind==="ram"?14:5,u.kind==="ram"?5:2.5,0,0,7);ctx.fill();
+    const fl=u.flash>0;
+    if(u.kind==="ram"){
+      ctx.fillStyle=fl?"#fff":COL.timber;ctx.fillRect(x-13,y-14,26,13);
+      ctx.fillStyle=a?COL.lapis:COL.wine;ctx.beginPath();ctx.moveTo(x-15,y-14);ctx.lineTo(x,y-24);ctx.lineTo(x+15,y-14);ctx.fill();
+      ctx.fillStyle="#4a3020";ctx.fillRect(x-4,y-28+(u.lunge?-4:0),8,10);ctx.fillStyle=COL.bronze;ctx.beginPath();ctx.arc(x,y-28+(u.lunge?-4:0),4,0,7);ctx.fill();
+      ctx.fillStyle="#3a2618";[-9,9].forEach(o=>{ctx.beginPath();ctx.arc(x+o,y-1,3.5,0,7);ctx.fill()});
+      continue;
+    }
+    if(u.kind==="cav"){ctx.fillStyle=fl?"#fff":COL.clayDark;ctx.beginPath();ctx.ellipse(x,y-5+bob*.5,8,4.5,0,0,7);ctx.fill();
+      ctx.beginPath();ctx.ellipse(x+u.face*8,y-9+bob*.5,2.8,4,u.face*.5,0,7);ctx.fill();
+      ctx.strokeStyle=COL.clayDark;ctx.lineWidth=1.6;ctx.beginPath();[-5,-2,3,6].forEach(o=>{ctx.moveTo(x+o,y-2);ctx.lineTo(x+o,y+1)});ctx.stroke()}
+    const by=y-(u.kind==="cav"?12:0)+bob*.6, big=u.kind==="hero"?1.5:1;
+    // body
+    ctx.fillStyle=fl?"#fff":COL.clay;roundRect(x-3.5*big,by-11*big,7*big,10*big,3*big);ctx.fill();
+    ctx.fillStyle=fl?"#fff":COL.clayHi;ctx.beginPath();ctx.arc(x,by-13.5*big,3*big,0,7);ctx.fill();
+    // helmet crest
+    ctx.fillStyle=crest;ctx.beginPath();ctx.ellipse(x,by-17*big,3.5*big,1.6*big,0,0,7);ctx.fill();
+    if(u.kind==="hero"){ctx.fillStyle=COL.giltHi;ctx.beginPath();ctx.arc(x,by-14*big,7*big,Math.PI*1.05,Math.PI*1.95);ctx.lineWidth=1.5;ctx.strokeStyle=COL.giltHi;ctx.stroke()}
+    // weapon
+    ctx.strokeStyle="#4a3424";ctx.lineWidth=1.2;
+    if(u.kind==="spear"||u.kind==="hero"){ctx.beginPath();ctx.moveTo(x+u.face*4*big,by-2);ctx.lineTo(x+u.face*(6+(u.lunge?5:2))*big,by-20*big);ctx.stroke();ctx.fillStyle=COL.bronze;ctx.beginPath();ctx.arc(x+u.face*(6+(u.lunge?5:2))*big,by-20*big,1.4,0,7);ctx.fill()}
+    if(u.kind==="archer"){ctx.beginPath();ctx.arc(x+u.face*4,by-8,5,-Math.PI/2,Math.PI/2,u.face<0);ctx.stroke()}
+    // shield
+    if(u.kind!=="archer"){ctx.fillStyle=shield;ctx.beginPath();
+      if(a)ctx.arc(x-u.face*3.5*big,by-6*big,3.6*big,0,7);else roundRect(x-u.face*3.5*big-3*big,by-11*big,6*big,9*big,1);
+      ctx.fill();ctx.strokeStyle=rim;ctx.lineWidth=1;ctx.stroke()}
+    else{ctx.fillStyle=shield;ctx.fillRect(x-3.5,by-9,7,3)}
+  }
+  if(u.hp<u.max)hpBar(u.x,u.y-(u.kind==="cav"?34:u.kind==="hero"?40:28),20,u.hp/u.max,true);
+}
+const FORM={1:[[0,0]],2:[[-5,0],[5,1]],3:[[-7,0],[7,0],[0,4]],4:[[-6,-2],[6,-2],[-6,4],[6,4]],5:[[-8,-2],[0,-3],[8,-2],[-4,4],[4,4]]};
+function formation(kind,n){if(kind==="cav")return [[-9,-1],[9,-1],[0,5]].slice(0,n);return FORM[Math.min(5,n)]}
+function roundRect(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+
+/* ===================== HUD ===================== */
+const ICONS={
+  spear:'<path d="M8 28L24 6M22 4l4 1-1 4z" stroke="#2A1C11" stroke-width="2" fill="#B08040"/><circle cx="10" cy="20" r="6" fill="#2D4670" stroke="#DDBB6E" stroke-width="1.5"/>',
+  archer:'<path d="M10 4c12 6 12 20 0 26" fill="none" stroke="#2A1C11" stroke-width="2"/><path d="M10 4v26M6 17h20M22 14l4 3-4 3" stroke="#2A1C11" stroke-width="1.6" fill="none"/>',
+  cav:'<path d="M6 24c0-6 4-10 10-10h6l4-6 2 2-2 6v8M10 24v6M22 24v6" stroke="#2A1C11" stroke-width="2" fill="#8A4A2A"/><circle cx="14" cy="9" r="3" fill="#B8693E"/>',
+  ram:'<path d="M4 22h24v-8H4z" fill="#6E4A2B"/><path d="M2 14l14-8 14 8z" fill="#2D4670"/><circle cx="9" cy="25" r="3" fill="#2A1C11"/><circle cx="23" cy="25" r="3" fill="#2A1C11"/><path d="M12 18h18" stroke="#B08040" stroke-width="3"/>',
+  hero:'<circle cx="16" cy="16" r="13" fill="none" stroke="#A77A22" stroke-width="1.5"/><path d="M16 3v4M16 25v4M3 16h4M25 16h4M7 7l3 3M22 22l3 3M25 7l-3 3M7 25l3-3" stroke="#A77A22"/><circle cx="16" cy="12" r="4" fill="#D08A5C"/><path d="M11 26v-7a5 5 0 0 1 10 0v7z" fill="#B8693E"/>',
+  rally:'<path d="M16 3l3.5 8.5 9 .7-7 5.8 2.3 8.8L16 22l-7.8 4.8 2.3-8.8-7-5.8 9-.7z" fill="#DDBB6E" stroke="#F0DDA6"/>'
+};
+function buildTray(){
+  const tray=document.getElementById("tray");tray.innerHTML="";
+  for(const k of ORDER){
+    const b=document.createElement("button");b.className="tc";b.dataset.k=k;
+    b.innerHTML=`<span class="ct"></span><svg viewBox="0 0 32 32" aria-hidden="true">${ICONS[k]}</svg><span class="nm">${TYPES[k].name}</span>`;
+    b.onclick=()=>onCard(k);tray.appendChild(b);
+  }
+  updateTray();
+}
+function heroUnit(){return G.U.find(u=>u.kind==="hero"&&u.team==="a")}
+function updateTray(){
+  document.querySelectorAll(".tc").forEach(b=>{
+    const k=b.dataset.k,n=G.reserve[k];
+    if(k==="hero"&&n===0){
+      const h=heroUnit(),can=h&&!G.rallyUsed;
+      b.classList.add("rally");b.querySelector("svg").innerHTML=ICONS.rally;b.querySelector(".nm").textContent=G.rallyUsed?"Rallied":"Rally";
+      b.querySelector(".ct").textContent="";b.disabled=!can||G.over;b.classList.remove("sel");
+      b.setAttribute("aria-label",G.rallyUsed?"Rally used":"Rally: nearby troops hit harder and heal");
+      return;
+    }
+    b.querySelector(".ct").textContent="×"+n;b.disabled=n===0||G.over;
+    b.classList.toggle("sel",sel===k&&n>0);
+    b.setAttribute("aria-label",TYPES[k].name+", "+n+" left"+(sel===k?", selected":""));
+  });
+}
+function onCard(k){
+  if(G.over)return;
+  if(k==="hero"&&G.reserve.hero===0){
+    const h=heroUnit();if(!h||G.rallyUsed)return;
+    G.rallyUsed=true;let c=0;
+    for(const u of G.U)if(u.team==="a"&&Math.hypot(u.x-h.x,u.y-h.y)<95){u.rally=6;c++}
+    G.shake=.2;toast("<b>Rally!</b> "+c+" squad"+(c===1?"":"s")+" strike harder and mend for 6 seconds.");
+    updateTray();return;
+  }
+  sel=k;updateTray();
+}
+function fmt(t){t=Math.max(0,Math.ceil(t));return Math.floor(t/60)+":"+String(t%60).padStart(2,"0")}
+function updateHud(){
+  if(!G)return;
+  const left=BATTLE-G.t,cl=document.getElementById("clock");cl.textContent=fmt(left);cl.classList.toggle("warn",left<=30);
+  document.getElementById("levFill").style.width=G.leverage+"%";document.getElementById("levNum").textContent=G.leverage;
+  document.getElementById("levMeter").setAttribute("aria-valuenow",G.leverage);
+  seals().forEach((on,i)=>document.getElementById("seal"+(i+1)).classList.toggle("on",on));
+  const pb=document.getElementById("parleyBtn");
+  pb.disabled=G.over||G.paused||G.leverage<5||G.parleys>=3;
+  pb.textContent=G.parleys>=3?"No more talks":"Parley"+(G.parleys?" ("+(3-G.parleys)+")":"");
+  updateTray();
+}
+
+/* ===================== input ===================== */
+cv.addEventListener("pointerdown",e=>{
+  if(!G||G.over||G.paused)return;
+  const r=cv.getBoundingClientRect(),x=(e.clientX-r.left-view.ox)/view.s,y=(e.clientY-r.top-view.oy)/view.s;
+  if(!sel){if(y>DEPLOY_Y)toast("Pick a troop card first.",2);return}
+  if(y<DEPLOY_Y){toast("Deploy <b>below the red line</b>.",2);return}
+  if(G.reserve[sel]<=0)return;
+  G.reserve[sel]--;G.deployed++;
+  const u=mkUnit(sel,"a",Math.max(12,Math.min(W-12,x)),Math.min(H-14,y));
+  G.U.push(u);dust(u.x,u.y,6);
+  if(G.reserve[sel]===0)sel=ORDER.find(k=>G.reserve[k]>0&&k!=="hero")||null;
+  updateTray();
+});
+
+/* ===================== parley ===================== */
+const pOv=document.getElementById("parley"),pBody=document.getElementById("parleyBody");
+function moodLine(final){
+  const w=will();
+  if(G.scout>0){return {html:`Your scout reports from inside the walls: the council would accept up to <b>${w}%</b> right now.`,exact:true}}
+  const lo=Math.max(3,w-4-Math.floor(Math.random()*3)),hi=Math.min(40,w+4+Math.floor(Math.random()*3));
+  return {html:`From their faces, the council might accept somewhere between <b>${lo}% and ${hi}%</b>.`,exact:false};
+}
+function openParley(final=false,reason=""){
+  G.paused=true;sel=null;updateHud();
+  const m=moodLine(final);if(G.scout>0)G.scout--;
+  const s=seals().filter(Boolean).length, w=will();
+  const suggest=Math.max(5,Math.min(40,w+(m.exact?0:2)));
+  document.getElementById("parleyEyebrow").textContent=final?"Last call · "+reason:"Parley "+(G.parleys+1)+" of 3 · the battle is paused";
+  document.getElementById("parleyTitle").textContent="Lysa's council";
+  pBody.innerHTML=`
+    <div class="stat"><span>Your leverage</span><b>${G.leverage} / 100</b></div>
+    <div class="stat"><span>Seals won</span><b>${s} of 3</b></div>
+    <div class="stat"><span>Your army left</span><b>${Math.round(armyFrac()*100)}%</b></div>
+    ${G.theraHere?'<div class="stat"><span>Thera\'s army</span><b>Here</b></div>':""}
+    <div class="mood">${m.html}</div>
+    <p style="text-align:center;margin:.6em 0 .1em" class="eyebrow">Your demand</p>
+    <div class="demand" id="dv">${suggest}%</div>
+    <input class="slider" id="ds" type="range" min="5" max="40" value="${suggest}" aria-label="Tribute you demand, percent">
+    <p style="font-size:.95rem;color:var(--ink-soft);margin:.2em 0">Every 1% pays you 100 gold over ten seasons. At 25% or more Lysa\'s soldiers also join you (+500). Burning the city pays 1,500 once.</p>
+    <div class="btns">
+      ${final?'<button class="btn" id="pWithdraw">Withdraw</button>':'<button class="btn" id="pBack">Back to battle</button>'}
+      <button class="btn primary" id="pSend">Send demand</button>
+    </div>`;
+  pOv.hidden=false;
+  const ds=document.getElementById("ds"),dv=document.getElementById("dv");
+  ds.oninput=()=>dv.textContent=ds.value+"%";
+  if(!final)document.getElementById("pBack").onclick=()=>{pOv.hidden=true;resume()};
+  else document.getElementById("pWithdraw").onclick=()=>{pOv.hidden=true;finish("withdraw")};
+  document.getElementById("pSend").onclick=()=>sendDemand(+ds.value,final);
+  document.getElementById("pSend").focus();
+}
+function sendDemand(d,final){
+  if(!final)G.parleys++;
+  const w=will();
+  if(d<=w){pOv.hidden=true;return finish("terms",d)}
+  G.refusals++;
+  const counter=Math.max(3,will()-1);
+  pBody.innerHTML=`
+    <p class="envoy">"${d}%? Lysa would sooner starve. We offer <b>${counter}%</b>, and not a grain more."</p>
+    <p>${final?"This is their final word.":"Each refusal makes the council a little prouder. Fight on and break more, or take their offer now."}</p>
+    <div class="btns">
+      ${final?'<button class="btn" id="pNo">Withdraw</button>':'<button class="btn" id="pNo">Fight on</button>'}
+      <button class="btn primary" id="pYes">Accept ${counter}%</button>
+    </div>`;
+  document.getElementById("pYes").onclick=()=>{pOv.hidden=true;finish("terms",counter,true)};
+  document.getElementById("pNo").onclick=()=>{pOv.hidden=true;if(final)finish("withdraw");else resume()};
+  document.getElementById("pYes").focus();
+}
+function resume(){G.paused=false;last=performance.now();updateHud()}
+function finalCall(reason){
+  if(G.final)return;G.final=true;G.paused=true;
+  if(G.leverage<5){return finish("rout")}
+  openParley(true,reason);
+}
+document.getElementById("parleyBtn").onclick=()=>{if(!G.paused&&!G.over&&G.leverage>=5&&G.parleys<3)openParley(false)};
+
+/* ===================== results ===================== */
+let resultText="";
+function finish(kind,pct=0,countered=false){
+  G.over=true;G.paused=true;updateHud();
+  const lost=Math.round((1-armyFrac())*100), s=seals().filter(Boolean).length;
+  let title,text,spoils=0,lesson="";
+  const sackSpoils=1500;
+  if(kind==="terms"){
+    spoils=pct*10*10+(pct>=25?500:0);
+    title=`Lysa signs at ${pct}% tribute`;
+    text=(countered?"You took their envoy's offer. ":"The council accepted your demand. ")+(pct>=25?"A full surrender: Lysa's soldiers join your ranks.":"A partial surrender: tribute, but Lysa keeps its soldiers.")+` Lysa now pays you ${pct*10} gold a season.`;
+    lesson=spoils>=sackSpoils?`Burning the city would have paid ${sackSpoils} gold once. Your terms pay ${spoils} over ten seasons.`:`Terms this low pay less than a sack (${sackSpoils}). Break more before you talk, or ask for more.`;
+  } else if(kind==="sack"){
+    spoils=sackSpoils;title="Lysa burns";
+    text="The Council Hall falls and your army sacks the city. You carry off its treasury, but there is no one left to pay tribute, and no soldier of Lysa will ever serve you.";
+    lesson="A deal at 15% or more would have paid as much over ten seasons, and cost far fewer troops.";
+  } else if(kind==="withdraw"){
+    title="You withdraw";text="You lift the siege and march home with no tribute. Lysa will remember that its walls held.";
+    lesson="Even a small deal beats nothing. Next time, parley while your leverage is high and before Thera arrives.";
+  } else {
+    title="Your army is routed";text="You broke nothing that mattered, so Lysa had no reason to talk.";
+    lesson="Send rams at the gate early, with spears beside them to hold off cavalry.";
+  }
+  const time=fmt(G.t);
+  document.getElementById("resEyebrow").textContent="Lysa level "+["","I","II","III"][level]+" · "+time+" of battle";
+  document.getElementById("resTitle").textContent=title;
+  document.getElementById("resText").textContent=text;
+  document.getElementById("resStats").innerHTML=[
+    ["Spoils over ten seasons",spoils+" gold"],["Leverage at the end",G.leverage+" / 100"],["Seals won",s+" of 3"],
+    ["Times you parleyed",G.parleys+(G.final?" + last call":"")],["Your army lost",lost+"%"],["Enemy squads broken",G.kills]
+  ].map(([a,b])=>`<div class="stat"><span>${a}</span><b>${b}</b></div>`).join("");
+  document.getElementById("resLesson").textContent=lesson;
+  resultText=`Antonia · Siege of Lysa (level ${level})\nResult: ${title}\nSpoils: ${spoils} gold over 10 seasons\nLeverage: ${G.leverage}, seals ${s}/3\nParleys: ${G.parleys}${G.final?" + last call":""}, scouted: ${document.getElementById("scoutBox").checked?"yes":"no"}\nArmy lost: ${lost}%, time: ${time}\nThera arrived: ${G.theraHere?"yes":"no"}`;
+  setTimeout(()=>{document.getElementById("result").hidden=false;document.getElementById("againBtn").focus()},kind==="sack"?900:200);
+}
+document.getElementById("copyBtn").onclick=async()=>{
+  const b=document.getElementById("copyBtn");
+  try{await navigator.clipboard.writeText(resultText);b.textContent="Copied"}catch(e){b.textContent="Copy failed"}
+  setTimeout(()=>b.textContent="Copy results",1800);
+};
+document.getElementById("againBtn").onclick=()=>{document.getElementById("result").hidden=true;document.getElementById("intro").hidden=false;newGame()};
+
+/* ===================== intro ===================== */
+document.querySelectorAll("#levels .choice").forEach(b=>b.onclick=()=>{
+  level=+b.dataset.l;document.querySelectorAll("#levels .choice").forEach(c=>c.setAttribute("aria-pressed",c===b?"true":"false"));newGame()});
+document.getElementById("scoutBox").onchange=()=>{if(G)G.scout=document.getElementById("scoutBox").checked?1:0};
+document.getElementById("startBtn").onclick=()=>{document.getElementById("intro").hidden=true;newGame();G.paused=false;last=performance.now();sel="ram";updateTray()};
+
+/* ===================== loop ===================== */
+function loop(now){
+  const dt=Math.min(.05,(now-last)/1000||0);last=now;
+  if(G&&!G.paused&&!G.over&&!document.hidden)update(dt);
+  else if(G&&G.over){for(const p of G.parts){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=p.g*dt;p.life-=dt}G.parts=G.parts.filter(p=>p.life>0);G.shake=Math.max(0,G.shake-dt)}
+  draw();raf=requestAnimationFrame(loop);
+}
+document.addEventListener("visibilitychange",()=>{last=performance.now()});
+new ResizeObserver(resize).observe(stage);
+makeGround();resize();newGame();raf=requestAnimationFrame(loop);
+window.__lysa={get G(){return G},will,finish,openParley,onCard,update,TYPES};
+</script>
+</body>
+</html>
