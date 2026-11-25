@@ -297,7 +297,8 @@ function hitUnit(o,d,from){
   const n0=Math.max(0,Math.ceil(o.figs*Math.max(0,o.hp)/o.max));
   o.hp-=d;
   if(o.kind==="spear"||o.kind==="archer"){const n1=Math.max(0,Math.ceil(o.figs*Math.max(0,o.hp)/o.max)),P=formation(o.kind,Math.max(1,n0));
-    for(let i=n1;i<n0&&i<P.length;i++)G.dead.push({x:o.x+P[i][0],y:o.y+P[i][1],team:o.team,face:o.face,kind:o.kind==="archer"?"archer":o.levy?"levy":"spearman",t:0})}o.flash=.12;
+    for(let i=n1;i<n0&&i<P.length;i++)G.dead.push({x:o.x+P[i][0],y:o.y+P[i][1],team:o.team,face:o.face,kind:o.kind==="archer"?"archer":o.levy?"levy":"spearman",t:0})}
+  if(o.kind==="ram"&&o.hp<=0&&!o.wreck){o.wreck=true;G.dead.push({x:o.x,y:o.y,team:o.team,face:o.face,kind:"ram",t:0})}o.flash=.12;
   chips(o.x,o.y,o.team==="a"?COL.lapisHi:COL.wineHi,3);
   if(o.hp<=0){
     chips(o.x,o.y,COL.clay,12);
@@ -596,6 +597,13 @@ function rubble(x,y,w){
 function hpBar(x,y,w,f,show){if(!show)return;ctx.fillStyle="rgba(29,24,38,.7)";ctx.fillRect(x-w/2-1,y-1,w+2,5);ctx.fillStyle=f>.5?"#8fbf6a":f>.25?"#DDBB6E":"#d0644a";ctx.fillRect(x-w/2,y,w*Math.max(0,f),3)}
 /* ---- spearman sprite sheets (Blender + Mixamo, 64px frames, 8 per row) ---- */
 const SPR={};for(const k of ["spearman","archer","officer","levy"])for(const t of ["a","d"]){const im=new Image();im.src=`sprites/${k}_${t}.png`;SPR[k+"_"+t]=im}
+const RAM=new Image();RAM.src="sprites/ram_a.png";
+/* ram sheet: 128px frames, rows idle/move/strike/wreck, ground anchor at (69,84) */
+function ramSprite(row,fr,x,y,face,alpha,flash){if(!RAM.complete||!RAM.naturalWidth)return false;const sc=.56,w=128*sc;
+  ctx.save();if(alpha!=null)ctx.globalAlpha=alpha;ctx.translate(x,y);if(face<0)ctx.scale(-1,1);
+  ctx.drawImage(RAM,(fr|0)*128,row*128,128,128,-69*sc,-84*sc,w,w);
+  if(flash){ctx.globalCompositeOperation="source-atop";ctx.globalAlpha=.35;ctx.fillStyle="#fff";ctx.fillRect(-69*sc,-84*sc,w,w)}
+  ctx.restore();return true}
 const ANIM={idle:0,march:1,run:2,thrust:3,slash:4,block:5,hit:6,death:7,cheer:8},SF=64,SS=.66;
 function sprite(team,row,fr,x,y,face,alpha,kind="spearman",sc=1){const im=SPR[kind+"_"+team];if(!im.complete||!im.naturalWidth)return false;
   const w=SF*SS*sc;ctx.save();if(alpha!=null)ctx.globalAlpha=alpha;ctx.translate(x,y);if(face<0)ctx.scale(-1,1);
@@ -615,6 +623,7 @@ function archerFrame(u,i){
 }
 function drawCorpses(){for(const c of G.dead){const k=Math.min(7,c.t/.9*7),al=c.t<4?1:Math.max(0,1-(c.t-4));
   ctx.fillStyle="rgba(60,40,20,.22)";ctx.beginPath();ctx.ellipse(c.x,c.y+2,7,2.5,0,0,7);ctx.fill();
+  if(c.kind==="ram"){ramSprite(3,k,c.x,c.y,c.face,al);continue}
   sprite(c.team,c.kind==="archer"?AANIM.death:ANIM.death,k,c.x,c.y,c.face,al,c.kind||"spearman")}}
 function drawUnit(u){
   const T=TYPES[u.kind],n=Math.max(1,Math.ceil(T.figs*u.hp/u.max)),a=u.team==="a";
@@ -638,6 +647,8 @@ function drawUnit(u){
     if(u.kind==="archer"){const [row,fr]=archerFrame(u,Math.abs(dx+dy*2));
       if(sprite(u.team,row,Math.min(7,((fr%8)+8)%8),x,y,u.face,null,"archer"))continue}
     if(u.kind==="ram"){
+      {const k=u.atk>0?1-u.atk/.45:-1,row=k>=0?2:u.moving?1:0,fr=k>=0?Math.min(7,k*8):u.moving?(G.t*8+u.phase)%8:(G.t*2+u.phase)%8;
+       if(ramSprite(row,fr,x,y,u.face,null,fl))continue}
       ctx.fillStyle=fl?"#fff":COL.timber;ctx.fillRect(x-13,y-14,26,13);
       ctx.fillStyle=a?COL.lapis:COL.wine;ctx.beginPath();ctx.moveTo(x-15,y-14);ctx.lineTo(x,y-24);ctx.lineTo(x+15,y-14);ctx.fill();
       ctx.fillStyle="#4a3020";ctx.fillRect(x-4,y-28+(u.lunge?-4:0),8,10);ctx.fillStyle=COL.bronze;ctx.beginPath();ctx.arc(x,y-28+(u.lunge?-4:0),4,0,7);ctx.fill();
