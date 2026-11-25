@@ -1,0 +1,1910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Antonia: The Rise and Fall</title>
+<link rel="alternate" hreflang="en" href="./">
+<link rel="alternate" hreflang="es" href="./?lang=es">
+<link rel="alternate" hreflang="de" href="./?lang=de">
+<link rel="alternate" hreflang="fr" href="./?lang=fr">
+<script>
+/* ---------- languages: the choice lives in the page address (?lang=es), nothing is stored ---------- */
+(function(){
+  var q=location.search,m=/[?&]lang=(es|de|fr)(?:&|$)/.exec(q),L=m?m[1]:'en',COLLECT=/[?&]i18ncollect(?:&|$)/.test(q);
+  window.LANG=L;document.documentElement.lang=L;
+  if(L!=='en')document.write('<style id="i18nHide">html{visibility:hidden}</style><script src="i18n/'+L+'.js"><\/script>');
+  window.__i18nBoot=function(){
+    var D=window.I18N||{},on=L!=='en'||COLLECT,keys=window.__keys=[],seen={},miss=window.__miss=[],mseen={};
+    function sel(){var s=document.getElementById('langSel');if(!s)return;s.value=L;
+      s.onchange=function(){var u=new URL(location.href);if(s.value==='en')u.searchParams.delete('lang');else u.searchParams.set('lang',s.value);location.href=u.pathname+u.search}}
+    if(!on){document.addEventListener('DOMContentLoaded',sel);window.T=function(s){return s};return}
+    var INL={B:1,I:1,EM:1,STRONG:1,A:1,BR:1,Q:1,CITE:1},SKIP={SCRIPT:1,STYLE:1,NOSCRIPT:1,TEXTAREA:1,CODE:1},ATTR=['aria-label','title','placeholder','alt'],
+        done=new WeakMap(),cache={},LET=/[A-Za-zÀ-ɏ]{2}/;
+    function look(k){if(COLLECT){if(!seen[k]){seen[k]=1;keys.push(k)}return null}
+      var v=D[k];if(v==null&&!mseen[k]){mseen[k]=1;miss.push(k)}return v==null?null:v}
+    function one(core){core=core.replace(/#/g,'\u266f');var nums=[],k=core.replace(/\d+(?:[.,]\d+)*/g,function(n){nums.push(n);return '#'}),v=look(k),i=0;
+      return v==null?null:v.replace(/#/g,function(){return nums[i++]}).replace(/\u266f/g,'#')}
+    function pieces(s){var out=[],st=0,re=/[.!?]+["”’»)]*\s+/g,x;while(x=re.exec(s)){if(/[A-ZÀ-Þ"“¿¡(\d]/.test(s.charAt(re.lastIndex))){out.push(s.slice(st,re.lastIndex));st=re.lastIndex}}out.push(s.slice(st));return out}
+    function tr(s){if(typeof s!=='string'||!LET.test(s))return s;if(cache[s]!==undefined)return cache[s];
+      var lead=/^\s*/.exec(s)[0],tail=/\s*$/.exec(s)[0],core=s.trim().replace(/\s+/g,' '),v=null;
+      var ps=pieces(core);if(ps.length<2)v=one(core);else if(!COLLECT){var nn=[],kk=core.replace(/#/g,'\u266f').replace(/\d+(?:[.,]\d+)*/g,function(n){nn.push(n);return '#'}),ii=0;if(D[kk]!=null)v=D[kk].replace(/#/g,function(){return nn[ii++]}).replace(/\u266f/g,'#')}
+      if(v==null){if(ps.length>1){var hit=false;v=ps.map(function(p){var c=p.trim();if(!LET.test(c))return p;var t=one(c);if(t==null)return p;hit=true;return t+/\s*$/.exec(p)[0]}).join('');if(!hit)v=null}}
+      var r=v==null?s:lead+v+tail;cache[s]=r;return r}
+    window.T=tr;
+    function text(n){var d=n.data;if(done.get(n)===d)return;var r=tr(d);if(r!==d)n.data=r;done.set(n,n.data)}
+    function attrs(el){for(var i=0;i<ATTR.length;i++){var a=el.getAttribute(ATTR[i]);if(a){var r=tr(a);if(r!==a)el.setAttribute(ATTR[i],r)}}}
+    function inlineOnly(el){for(var c=el.firstElementChild;c;c=c.nextElementSibling){if(!INL[c.tagName]||c.id||!inlineOnly(c))return false}return true}
+    function mixed(el){if(!el.firstElementChild||!inlineOnly(el))return false;for(var c=el.firstChild;c;c=c.nextSibling)if(c.nodeType===3&&LET.test(c.data))return true;return false}
+    function walk(el,whole){if(el.nodeType===3)return text(el);if(el.nodeType!==1||SKIP[el.tagName]||el.hasAttribute('data-noi18n'))return;
+      attrs(el);
+      if(whole&&mixed(el)){var h=el.innerHTML.trim().replace(/\s+/g,' '),v=one(h);
+        if(v!=null){el.innerHTML=v;mark(el);return}if(COLLECT){mark(el);return}}
+      for(var c=el.firstChild;c;c=c.nextSibling)walk(c,whole)}
+    function mark(el){var w=document.createTreeWalker(el,4),n;while(n=w.nextNode())done.set(n,n.data)}
+    var ft=CanvasRenderingContext2D.prototype.fillText;CanvasRenderingContext2D.prototype.fillText=function(t){arguments[0]=tr(String(t));return ft.apply(this,arguments)};
+    document.addEventListener('DOMContentLoaded',function(){
+      sel();document.title=tr(document.title);walk(document.body,true);
+      new MutationObserver(function(ms){for(var i=0;i<ms.length;i++){var m=ms[i];
+        if(m.type==='characterData')text(m.target);
+        else if(m.type==='attributes'){if(m.target.closest&&!m.target.closest('[data-noi18n]'))attrs(m.target)}
+        else for(var j=0;j<m.addedNodes.length;j++){var n=m.addedNodes[j];if(n.parentNode&&!(n.parentNode.closest&&n.parentNode.closest('[data-noi18n],script,style')))walk(n,false)}}
+      }).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:ATTR});
+      var h=document.getElementById('i18nHide');if(h)h.remove()});
+  };
+})();
+</script>
+<script>window.__i18nBoot()</script>
+<style>
+/* ---------- self-hosted fonts ---------- */
+@font-face{font-family:"Caesar Dressing";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/caesar-dressing-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Alegreya";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/alegreya-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Alegreya";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/alegreya-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Alegreya";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/alegreya-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Alegreya";font-style:italic;font-weight:400;font-display:swap;src:url(fonts/alegreya-latin-400-italic.woff2) format("woff2")}
+@font-face{font-family:"Alegreya";font-style:italic;font-weight:500;font-display:swap;src:url(fonts/alegreya-latin-500-italic.woff2) format("woff2")}
+@font-face{font-family:"Alegreya Sans SC";font-style:normal;font-weight:500;font-display:swap;src:url(fonts/alegreya-sans-sc-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Alegreya Sans SC";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/alegreya-sans-sc-latin-700-normal.woff2) format("woff2")}
+
+:root{
+  /* One visual world: a painted Greek vase come alive. The lore says everything is made of Living Clay,
+     so the page is clay too. Sections alternate between the three surfaces of ancient pottery:
+     red-figure (black glaze ground), black-figure (terracotta ground) and cream slip.
+     Layout idea: a frieze you scroll down. Meander bands slide between scenes, each scene tilts up
+     like a tablet, and a 3D amphora turns on Cassius's wheel at the top. */
+  --clay:#d4733f;
+  --clay-deep:#a84a24;
+  --glaze:#17120f;
+  --slip:#f1e3c4;
+  --gold:#f0b93a;
+  --aegean:#1b7a94;
+  --tyrian:#8a2552;
+  --display:"Caesar Dressing","Papyrus","Copperplate",fantasy;
+  --body:"Alegreya",Georgia,"Times New Roman",serif;
+  --label:"Alegreya Sans SC","Alegreya",Georgia,serif;
+  --key-ink:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M0 21H19V3H5V15H13V9M19 21H24' fill='none' stroke='%2317120f' stroke-width='2.6'/%3E%3C/svg%3E");
+  --key-clay:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M0 21H19V3H5V15H13V9M19 21H24' fill='none' stroke='%23d4733f' stroke-width='2.6'/%3E%3C/svg%3E");
+  --mx:0px;
+  color-scheme:light;
+}
+.rf{--bg:var(--glaze);--ink:var(--slip);--mut:#c9b896;--acc:var(--clay);--on-acc:var(--glaze);--panel:#241c17;--line:rgba(212,115,63,.45);--key:var(--key-clay);--focus:var(--gold);--bad:#e57aa3}
+.bf{--bg:var(--clay);--ink:var(--glaze);--mut:#3a1f11;--acc:var(--glaze);--on-acc:var(--slip);--panel:rgba(23,18,15,.09);--line:rgba(23,18,15,.45);--key:var(--key-ink);--focus:var(--glaze);--bad:#5a1233}
+.sl{--bg:var(--slip);--ink:var(--glaze);--mut:#584836;--acc:var(--clay-deep);--on-acc:var(--slip);--panel:#e6d4ad;--line:rgba(23,18,15,.32);--key:var(--key-ink);--focus:var(--aegean);--bad:var(--tyrian)}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;overflow-x:hidden;overflow-x:clip}
+body{background:var(--glaze);color:var(--slip);font-family:var(--body);font-size:19px;line-height:1.6;overflow-x:hidden}
+img,svg,canvas{max-width:100%;display:block}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus,#f0b93a);outline-offset:3px}
+h1,h2,h3,h4{font-family:var(--display);font-weight:400;line-height:1.05;text-wrap:balance}
+.wrap{width:min(1160px,100% - 40px);margin-inline:auto;transform-origin:50% 0;will-change:transform}
+.label{font-family:var(--label);font-weight:700;font-size:15px;letter-spacing:.14em;text-transform:lowercase;color:var(--acc)}
+.rf .label{color:var(--clay)}
+h2.title{font-size:clamp(40px,7vw,84px);margin:6px 0 14px}
+.lede{font-size:clamp(21px,2.5vw,28px);line-height:1.4;font-weight:500;font-style:italic;max-width:32ch}
+.prose{max-width:62ch}
+.mut{color:var(--mut)}
+section,header.hero,footer{position:relative;background-color:var(--bg);color:var(--ink)}
+section{padding:0 0 110px}
+.bf{background-image:radial-gradient(rgba(23,18,15,.08) 1px,transparent 1.6px),radial-gradient(rgba(255,214,170,.12) 1px,transparent 1.6px);background-size:7px 7px,11px 11px;background-position:0 0,3px 5px}
+.meander{height:30px;background:var(--key) var(--mx) 3px/24px 24px repeat-x;border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);margin-bottom:90px}
+.meander.rev{background-position:calc(-1 * var(--mx)) 3px}
+
+/* buttons: stamped clay tiles */
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--label);font-weight:700;font-size:17px;letter-spacing:.1em;text-transform:lowercase;text-decoration:none;cursor:pointer;color:var(--on-acc);background:var(--acc);border:3px solid var(--ink);padding:12px 22px;border-radius:0;box-shadow:5px 5px 0 var(--ink);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+.btn:active{transform:translate(5px,5px);box-shadow:0 0 0 var(--ink)}
+.btn.line{background:transparent;color:var(--ink)}
+.btn.small{font-size:15px;padding:8px 14px;box-shadow:3px 3px 0 var(--ink)}
+.rf .btn{border-color:var(--slip);box-shadow:5px 5px 0 var(--clay-deep)}
+.rf .btn:hover{box-shadow:2px 2px 0 var(--clay-deep)}
+.rf .btn.small{box-shadow:3px 3px 0 var(--clay-deep)}
+
+/* nav */
+nav.top{position:fixed;inset:0 0 auto 0;z-index:60;background:var(--glaze);color:var(--slip);border-bottom:3px solid var(--clay);--focus:var(--gold)}
+nav.top .navrow{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:8px 20px}
+.wordmark{font-family:var(--display);font-size:24px;letter-spacing:.08em;color:var(--clay);text-decoration:none}
+nav.top ul{list-style:none;display:flex;gap:22px}
+nav.top ul a{font-family:var(--label);font-weight:700;letter-spacing:.1em;font-size:16px;color:var(--slip);text-decoration:none;text-transform:lowercase;padding:4px 2px;border-bottom:3px solid transparent}
+nav.top ul a:hover{border-bottom-color:var(--clay)}
+nav.top .go{font-family:var(--label);font-weight:700;letter-spacing:.1em;font-size:15px;text-transform:lowercase;text-decoration:none;color:var(--glaze);background:var(--clay);padding:6px 14px;border:2px solid var(--slip)}
+.progress{height:6px;background:#2b211b}
+.progress i{display:block;height:100%;width:0;background:var(--gold)}
+
+/* hero */
+.hero{padding:96px 0 0;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:20px;align-items:center}
+.hero h1{font-size:clamp(48px,9.6vw,122px);color:var(--clay);letter-spacing:.02em;line-height:.95;margin:10px 0 6px;display:flex;flex-wrap:nowrap;white-space:nowrap}
+.hero h1 span{display:inline-block;animation:stamp .7s cubic-bezier(.2,1.4,.4,1) both;animation-delay:calc(var(--i) * 70ms)}
+@keyframes stamp{from{transform:translateY(26px) rotate(-7deg) scale(1.12)}to{transform:none}}
+.hero .sub{font-family:var(--display);font-size:clamp(22px,3vw,34px);color:var(--slip)}
+.hero .sub em{font-style:normal;color:var(--gold)}
+.hero .sub em+em{color:var(--bad)}
+.hero .thesis{font-size:clamp(20px,2.1vw,24px);max-width:36ch;margin:22px 0 28px}
+.cta{display:flex;flex-wrap:wrap;gap:16px}
+.hero-stage{display:flex;flex-direction:column;gap:6px}
+.vasebox{position:relative;aspect-ratio:1/1;min-height:320px}
+#vase{position:absolute;inset:0;width:100%;height:100%;touch-action:pan-y;cursor:grab}
+#vase:active{cursor:grabbing}
+.stage-ui{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:center;font-size:16px;color:var(--mut);text-align:center}
+.tags{display:flex;flex-wrap:wrap;gap:10px;margin:34px 0 0;list-style:none}
+.tags li{font-family:var(--label);font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:lowercase;border:2px solid var(--clay);color:var(--slip);padding:3px 12px;border-radius:999px}
+.hero .meander{margin:44px 0 0}
+
+/* glance: metopes */
+.metopes{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:44px;border:3px solid var(--ink)}
+.metope{padding:24px 22px 28px;border-right:3px solid var(--ink);display:flex;flex-direction:column;gap:10px;transition:background .25s}
+.metope:last-child{border-right:0}
+.metope:hover{background:var(--panel)}
+.metope svg{width:64px;height:64px}
+.metope h3{font-size:27px}
+.metope p{font-size:17.5px;line-height:1.5}
+.steps-head{font-size:clamp(28px,3.6vw,40px);margin:70px 0 8px}
+.march{position:relative;margin-top:26px}
+.march .road{position:relative;height:54px;border-bottom:4px solid var(--ink)}
+.march .runner{position:absolute;bottom:0;left:10%;width:44px;height:50px;transform:translateX(-50%);transition:left .7s cubic-bezier(.5,0,.2,1)}
+.march .runner svg{width:100%;height:100%;animation:bob .5s ease-in-out infinite alternate}
+@keyframes bob{to{transform:translateY(-4px) rotate(3deg)}}
+.steps{list-style:none;display:grid;grid-template-columns:repeat(5,1fr)}
+.steps button{all:unset;cursor:pointer;display:block;padding:16px 14px 18px;border-right:2px dashed var(--line);height:100%;box-sizing:border-box;transition:background .25s}
+.steps li:last-child button{border-right:0}
+.steps button:focus-visible{outline:3px solid var(--focus);outline-offset:-3px}
+.steps .n{font-family:var(--display);font-size:30px;display:block}
+.steps b{font-family:var(--display);font-weight:400;font-size:22px;display:block;margin:2px 0 6px;line-height:1.1}
+.steps span.t{font-size:16.5px;line-height:1.45;display:block;color:var(--mut)}
+.steps button[aria-pressed="true"]{background:var(--glaze);color:var(--slip)}
+.steps button[aria-pressed="true"] span.t{color:var(--slip)}
+.steps button[aria-pressed="true"] .n{color:var(--gold)}
+
+/* why */
+.why{display:grid;grid-template-columns:1fr 1.15fr;gap:60px;align-items:start}
+.fixes{display:grid;gap:18px}
+.fix{border:3px solid var(--ink);background:var(--bg);box-shadow:7px 7px 0 var(--ink)}
+.fix .said{padding:12px 18px;border-bottom:2px dashed var(--line);color:var(--bad);font-size:18px;position:relative}
+.fix .said small,.fix .ans small{display:block;font-family:var(--label);font-weight:700;letter-spacing:.12em;font-size:13.5px;text-transform:lowercase}
+.fix .said q{quotes:none;position:relative;display:inline}
+.fix .said q::after{content:"";position:absolute;left:-2px;right:-2px;top:55%;height:3px;background:var(--tyrian);transform:scaleX(0);transform-origin:0 50%;transition:transform .7s .25s cubic-bezier(.6,0,.2,1)}
+.fix.struck .said q::after{transform:scaleX(1)}
+.fix .ans{padding:14px 18px;font-size:20px;font-weight:500}
+.fix .ans small{color:var(--aegean)}
+
+/* book */
+.tome{margin-top:44px;perspective:2000px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;padding-left:14px}
+.tabs button{all:unset;cursor:pointer;font-family:var(--display);font-size:20px;padding:6px 14px 4px;background:#2b211b;color:var(--mut);border:3px solid var(--clay);border-bottom:0;border-radius:10px 10px 0 0;transition:transform .2s,background .2s}
+.tabs button:hover{transform:translateY(-3px)}
+.tabs button[aria-selected="true"]{background:var(--slip);color:var(--glaze)}
+.tabs button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.leafwrap{background:#dccba3;border:3px solid var(--clay);box-shadow:10px 10px 0 var(--clay-deep);position:relative}
+.leaf{background:var(--slip);color:var(--glaze);padding:44px clamp(22px,6vw,76px) 30px;min-height:470px;display:flex;flex-direction:column;transform-origin:0 50%;backface-visibility:hidden;--focus:var(--aegean);
+  background-image:linear-gradient(90deg,rgba(23,18,15,.12),transparent 5%),repeating-linear-gradient(0deg,transparent 0 33px,rgba(23,18,15,.045) 33px 34px)}
+.leaf.turn{animation:turn .75s cubic-bezier(.3,.7,.2,1)}
+@keyframes turn{from{transform:rotateY(-82deg)}to{transform:none}}
+.leaf .ch{font-family:var(--label);font-weight:700;letter-spacing:.16em;font-size:15px;color:var(--clay-deep);text-transform:lowercase}
+.leaf h3{font-size:clamp(34px,5vw,54px);margin:4px 0 20px}
+.leaf p{font-size:clamp(19px,2vw,22px);line-height:1.7;max-width:62ch}
+.leaf p::first-letter{font-family:var(--display);font-size:3.6em;float:left;line-height:.78;padding:8px 10px 0 0;color:var(--clay-deep)}
+.leaf .nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:auto;padding-top:28px;font-family:var(--label);font-weight:700;letter-spacing:.08em;font-size:15px;color:var(--mut)}
+.leaf .btn{border-color:var(--glaze);box-shadow:3px 3px 0 var(--glaze);background:var(--clay-deep);color:var(--slip)}
+.leaf .btn.line{background:transparent;color:var(--glaze)}
+.fine{font-size:16px;color:var(--mut);margin-top:22px;font-style:italic}
+
+/* world */
+.chain{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+.chain svg{width:100%;height:auto}
+.cast{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:56px;perspective:1400px}
+.who{background:var(--glaze);color:var(--slip);padding:22px 20px 24px;display:flex;flex-direction:column;gap:8px;border:3px solid var(--glaze);box-shadow:7px 7px 0 rgba(23,18,15,.35);transition:transform .2s;transform-style:preserve-3d;--focus:var(--gold)}
+.coinbox{width:84px;height:84px;margin:6px 0 0 6px;perspective:520px;cursor:pointer}
+.coin{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .85s cubic-bezier(.45,.05,.2,1);will-change:transform}
+.who:hover .coin,.coin.flip{transform:rotateY(180deg)}
+.who:hover .coin.flip{transform:rotateY(0deg)}
+.face{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:#0d0a08;border:3px solid var(--gold);box-shadow:0 0 0 3px var(--glaze),0 0 0 5px var(--clay)}
+.face.back{transform:rotateY(180deg);display:grid;place-items:center;font-family:var(--display);font-size:40px;line-height:1;color:var(--gold);background:radial-gradient(circle,#2b211b 0 56%,#0d0a08 57% 64%,#2b211b 65%)}
+.who.you .face{box-shadow:0 0 0 3px var(--slip),0 0 0 5px var(--clay-deep)}
+.who .role{font-family:var(--label);font-weight:700;letter-spacing:.1em;font-size:14px;color:var(--clay);text-transform:lowercase;margin-top:8px}
+.who h4{font-size:30px}
+.who p{font-size:17px;line-height:1.45;color:#dccba3}
+.who.you{grid-column:span 2;background:var(--slip);color:var(--glaze);border-color:var(--glaze)}
+.who.you p{color:var(--glaze)}.who.you .role{color:var(--clay-deep)}
+.terms{display:flex;flex-wrap:wrap;gap:12px;margin-top:54px}
+.terms div{border:2px solid var(--ink);padding:10px 16px;max-width:340px;flex:1 1 250px;background:var(--panel)}
+.terms dt{font-family:var(--display);font-size:22px}
+.terms dd{font-size:16.5px;line-height:1.45;color:var(--mut)}
+
+/* atlas */
+.atlas-h{font-size:clamp(30px,4vw,46px);margin:76px 0 6px}
+.atlas-sub{max-width:62ch;margin-bottom:24px}
+.realms{border:3px solid var(--glaze);box-shadow:8px 8px 0 rgba(23,18,15,.35)}
+.realm-band{display:grid;grid-template-columns:200px 1fr;gap:26px;padding:24px 26px;align-items:start}
+.realm-band+.realm-band{border-top:3px solid var(--glaze)}
+.realm-band h4{font-size:32px}
+.realm-band .where{font-family:var(--label);font-weight:700;font-size:14.5px;letter-spacing:.1em;text-transform:lowercase;display:block;margin-top:4px}
+.realm-band p{font-size:18px;line-height:1.5;max-width:64ch}
+.realm-band.up{background:var(--slip)}
+.realm-band.up .where{color:var(--clay-deep)}
+.realm-band.mid .where{color:var(--mut)}
+.realm-band.down{background:var(--glaze);color:var(--slip)}
+.realm-band.down .where{color:var(--clay)}
+.inner{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.inner div{border:2px solid var(--clay);padding:12px 16px}
+.inner h5{font-family:var(--display);font-weight:400;font-size:22px;color:var(--clay)}
+.inner p{font-size:16.5px;color:#dccba3}
+.inner.light div{border-color:var(--glaze);background:var(--panel)}
+.inner.light h5{color:var(--glaze)}.inner.light p{color:var(--mut)}
+.powers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.power{border:3px solid var(--glaze);background:var(--panel);padding:20px 22px;display:flex;flex-direction:column;gap:8px}
+.power h4{font-size:27px}
+.power .tag{font-family:var(--label);font-weight:700;font-size:14.5px;letter-spacing:.1em;text-transform:lowercase;color:var(--bad)}
+.power .tag.ok{color:var(--mut)}
+.power p{font-size:17px;line-height:1.48}
+.power p b{font-family:var(--label);font-weight:700;letter-spacing:.06em;text-transform:lowercase;font-size:15.5px}
+.power.dark{background:var(--glaze);color:var(--slip)}
+.power.dark .tag{color:var(--clay)}
+/* research reader */
+.howpill.ink{border-color:var(--glaze);color:var(--glaze)}
+.howpill.ink::before{content:"\2192";background:var(--glaze);color:var(--slip)}
+.howpill.ink:hover{background:var(--glaze);color:var(--slip)}
+.howpill.ink:hover::before{background:var(--slip);color:var(--glaze)}
+.howpill.ink:focus-visible{outline-color:var(--aegean)}
+dialog.research{border:3px solid var(--glaze);background:var(--slip);color:var(--glaze);padding:0;width:min(1060px,calc(100% - 20px));height:min(90vh,880px);max-height:none;margin:auto;box-shadow:10px 10px 0 var(--clay-deep);overflow:hidden;--focus:var(--aegean);--line:rgba(23,18,15,.3);--mut:#584836}
+dialog.research::backdrop{background:rgba(13,10,8,.8)}
+.rwrap{display:grid;grid-template-columns:280px minmax(0,1fr);height:100%}
+.rside{background:var(--glaze);color:var(--slip);padding:20px 16px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;--focus:var(--gold)}
+.rside h3{font-size:28px;color:var(--clay)}
+.rside p{font-size:15.5px;line-height:1.35;color:#c9b896}
+.rnav button,.rx{all:unset;cursor:pointer;box-sizing:border-box}
+.rnav{display:grid;gap:16px}
+.rgroup h4{font-family:var(--label);font-weight:700;letter-spacing:.14em;font-size:14.5px;text-transform:lowercase;color:var(--gc);padding:0 0 5px 10px;border-bottom:2px solid var(--gc);margin-bottom:4px}
+.rgroup ol{list-style:none;display:grid;gap:1px}
+.rnav button{display:grid;grid-template-columns:22px 1fr;gap:6px;align-items:baseline;width:100%;padding:7px 10px;font-size:17px;line-height:1.25;border-left:4px solid transparent;color:#dccba3}
+.rnav button i{font-style:normal;font-family:var(--display);font-size:17px;color:var(--gc)}
+.rnav button:hover{background:#241c17;color:var(--slip)}
+.rnav button[aria-current="true"]{background:#2b211b;border-left-color:var(--gc);color:var(--slip);font-weight:700}
+.rnav button:focus-visible,.rx:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.rwhere{font-family:var(--label);font-weight:700;letter-spacing:.1em;font-size:15px;text-transform:lowercase;color:var(--clay-deep)}
+.rpick{display:none;font:inherit;font-size:17px;padding:8px 10px;width:100%;background:var(--slip);color:var(--glaze);border:2px solid var(--clay)}
+.rmain{display:grid;grid-template-rows:auto minmax(0,1fr) auto;min-height:0}
+.rtop{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 22px;border-bottom:2px solid var(--line)}
+.rx{font-family:var(--label);font-weight:700;letter-spacing:.08em;font-size:15px;text-transform:lowercase;border:2px solid var(--glaze);padding:3px 12px}
+.rbody{overflow-y:auto;padding:22px clamp(18px,4vw,40px) 30px}
+.rch{display:grid;gap:16px;max-width:68ch}
+.rch[hidden]{display:none}
+.rch h3{font-size:clamp(30px,4.6vw,44px)}
+.rch p,.rch li{font-size:18.5px;line-height:1.55}
+.rch h4{font-family:var(--label);font-weight:700;letter-spacing:.14em;font-size:15px;text-transform:lowercase;color:var(--clay-deep)}
+.rch ul{padding-left:22px;display:grid;gap:8px}
+.rsum{border:2px solid var(--glaze);background:#e6d4ad;padding:12px 16px}
+.rsum p{font-size:19.5px;font-weight:500}
+.rins{border-left:6px solid var(--clay-deep);padding:6px 0 6px 16px}
+.rins p{font-size:20px;font-style:italic;font-weight:500}
+.rtable{width:100%;border-collapse:collapse;font-size:17px;line-height:1.35}
+.rtable th{font-family:var(--label);font-weight:700;letter-spacing:.08em;font-size:14.5px;text-transform:lowercase;text-align:left;border-bottom:3px solid var(--glaze);padding:6px 10px 6px 0}
+.rtable td{border-bottom:1px solid var(--line);padding:8px 10px 8px 0;vertical-align:top}
+.rtable td b{font-variant-numeric:tabular-nums}
+.rscroll{overflow-x:auto}
+.rfig{border:2px solid var(--glaze);padding:12px;background:#f6ecd4}
+.rfig figcaption{font-size:16px;color:var(--mut);margin-top:6px;line-height:1.4}
+.rgo{all:unset;cursor:pointer;color:var(--aegean);font-weight:700;text-decoration:underline}
+.rgo:focus-visible{outline:3px solid var(--aegean);outline-offset:2px}
+.rch a{color:var(--aegean)}
+.rfoot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 22px;border-top:2px solid var(--line);font-family:var(--label);font-weight:700;letter-spacing:.06em;font-size:15px;color:var(--mut)}
+.rfoot .btn{border-color:var(--glaze);box-shadow:3px 3px 0 var(--glaze);background:var(--clay-deep);color:var(--slip)}
+.rfoot .btn.line{background:transparent;color:var(--glaze)}
+@media (max-width:780px){
+  .rwrap{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
+  .rside{padding:12px 14px;gap:8px;overflow:visible}
+  .rside h3{font-size:22px}.rside p{display:none}
+  .rnav{display:none}.rpick{display:block}
+  .rtop{padding:8px 14px}.rfoot{padding:10px 14px}
+}
+/* play: four real mini-games */
+.game{padding:64px 0;border-top:3px solid var(--line)}
+.game:first-of-type{border-top:0}
+.ghead{display:grid;grid-template-columns:1.1fr 1fr;gap:44px;align-items:start;margin-bottom:24px}
+.ghead h3{font-size:clamp(32px,4.4vw,52px);margin:6px 0 12px}
+.ghead .theory{font-family:var(--label);font-weight:500;font-size:16px;letter-spacing:.06em;color:var(--mut);margin-top:12px}
+.how{border:2px dashed var(--line);padding:14px 18px}
+.how .goal{font-size:21px;line-height:1.4;font-weight:500;margin:6px 0 4px}
+.howpill{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:6px 18px;border-radius:999px;border:2px solid var(--gold);color:var(--gold);font-family:var(--label);font-weight:700;letter-spacing:.08em;font-size:16px;text-transform:lowercase;transition:background .2s,color .2s}
+.howpill::before{content:"?";display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--gold);color:var(--glaze);font-size:14px}
+.howpill:hover{background:var(--gold);color:var(--glaze)}
+.howpill:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+dialog.howto{border:3px solid var(--glaze);background:var(--slip);color:var(--glaze);padding:0;width:min(600px,calc(100% - 28px));max-height:88vh;overflow-y:auto;margin:auto;box-shadow:10px 10px 0 var(--clay-deep);--focus:var(--aegean)}
+dialog.howto::backdrop{background:rgba(13,10,8,.78)}
+.howto .in{padding:26px 28px 24px;display:grid;gap:14px}
+.howto .top{display:flex;justify-content:space-between;align-items:start;gap:14px}
+.howto h3{font-size:clamp(28px,5vw,38px)}
+.howto .x{all:unset;cursor:pointer;font-family:var(--label);font-weight:700;letter-spacing:.08em;font-size:15px;text-transform:lowercase;border:2px solid var(--glaze);padding:3px 12px;flex:none}
+.howto .x:focus-visible{outline:3px solid var(--aegean);outline-offset:2px}
+.howto h4{font-family:var(--label);font-weight:700;letter-spacing:.14em;font-size:15px;text-transform:lowercase;color:var(--clay-deep)}
+.howto .goal{font-size:21px;font-weight:500;line-height:1.4}
+.howto ol{padding-left:24px;display:grid;gap:8px;font-size:18.5px;line-height:1.45}
+.howto dl{display:grid;gap:6px;font-size:17.5px;line-height:1.4}
+.howto dt{font-weight:700;display:inline}
+.howto dd{display:inline}
+.howto .wl{display:grid;gap:6px;font-size:18px;border:2px solid var(--glaze);padding:12px 14px;background:var(--panel,#e6d4ad)}
+.howto .wl b:first-child{color:var(--aegean)}
+.howto .wl p+p b:first-child{color:var(--tyrian)}
+.howto .tip{font-style:italic;font-size:18px}
+.howto .btn{border-color:var(--glaze);box-shadow:4px 4px 0 var(--glaze);background:var(--clay-deep);color:var(--slip);justify-self:start}
+.stage{border:3px solid var(--clay);background:#100c0a;padding:16px;box-shadow:9px 9px 0 var(--clay-deep)}
+.stage canvas{width:100%;height:auto}
+.board{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px;align-items:start}
+.board>*{min-width:0}
+.side{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;min-width:0}
+.acts{display:flex;flex-wrap:wrap;gap:10px}
+.btn[disabled]{opacity:.4;cursor:not-allowed;transform:none!important}
+.btn[aria-pressed="true"]{background:var(--bad);color:var(--glaze)}
+.offer{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;font-size:17px;border:2px solid var(--line);padding:10px 12px}
+.offer b{font-family:var(--display);font-weight:400;font-size:24px;color:var(--gold);min-width:3ch;font-variant-numeric:tabular-nums}
+input[type=range]{accent-color:var(--gold);width:170px;max-width:100%}
+.log{height:176px;overflow-y:auto;border:2px solid var(--line);padding:10px 12px;font-size:16.5px;line-height:1.4;display:flex;flex-direction:column;gap:6px;background:#0b0807}
+.log .me{color:var(--gold)}.log .bad{color:var(--bad)}.log .good{color:#a7d58f}
+.meter{display:grid;grid-template-columns:128px 1fr 78px;gap:10px;align-items:center;font-family:var(--label);font-weight:700;letter-spacing:.06em;font-size:15px;margin-top:8px;text-transform:lowercase}
+.meter b{font-variant-numeric:tabular-nums;text-align:right;color:var(--gold)}
+.bar{height:12px;background:#2b211b;border:1px solid var(--line)}
+.bar i{display:block;height:100%;width:100%;background:var(--gold);transition:width .4s}
+.bar.foe i{background:var(--slip)}
+.bar.fog i{background:repeating-linear-gradient(90deg,var(--slip) 0 6px,#857a66 6px 12px)}
+.result{border:3px solid var(--gold);padding:14px 16px;font-size:18px;line-height:1.45;background:#1c150f}
+.result b{font-family:var(--display);font-weight:400;font-size:25px;color:var(--gold);display:block;margin-bottom:4px}
+.result[hidden]{display:none}
+.score{display:flex;flex-wrap:wrap;gap:8px 22px;font-family:var(--label);font-weight:700;letter-spacing:.08em;font-size:16px;text-transform:lowercase}
+.score b{font-family:var(--display);font-weight:400;font-size:24px;color:var(--gold);margin-left:6px;font-variant-numeric:tabular-nums;text-transform:none}
+.rowlist{display:grid;gap:8px}
+.nrow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;border:2px solid var(--line);padding:8px 12px}
+.nrow b{font-family:var(--display);font-weight:400;font-size:21px}
+.nrow small{display:block;color:var(--mut);font-size:15px;line-height:1.3}
+.nrow.gone{opacity:.5}
+.takes{display:grid;gap:6px;font-family:var(--label);font-weight:700;font-size:15px;letter-spacing:.06em;text-transform:lowercase}
+.takes div{display:grid;grid-template-columns:62px minmax(0,1fr) auto;gap:10px;align-items:center}
+.takes span:last-child{text-align:right;color:var(--mut);font-variant-numeric:tabular-nums}
+.tablet{background:var(--clay);color:var(--glaze);border:3px solid var(--glaze);border-radius:14px;--focus:var(--glaze);background-image:radial-gradient(rgba(23,18,15,.09) 1px,transparent 1.6px);background-size:7px 7px;margin-bottom:10px}
+.tablet .thead{display:flex;justify-content:space-between;align-items:center;padding:8px 16px;border-bottom:2px dashed rgba(23,18,15,.45);font-family:var(--label);font-weight:700;letter-spacing:.14em;font-size:14.5px;text-transform:lowercase}
+.tablet .thead button{all:unset;cursor:pointer;font-size:15px;padding:2px 10px;border:2px solid var(--glaze);margin-left:6px;border-radius:6px}
+.tablet .thead button:focus-visible{outline:3px solid var(--glaze);outline-offset:2px}
+.tablet .thead button[disabled]{opacity:.3;cursor:not-allowed}
+.tablet .band{padding:10px 16px 12px;font-size:19.5px;line-height:1.6}
+.tablet.dead{opacity:.6}
+.pill{all:unset;cursor:pointer;display:inline-block;padding:0 12px;margin:2px;border-radius:999px;background:var(--glaze);color:var(--slip);font-weight:500;transition:transform .15s}
+.pill:hover{transform:scale(1.05) rotate(-1deg)}
+.pill:focus-visible{outline:3px solid var(--glaze);outline-offset:2px}
+.warn{font-size:16.5px;line-height:1.4;display:grid;gap:4px}
+.warn p{color:var(--bad)}.warn p.ok{color:#a7d58f}
+.shake{animation:shake .45s}
+@keyframes shake{20%{transform:translate(-8px,3px) rotate(-.6deg)}40%{transform:translate(7px,-4px) rotate(.5deg)}60%{transform:translate(-4px,2px)}80%{transform:translate(3px,-1px)}}
+
+/* empire */
+.empire{display:grid;grid-template-columns:auto 1fr;gap:60px;align-items:center;margin-top:50px}
+.rota{--R:calc(min(340px,74vw) / 2);--rot:0deg;position:relative;width:calc(var(--R) * 2);aspect-ratio:1;border-radius:50%;border:4px solid var(--ink);margin:36px;
+  background:radial-gradient(circle,var(--bg) 0 33%,transparent 33.5%),repeating-conic-gradient(from -1deg,var(--ink) 0 2deg,transparent 2deg 72deg),radial-gradient(circle,transparent 0 62%,var(--panel) 62.5%)}
+.rota .stop{position:absolute;left:50%;top:50%;width:62px;height:62px;margin:-31px;border-radius:50%;display:grid;place-items:center;background:var(--bg);border:4px solid var(--ink);font-family:var(--display);font-size:24px;cursor:pointer;color:var(--ink);padding:0;
+  transform:rotate(calc(var(--a) + var(--rot))) translateY(calc(-1 * var(--R))) rotate(calc(-1 * (var(--a) + var(--rot))));transition:transform .9s cubic-bezier(.5,0,.2,1),background .3s,color .3s}
+.rota .stop.on{background:var(--clay-deep);color:var(--slip)}
+.rota .hub{position:absolute;inset:34%;display:grid;place-items:center;text-align:center;font-family:var(--display);font-size:clamp(17px,2.4vw,23px);line-height:1}
+.stages{list-style:none;display:grid;gap:4px}
+.stages button{all:unset;cursor:pointer;display:block;padding:12px 18px;border-left:6px solid transparent;transition:background .25s,border-color .25s;width:100%;box-sizing:border-box}
+.stages button:focus-visible{outline:3px solid var(--focus);outline-offset:-3px}
+.stages button.on{background:var(--panel);border-left-color:var(--clay-deep)}
+.stages b{font-family:var(--display);font-weight:400;font-size:25px;margin-right:10px}
+.stages span{color:var(--mut);font-size:18px}
+.realm{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;margin-top:90px}
+.orb{perspective:900px;display:grid;place-items:center;height:330px}
+.disc{position:relative;width:min(330px,76vw);aspect-ratio:1;transform-style:preserve-3d;transform:rotateX(62deg) rotateZ(0deg);animation:spin 50s linear infinite}
+@keyframes spin{to{transform:rotateX(62deg) rotateZ(360deg)}}
+.ring{position:absolute;inset:var(--i);border-radius:50%;transform:translateZ(var(--z));transform-style:preserve-3d;background:var(--c);border:3px solid var(--glaze)}
+.ring::after{content:"";position:absolute;inset:-3px;border-radius:50%;background:var(--glaze);transform:translateZ(-12px);opacity:.85}
+.ring.r1{--i:0%;--z:0px;--c:var(--clay);border-style:dashed}
+.ring.r2{--i:15%;--z:24px;--c:var(--clay-deep)}
+.ring.r3{--i:31%;--z:48px;--c:var(--tyrian);border-color:var(--slip);border-style:dashed}
+.ring.r4{--i:43%;--z:78px;--c:var(--glaze);border-color:var(--gold);box-shadow:0 0 22px var(--gold)}
+.legend{list-style:none;display:grid;gap:12px;margin-top:20px}
+.legend li{display:grid;grid-template-columns:22px 1fr;gap:12px;align-items:start;font-size:18px}
+.legend i{width:22px;height:22px;border-radius:50%;border:3px solid var(--glaze);margin-top:3px;background:var(--c)}
+
+/* kingdom: columns rise */
+.temple{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;align-items:end;margin-top:50px;border-bottom:8px solid var(--glaze);padding-bottom:0}
+.tier{display:flex;flex-direction:column;align-items:center;text-align:center}
+.tier .txt{padding:0 4px 22px}
+.tier h4{font-size:26px}
+.tier p{font-size:16.5px;line-height:1.35}
+.tier .needs{font-family:var(--label);font-weight:700;font-size:15px;letter-spacing:.06em;margin-top:4px}
+.col{position:relative;height:var(--h);width:min(84px,64%);margin-top:16px;background:repeating-linear-gradient(90deg,var(--glaze) 0 8px,#3b2b21 8px 10px);transform-origin:50% 100%;transition:transform .9s cubic-bezier(.2,.9,.3,1.2)}
+.col::before{content:"";position:absolute;left:-14px;right:-14px;top:-16px;height:16px;background:var(--glaze);border-radius:4px 4px 0 0}
+.col::after{content:"";position:absolute;left:-9px;right:-9px;bottom:0;height:9px;background:var(--glaze)}
+.temple.low .col{transform:scaleY(.35)}
+
+/* factions */
+.factions{display:grid;grid-template-columns:repeat(3,1fr);gap:26px 30px;margin-top:46px}
+.faction{display:grid;grid-template-columns:84px 1fr;gap:18px;align-items:start}
+.shield{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;font-family:var(--body);font-weight:700;font-size:38px;color:var(--glaze);border:3px solid var(--slip);
+  background:radial-gradient(circle,var(--clay) 0 46%,var(--glaze) 47% 54%,var(--clay) 55% 70%,var(--glaze) 71%);transition:transform .5s cubic-bezier(.3,1.5,.4,1)}
+.faction:hover .shield{transform:rotate(-14deg) scale(1.08)}
+.faction h4{font-size:26px;color:var(--clay)}
+.faction p{font-size:17.5px;line-height:1.45}
+.faction .mech{font-family:var(--label);font-weight:500;font-size:16px;letter-spacing:.04em;color:var(--gold);margin-top:6px}
+
+/* fair */
+.fair{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:44px}
+.fair>div{border:3px solid var(--ink);padding:26px 28px;box-shadow:7px 7px 0 var(--ink);background:var(--bg)}
+.fair h3{font-size:32px;margin-bottom:12px}
+.fair ul{list-style:none;display:grid;gap:9px;font-size:18.5px}
+.fair li{padding-left:30px;position:relative}
+.fair li::before{position:absolute;left:0;top:-2px;font-family:var(--display);font-size:22px}
+.fair .yes li::before{content:"✓";color:var(--aegean)}
+.fair .no li::before{content:"✗";color:var(--tyrian)}
+.fair .no h3{color:var(--tyrian)}
+.fair .yes h3{color:var(--aegean)}
+
+/* back */
+.pledges{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:44px;perspective:1400px}
+.pledge{background:var(--glaze);color:var(--slip);padding:22px 18px;display:flex;flex-direction:column;gap:6px;border:3px solid var(--glaze);box-shadow:7px 7px 0 rgba(23,18,15,.35);transition:transform .2s}
+.pledge .amt{font-family:var(--display);font-size:46px;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1}
+.pledge h4{font-size:25px;color:var(--clay)}
+.pledge ul{list-style:none;font-size:16.5px;line-height:1.4;display:grid;gap:6px;margin-top:6px;color:#dccba3}
+.pledge.feature{background:var(--slip);color:var(--glaze)}
+.pledge.feature .amt{color:var(--clay-deep)}.pledge.feature h4{color:var(--glaze)}.pledge.feature ul{color:var(--glaze)}
+.note{font-size:16.5px;font-style:italic;margin-top:20px;color:var(--mut)}
+.milestones{display:grid;grid-template-columns:repeat(4,1fr);margin-top:60px;border-top:4px solid var(--glaze)}
+.milestones div{padding:0 16px 0 0}
+.milestones .mk{display:inline-grid;place-items:center;width:52px;height:60px;margin-top:-4px;background:var(--glaze);color:var(--slip);font-family:var(--display);font-size:22px;border-radius:0 0 26px 26px}
+.milestones .now .mk{background:var(--slip);color:var(--glaze);border:4px solid var(--glaze);border-top:0}
+.milestones h4{font-size:26px;margin-top:10px}
+.milestones p{font-size:17px;line-height:1.4;color:var(--mut)}
+
+footer{padding:0 0 70px}
+footer .title{color:var(--clay)}
+
+@media (max-width:900px){
+  nav.top ul{display:none}
+  .hero h1{font-size:min(18vw,122px)}
+  .hero-grid,.why,.chain,.ghead,.empire,.realm,.fair{grid-template-columns:1fr}
+  .board{grid-template-columns:minmax(0,1fr)}
+  .ghead{gap:20px}
+  .metopes{grid-template-columns:1fr 1fr}
+  .metope:nth-child(2){border-right:0}
+  .metope:nth-child(-n+2){border-bottom:3px solid var(--ink)}
+  .steps{grid-template-columns:1fr}
+  .steps button{border-right:0;border-bottom:2px dashed var(--line)}
+  .march .road{display:none}
+  .cast{grid-template-columns:1fr 1fr}
+  .powers{grid-template-columns:1fr}
+  .realm-band{grid-template-columns:1fr;gap:8px}
+  .factions{grid-template-columns:1fr}
+  .pledges{grid-template-columns:1fr 1fr}
+  .milestones{grid-template-columns:1fr 1fr;row-gap:26px}
+  .temple{grid-template-columns:1fr;border-bottom:0;gap:0}
+  .tier{flex-direction:row;align-items:flex-end;text-align:left;gap:26px;border-bottom:6px solid var(--glaze);padding-top:26px}
+  .tier .txt{padding:0 0 12px;order:2}
+  .col{height:calc(var(--h) * .45);width:46px;flex:none;margin:0 0 0 16px}
+  .empire{justify-items:center}
+  .meander{margin-bottom:64px}
+  section{padding-bottom:80px}
+  .hero-stage{max-width:460px;margin-inline:auto;width:100%}
+}
+@media (max-width:520px){
+  body{font-size:18px}
+  .metopes,.cast,.pledges{grid-template-columns:1fr}
+  .metope{border-right:0;border-bottom:3px solid var(--ink)}
+  .metope:last-child{border-bottom:0}
+  .who.you{grid-column:auto}
+  .inner{grid-template-columns:1fr}
+  .meter{grid-template-columns:104px 1fr 70px}
+  .tabs button{font-size:17px;padding:5px 10px 3px}
+}
+@media (pointer:coarse){.tablet .thead button{padding:8px 14px}input[type=range]{min-height:36px}.pill{padding:7px 14px;margin:4px 2px}.tabs button{padding:11px 15px 9px}nav.top .go{padding:10px 14px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+/* ---------- privacy and terms ---------- */
+footer .legalrow{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center;margin-top:34px;padding-top:18px;border-top:2px solid var(--line);font-size:16px}
+footer .legalrow .copy{margin-right:auto;color:var(--mut,#b9a888)}
+footer .legalrow button{all:unset;cursor:pointer;font-family:var(--label);font-weight:700;letter-spacing:.12em;text-transform:lowercase;font-size:16px;color:var(--clay);padding:8px 2px;border-bottom:2px solid currentColor}
+footer .legalrow button:hover{color:var(--gold)}
+footer .legalrow button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+dialog.legal{border:3px solid var(--glaze);background:var(--slip);color:var(--glaze);padding:0;width:min(780px,calc(100% - 24px));height:min(88vh,860px);max-height:none;margin:auto;box-shadow:10px 10px 0 var(--clay-deep);--focus:var(--aegean)}
+dialog.legal[open]{display:flex;flex-direction:column}
+dialog.legal::backdrop{background:rgba(13,10,8,.8)}
+.legal .lhead{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:3px solid var(--glaze);flex:none;flex-wrap:wrap}
+.legal .ltabs{display:flex;gap:8px;margin-right:auto}
+.legal .ltabs button,.legal .x{all:unset;cursor:pointer;font-family:var(--label);font-weight:700;letter-spacing:.1em;font-size:16px;text-transform:lowercase;border:2px solid var(--glaze);padding:7px 14px}
+.legal .ltabs button[aria-selected="true"]{background:var(--glaze);color:var(--slip)}
+.legal button:focus-visible{outline:3px solid var(--aegean);outline-offset:2px}
+.legal .lbody{overflow-y:auto;padding:24px 28px 30px;flex:1;min-height:0}
+.legal .lbody:focus-visible{outline:3px solid var(--aegean);outline-offset:-3px}
+.legal h3{font-size:clamp(30px,5vw,42px);line-height:1.05}
+.legal .eff{font-family:var(--label);font-weight:700;letter-spacing:.1em;text-transform:lowercase;font-size:15px;color:var(--clay-deep);margin:6px 0 14px}
+.legal .short{border:2px solid var(--glaze);background:var(--panel,#e6d4ad);padding:12px 16px;font-size:18.5px;line-height:1.45;margin-bottom:8px}
+.legal h4{font-family:var(--label);font-weight:700;letter-spacing:.12em;font-size:17px;text-transform:lowercase;color:var(--clay-deep);margin:22px 0 6px}
+.legal p,.legal li{font-size:18px;line-height:1.5}
+.legal p+p,.legal ul+p{margin-top:8px}
+.legal ul{padding-left:22px;display:grid;gap:5px;margin-top:6px}
+.legal a{color:var(--aegean);text-decoration:underline}
+.legal [hidden]{display:none}
+@media (max-width:600px){.legal .lbody{padding:18px 16px 24px}.legal .ltabs button,.legal .x{padding:8px 12px}}
+/* ---------- header tools: language and pause ---------- */
+nav.top .tools{display:flex;align-items:center;gap:10px;flex:none}
+nav.top .tools select,nav.top .tools .motion{font-family:var(--label);font-weight:700;letter-spacing:.08em;font-size:15px;color:var(--slip);background:var(--glaze);border:2px solid var(--clay);border-radius:0;height:34px;cursor:pointer}
+nav.top .tools select{padding:0 6px;text-transform:uppercase}
+nav.top .tools .motion{padding:0 10px;display:inline-flex;align-items:center;gap:7px;text-transform:lowercase}
+nav.top .tools .motion .ic{font-size:12px;letter-spacing:0}
+nav.top .tools .motion[aria-pressed="true"]{background:var(--clay);color:var(--glaze)}
+nav.top .tools select:focus-visible,nav.top .tools .motion:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+html.paused *,html.paused *::before,html.paused *::after{animation-play-state:paused!important}
+@media (max-width:1100px){nav.top .tools .motion .tx{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}}
+@media (max-width:600px){nav.top .navrow{padding:8px 12px;gap:10px}nav.top .tools{gap:8px}.wordmark{font-size:21px;letter-spacing:.05em}nav.top .go{padding:6px 10px;letter-spacing:.06em}}
+@media (pointer:coarse){nav.top .tools select,nav.top .tools .motion{height:40px}}
+.noscript{background:var(--gold);color:var(--glaze);padding:14px 20px;margin-top:58px;font-size:18px;text-align:center;border-bottom:3px solid var(--glaze)}
+.result:focus-visible{outline:3px solid var(--focus,var(--aegean));outline-offset:3px}
+/* ---------- risks and faq ---------- */
+.risks{margin-top:56px;display:grid;grid-template-columns:1fr 1fr;gap:34px 44px;align-items:start}
+.risks h3{font-size:clamp(30px,4.4vw,44px);margin-bottom:10px}
+.risks p{font-size:18.5px;line-height:1.5}
+.risks ul{list-style:none;display:grid;gap:12px;margin-top:14px}
+.risks li{border-left:4px solid var(--glaze);padding:2px 0 2px 14px;font-size:18px;line-height:1.45}
+.risks li b{display:block;font-family:var(--label);letter-spacing:.08em;text-transform:lowercase;font-size:17px}
+.faq details{border:3px solid var(--glaze);background:var(--slip);color:var(--glaze);margin-top:10px;box-shadow:5px 5px 0 rgba(23,18,15,.35)}
+.faq summary{cursor:pointer;padding:12px 16px;font-weight:700;font-size:18.5px;list-style:none;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--label);font-size:24px;line-height:1;flex:none}
+.faq details[open] summary::after{content:"\2212"}
+.faq summary:focus-visible{outline:3px solid var(--aegean);outline-offset:2px}
+.faq details p{padding:0 16px 14px;font-size:18px;line-height:1.5}
+.faq a{color:var(--aegean)}
+@media (max-width:900px){.risks{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="top" aria-label="Main">
+  <div class="navrow">
+    <a class="wordmark" href="#top">Antonia</a>
+    <ul>
+      <li><a href="#glance">The game</a></li>
+      <li><a href="#book">The story</a></li>
+      <li><a href="#world">The world</a></li>
+      <li><a href="#play">Try it</a></li>
+      <li><a href="#empire">Empire</a></li>
+    </ul>
+    <div class="tools">
+      <select id="langSel" aria-label="Language" data-noi18n>
+        <option value="en" lang="en" aria-label="English">EN</option>
+        <option value="es" lang="es" aria-label="Español">ES</option>
+        <option value="de" lang="de" aria-label="Deutsch">DE</option>
+        <option value="fr" lang="fr" aria-label="Français">FR</option>
+      </select>
+      <button type="button" class="motion" id="motionBtn" aria-pressed="false"><span class="ic" aria-hidden="true">❚❚</span><span class="tx">Pause motion</span></button>
+      <a class="go" href="#back">Back the Book</a>
+    </div>
+  </div>
+  <div class="progress" aria-hidden="true"><i id="prog"></i></div>
+</nav>
+<noscript><p class="noscript">This page uses JavaScript for its story book, 3D art, mini-games and pop-ups, and JavaScript is turned off in your browser. You can still read the main sections below. Turn JavaScript on to see everything.</p></noscript>
+
+<!-- HERO -->
+<header class="hero rf" id="top">
+  <div class="wrap hero-grid" style="transform:none">
+    <div>
+      <p class="label">An alternate-history Greco-Roman strategy game for phones</p>
+      <h1 aria-label="Antonia"><span style="--i:0">A</span><span style="--i:1">n</span><span style="--i:2">t</span><span style="--i:3">o</span><span style="--i:4">n</span><span style="--i:5">i</span><span style="--i:6">a</span></h1>
+      <p class="sub">Book One: The <em>Rise</em> and <em>Fall</em></p>
+      <p class="thesis">Build a kingdom in a world where the gods are real and the villains are winning: the Remian Empire is swallowing city after city. Ride out from the ashes of your home, take back what was stolen from you, break walls in short, skilful sieges, then bargain from strength.</p>
+      <div class="cta">
+        <a class="btn" href="#back">Back the Book</a>
+        <a class="btn line" href="#glance">What is Antonia?</a>
+      </div>
+      <ul class="tags"><li>Free to play</li><li>Three-minute sieges</li><li>Ride, tame and fight</li><li>Cosmetics only, never power</li></ul>
+    </div>
+    <div class="hero-stage">
+      <div class="vasebox"><canvas id="vase" aria-label="A painted clay amphora turning on a potter's wheel. Drag to spin it."></canvas></div>
+      <div class="stage-ui">
+        <button class="btn small" id="reshape" type="button">Turn the Wheel</button>
+        <span>Drag the vase to spin it. Each season the Wheel shapes a new world.</span>
+      </div>
+    </div>
+  </div>
+  <div class="meander"></div>
+</header>
+
+<!-- GLANCE -->
+<section class="bf" id="glance">
+  <div class="meander rev"></div>
+  <div class="wrap" data-rise>
+    <p class="label">I · the game in one minute</p>
+    <h2 class="title">What is Antonia?</h2>
+    <p class="lede">Fight for every wall. Then make the bargain that keeps it.</p>
+    <div class="metopes">
+      <div class="metope">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M6 24 32 8l26 16z" fill="#17120f"/><path d="M12 28h6v22h-6zM24 28h6v22h-6zM35 28h6v22h-6zM47 28h6v22h-6z" fill="#17120f"/><path d="M6 52h52v6H6z" fill="#17120f"/></svg>
+        <h3>The game</h3>
+        <p>A free-to-play strategy game for phones. Roam the land on foot or horseback, grow a city, raise an army and take kingdoms in short, hands-on siege battles. Thousands of other players share your world as allies or rivals.</p>
+      </div>
+      <div class="metope">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="#17120f" stroke-width="4"/><path d="M32 12c10 14 13 20 13 27a13 13 0 0 1-26 0c0-7 3-13 13-27z" fill="#17120f"/></svg>
+        <h3>Who you are</h3>
+        <p>You grew up on a farm in the hills above Lysa, loved, and knowing nothing of where you came from. Then one day you found a note that was never meant to be found by any hand but yours. You never speak a word in the story. What you do speaks for you.</p>
+      </div>
+      <div class="metope">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><ellipse cx="18" cy="38" rx="12" ry="8" fill="none" stroke="#17120f" stroke-width="5" transform="rotate(-30 18 38)"/><ellipse cx="46" cy="26" rx="12" ry="8" fill="none" stroke="#17120f" stroke-width="5" transform="rotate(-30 46 26)"/><path d="M30 20l2 8M36 44l-2-8M26 28l5 4" stroke="#17120f" stroke-width="3" stroke-linecap="round"/></svg>
+        <h3>The stakes</h3>
+        <p>The Remian Empire forces city after city to kneel to one chained god. But worship taken by fear burns bright and fades, so the empire must keep taking. Only loyalty given freely holds the world together.</p>
+      </div>
+      <div class="metope">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 8v48M18 56h28M10 18h44" stroke="#17120f" stroke-width="4" stroke-linecap="round"/><path d="M10 18 3 36h14zM54 18l-7 18h14z" fill="#17120f"/><path d="M3 36a7 5 0 0 0 14 0zM47 36a7 5 0 0 0 14 0z" fill="#17120f"/></svg>
+        <h3>What's different</h3>
+        <p>Sieges are quick battles of skill, and every wall you break strengthens your hand at the bargaining table. Broken promises scar the map. Money buys style, never power.</p>
+      </div>
+    </div>
+
+    <h3 class="steps-head">Your first hours</h3>
+    <div class="march">
+      <div class="road" aria-hidden="true">
+        <div class="runner" id="runner"><svg viewBox="0 0 44 50"><circle cx="24" cy="8" r="5" fill="#17120f"/><path d="M17 7q7-11 13 0" fill="none" stroke="#17120f" stroke-width="3"/><path d="M19 14h10l2 14H17z" fill="#17120f"/><path d="M22 28l8 10 2 10M22 28l-6 10-6 10" fill="none" stroke="#17120f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="29" cy="22" r="9" fill="#17120f" stroke="#f1e3c4" stroke-width="1.5"/><path d="M8 34 40 2" stroke="#17120f" stroke-width="2"/></svg></div>
+      </div>
+      <ol class="steps" id="steps">
+        <li><button type="button"><span class="n">I</span><b>Find the note</b><span class="t">A quiet life on a hill farm ends the day you find a letter hidden in the barn. Then the well wakes.</span></button></li>
+        <li><button type="button"><span class="n">II</span><b>Face what woke</b><span class="t">Fight a beast twisted by the Corruption. Win, then choose: absorb its power, at a price, or tame it.</span></button></li>
+        <li><button type="button"><span class="n">III</span><b>Rise from the ashes</b><span class="t">Your home is gone. Train, take odd jobs on the open road and gather a few people worth trusting.</span></button></li>
+        <li><button type="button"><span class="n">IV</span><b>Lay your first siege</b><span class="t">Break the walls of Lysa in a short battle, then name your terms. Win it and Lysa becomes your castle.</span></button></li>
+        <li><button type="button"><span class="n">V</span><b>Rule and swear oaths</b><span class="t">Treat your vassals fairly or face revolt, join an alliance and push toward Remia, the heart of the empire.</span></button></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="sl" id="why">
+  <div class="meander"></div>
+  <div class="wrap why" data-rise>
+    <div>
+      <p class="label">II · why make it</p>
+      <h2 class="title">Players deserve better</h2>
+      <p class="lede">People love the alliances in mobile strategy games. They hate almost everything else.</p>
+      <p class="prose mut" style="margin-top:18px">Kingdom-building games, often called 4X (explore, expand, exploit, exterminate), are some of the biggest earners on phones. Their reviews still read like complaints. We studied what players say and built Antonia as the answer.</p>
+      <button class="howpill ink" type="button" id="resOpen">View research</button>
+    </div>
+    <div class="fixes">
+      <div class="fix"><div class="said"><small>players say</small><q>The ads show a game that doesn't exist.</q></div><div class="ans"><small>in antonia</small>Every ad shows real sieges, real bargaining, real gameplay.</div></div>
+      <div class="fix"><div class="said"><small>players say</small><q>You can't compete without paying.</q></div><div class="ans"><small>in antonia</small>Money buys style. Never power.</div></div>
+      <div class="fix"><div class="said"><small>players say</small><q>It feels like a second job.</q></div><div class="ans"><small>in antonia</small>Battles take minutes. Your defences hold while you sleep. Diplomacy waits for you.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOK -->
+<section class="rf" id="book">
+  <div class="meander rev"></div>
+  <div class="wrap" data-rise>
+    <p class="label">III · the story so far</p>
+    <h2 class="title" style="color:var(--clay)">Told by your mother</h2>
+    <p class="lede">Your mother, Persephi, is sealed away where no sun has ever risen. She sends you the pages of a book that writes itself, one at a time, up through the wells of Antonia.</p>
+    <p class="prose mut" style="margin-top:14px">The Book of Providence shows what <em>may</em> happen, never what must. The first pages are here: the note that started everything, your mother's first words to you and how the gods made the world. The rest wait in the game.</p>
+    <div class="tome">
+      <div class="tabs" role="tablist" id="tabs" aria-label="Chapters"></div>
+      <div class="leafwrap">
+        <article class="leaf" id="leaf" aria-live="polite">
+          <div class="ch" id="lch"></div>
+          <h3 id="ltitle"></h3>
+          <p id="ltext"></p>
+          <div class="nav">
+            <button class="btn line small" id="prev" type="button">Previous</button>
+            <span id="lcount"></span>
+            <button class="btn small" id="next" type="button">Turn the page</button>
+          </div>
+        </article>
+      </div>
+    </div>
+    <p class="fine">The pages are still writing. The story of Antonia can change.</p>
+  </div>
+</section>
+
+<!-- WORLD -->
+<section class="bf" id="world">
+  <div class="meander"></div>
+  <div class="wrap" data-rise>
+    <div class="chain">
+      <div>
+        <p class="label">IV · the world</p>
+        <h2 class="title">Who rules whom</h2>
+        <div class="prose" style="display:grid;gap:14px">
+          <p>Everything in Antonia runs on a chain of devotion. Mortals worship the gods. The gods must worship Toaa, “The One Above All,” who was before all things and whose true name unmakes anyone who tries to speak it.</p>
+          <p>Devotion flows up the chain like rivers to the sea. When the god Aerickleus made the city of Remia worship him alone, the chain broke and the world began to fray.</p>
+          <p>And not all devotion is equal. A prayer given freely holds, like rope. A prayer forced out of frightened people burns bright, then frays like thread.</p>
+          <p><strong>The game works the same way.</strong> Tribute, loyalty and oaths are how power moves, from your vassals all the way up to the gods.</p>
+        </div>
+      </div>
+      <svg viewBox="0 0 420 470" role="img" aria-label="Devotion flows from mortal cities up to the gods, and from the gods up to Toaa. The link from Remia is broken.">
+        <defs>
+          <path id="p1" d="M96 395 C96 330 150 300 210 262"/><path id="p2" d="M210 395 L210 262"/><path id="p4" d="M210 228 L210 118"/>
+        </defs>
+        <g stroke="#17120f" stroke-width="3" stroke-linecap="round">
+          <g id="rays"></g>
+        </g>
+        <circle cx="210" cy="70" r="34" fill="#f0b93a" stroke="#17120f" stroke-width="4"/>
+        <circle cx="210" cy="70" r="12" fill="#f1e3c4" stroke="#17120f" stroke-width="3"/>
+        <text x="210" y="148" font-family="'Caesar Dressing',fantasy" font-size="26" text-anchor="middle" fill="#17120f">Toaa</text>
+        <use href="#p4" stroke="#17120f" stroke-width="4" fill="none" transform="translate(0,40)"/>
+        <rect x="140" y="246" width="140" height="42" fill="#17120f"/>
+        <text x="210" y="275" font-family="'Caesar Dressing',fantasy" font-size="22" text-anchor="middle" fill="#d4733f">The Gods</text>
+        <g fill="none" stroke="#17120f" stroke-width="4" transform="translate(0,26)"><use href="#p1"/><use href="#p2"/></g>
+        <path d="M324 421 C324 380 306 352 290 338" stroke="#5a1233" fill="none" stroke-width="4" stroke-dasharray="3 9" stroke-linecap="round"/>
+        <path d="M270 318l14 8M278 308l8 14" stroke="#5a1233" stroke-width="4" stroke-linecap="round"/>
+        <g font-family="'Alegreya Sans SC',sans-serif" font-weight="700" font-size="17" text-anchor="middle" letter-spacing="1.5" fill="#17120f">
+          <text x="96" y="448">the concord</text><text x="210" y="466">free cities</text><text x="324" y="448" fill="#5a1233">remia · broken</text>
+        </g>
+        <g fill="#f1e3c4" stroke="#17120f" stroke-width="2.5">
+          <circle r="6" transform="translate(0,26)"><animateMotion dur="3.2s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
+          <circle r="6" transform="translate(0,26)"><animateMotion dur="3.2s" begin="1.6s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
+          <circle r="6" transform="translate(0,26)"><animateMotion dur="2.6s" repeatCount="indefinite"><mpath href="#p2"/></animateMotion></circle>
+          <circle r="6" transform="translate(0,26)"><animateMotion dur="2.6s" begin="1.3s" repeatCount="indefinite"><mpath href="#p2"/></animateMotion></circle>
+          <circle r="7" fill="#f0b93a" transform="translate(0,40)"><animateMotion dur="2.4s" repeatCount="indefinite"><mpath href="#p4"/></animateMotion></circle>
+        </g>
+      </svg>
+    </div>
+
+    <div class="cast">
+      <div class="who tilt"><div class="coinbox"><div class="coin"><canvas class="face" data-sigil="toaa" width="152" height="152"></canvas><span class="face back" aria-hidden="true">T</span></div></div><div class="role">The One Above All</div><h4>Toaa</h4><p>Before all things, beyond all realms. Has vowed never to interfere directly, and gives only through nudges, miracles and chains of events.</p></div>
+      <div class="who tilt"><div class="coinbox"><div class="coin"><canvas class="face" data-sigil="cassius" width="152" height="152"></canvas><span class="face back" aria-hidden="true">C</span></div></div><div class="role">Firstborn, keeper of the Wheel</div><h4>Cassius</h4><p>King of the gods. Shaped in Toaa's image, imperfectly. He keeps a ledger of every prayer and lets no god read the last page. In Book One he is far from his throne, holding back something very old.</p></div>
+      <div class="who tilt"><div class="coinbox"><div class="coin"><canvas class="face" data-sigil="hemera" width="152" height="152"></canvas><span class="face back" aria-hidden="true">H</span></div></div><div class="role">Wife of Cassius</div><h4>Hemera</h4><p>With Cassius she shaped the second age of mortals. Mother of Aerickleus.</p></div>
+      <div class="who tilt"><div class="coinbox"><div class="coin"><canvas class="face" data-sigil="aer" width="152" height="152"></canvas><span class="face back" aria-hidden="true">A</span></div></div><div class="role">The Golden Tongue</div><h4>Aerickleus</h4><p>The son who wanted to be loved more than anything, and could never be loved enough. He made a city worship him alone. Chained in the Hollow, he still speaks.</p></div>
+      <div class="who tilt"><div class="coinbox"><div class="coin"><canvas class="face" data-sigil="persephi" width="152" height="152"></canvas><span class="face back" aria-hidden="true">P</span></div></div><div class="role">Your mother</div><h4>Persephi</h4><p>A farmer's daughter, born after her mother drank from a well. There is more to her than she knows. Sealed in the Hollow, she cannot see your face, but she can feel you, and she sends you the Book's pages.</p></div>
+      <div class="who tilt"><div class="coinbox"><div class="coin"><canvas class="face" data-sigil="corvus" width="152" height="152"></canvas><span class="face back" aria-hidden="true">C</span></div></div><div class="role">Proxy emperor of Remia</div><h4>Corvus</h4><p>A tanner's son, saved as a boy by a wandering hero, and that hero's first believer ever since. The empire is his. The voice is not.</p></div>
+      <div class="who you tilt"><div class="coinbox"><div class="coin"><canvas class="face" data-sigil="you" width="152" height="152"></canvas><span class="face back" aria-hidden="true">Y</span></div></div><div class="role">Toaa's miraculous child</div><h4>You</h4><p>Raised on a hill farm, knowing nothing of where you came from. Pieces of you were taken before you could remember. Every one you reclaim draws the gods' eyes.</p></div>
+    </div>
+
+    <h3 class="atlas-h">The three realms</h3>
+    <p class="atlas-sub">The world of Antonia is stacked in three layers. Gods above, mortals in the middle, the forgotten below.</p>
+    <div class="realms">
+      <div class="realm-band up">
+        <div><h4>Orthys</h4><span class="where">above · realm of the gods</span></div>
+        <p>White terraces above the clouds, home of Cassius, Hemera and the rest of the divine family, each ruling a piece of the world such as the sea, the harvest, love, war or death. The gods live on mortal worship and owe their own to Toaa. Since the chain broke, Orthys has gone hungry.</p>
+      </div>
+      <div class="realm-band mid">
+        <div><h4>Antonia</h4><span class="where">the middle · where you play</span></div>
+        <div>
+          <p>The mortal continent: city-states, farms, temples and legions, reshaped by the Wheel each season. This is the land you roam, build on and fight over.</p>
+          <div class="inner light">
+            <div><h5>Remia</h5><p>Once an ordinary city. Now the capital of the empire and the center of every map.</p></div>
+            <div><h5>Lysa</h5><p>A warm sandstone city under a Remian garrison, below the hills where you grew up. Your first siege, and maybe your first home again.</p></div>
+            <div><h5>The Concord's ruins</h5><p>Old meeting grounds where the cities once swore peace on Oath Stones. The Oathwardens still guard them.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="realm-band down">
+        <div><h4>The Hollow</h4><span class="where">below · the underworld</span></div>
+        <div>
+          <p>The dark beneath the world. It does not burn; it forgets. Colours fade, names slip, echoes come back wrong. Gods that mortals stopped worshipping sink here, along with souls nobody mourned, and they are hungry to be remembered.</p>
+          <div class="inner">
+            <div><h5>The Hollow Palace</h5><p>Persephi's prison, sealed so no god or mortal can reach her.</p></div>
+            <div><h5>The Pit</h5><p>The deepest part of the Hollow, where Aerickleus is chained for all eternity. His voice still gets out.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="atlas-h">Empires and powers</h3>
+    <p class="atlas-sub">Three kinds of power share the continent. You will start as the smallest of them.</p>
+    <div class="powers">
+      <div class="power dark">
+        <span class="tag">the enemy</span><h4>The Remian Empire</h4>
+        <p>The largest power in Antonia. It began when the god Aerickleus made the city of Remia worship him alone. Today his old friend Corvus rules as emperor in his name, and Aerickleus speaks through him from the Pit.</p>
+        <p><b>What it wants:</b> every city kneeling, until Aerickleus is strong enough to break his chains. Inside, it argues with itself: the Throne, the Choir and a Senate that is quietly tired of war.</p>
+        <p><b>In the game:</b> Remian garrisons hold cities across the map. Freeing them, and finally Remia itself, is the goal of Book One.</p>
+      </div>
+      <div class="power">
+        <span class="tag ok">the old order</span><h4>The Concord of Many Altars</h4>
+        <p>The golden age before the empire. Free city-states honored every god in turn and kept the peace with oaths sworn on sacred clay. It fell apart when Remia broke away.</p>
+        <p><b>What is left:</b> the Oathwardens, neutral judges who still record every pact and mark anyone who breaks one.</p>
+        <p><b>In the game:</b> the Concord is why oaths, claims and treaties carry real weight.</p>
+      </div>
+      <div class="power">
+        <span class="tag ok">the independents</span><h4>The Free Leagues</h4>
+        <p>Cities and clans the empire has not swallowed yet: Kallos the merchant republic, Thera the oracle city, the hill clans of Doros and Mira on the sea. Each follows its own god and has its own temper.</p>
+        <p><b>What they want:</b> to stay free, of the empire and of you.</p>
+        <p><b>In the game:</b> these are the kingdoms you bargain with, besiege, rule as vassals or win over as allies.</p>
+      </div>
+    </div>
+
+    <h3 class="atlas-h">Faiths</h3>
+    <p class="atlas-sub">Worship is power in Antonia, so religion is never only about belief. Who a city prays to decides who grows stronger.</p>
+    <div class="powers">
+      <div class="power">
+        <span class="tag ok">the old faith</span><h4>The Many Altars</h4>
+        <p>Worship of the whole family of gods, a temple for each. Mortals pray to the gods, and the gods pass a share of that devotion up to Toaa. This is the faith that keeps the chain whole.</p>
+        <p><b>In the game:</b> pick a patron god each season for blessings, and build temples to keep your people content.</p>
+      </div>
+      <div class="power dark">
+        <span class="tag">the empire's faith</span><h4>The Aerinant Remisan Orthodoxy</h4>
+        <p>One god only: Aerickleus. Its followers are called Reminants. Its priests, the Choir of the Tongue, carry his voice from city to city and make conquered people kneel. Worship taken by force burns bright at first and then fades.</p>
+        <p><b>In the game:</b> defeat a Chorister and the empire's hold on that region weakens.</p>
+      </div>
+      <div class="power">
+        <span class="tag">the forbidden faith</span><h4>The Ashen Choir</h4>
+        <p>Mortals who pray to the forgotten gods of the Hollow, hoping to raise them again. They gather wherever the land has been stripped bare.</p>
+        <p><b>In the game:</b> overharvest a shared granary and their raiders appear at your gates.</p>
+      </div>
+    </div>
+    <p class="atlas-sub" style="margin-top:22px"><strong>And above every faith:</strong> Toaa. Mortals build it no temples. The gods themselves are its worshippers.</p>
+
+    <h3 class="atlas-h">Words to know</h3>
+    <dl class="terms" style="margin-top:14px">
+      <div><dt>Devotion</dt><dd>Worship. It gives gods their power and keeps the world alive.</dd></div>
+      <div><dt>Thin prayer</dt><dd>Worship given in fear or grief. Strong for a while, then it frays.</dd></div>
+      <div><dt>Living Clay</dt><dd>What the old stories say the world and its people were shaped from.</dd></div>
+      <div><dt>Oath Stones</dt><dd>Pacts between kingdoms, carved in clay. Breaking one scars the land.</dd></div>
+      <div><dt>The Wheel</dt><dd>The potter's wheel Toaa gave to Cassius. It reshapes the world each age, which is why every season has a new map.</dd></div>
+      <div><dt>Torebodings</dt><dd>Strange, unexplained events. Some say they are Toaa's hand at work.</dd></div>
+      <div><dt>Shards</dt><dd>Pieces of something taken from you before you could remember. Each one wakes only for you.</dd></div>
+      <div><dt>The Corruption</dt><dd>The rot that turns beasts into monsters. Take a monster's power and some of the rot comes with it.</dd></div>
+      <div><dt>Perytons</dt><dd>Winged stags of the hills. Nobody rides a peryton. Nobody has tried and lived to brag.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- PLAY -->
+<section class="rf" id="play">
+  <div class="meander rev"></div>
+  <div class="wrap" data-rise>
+    <p class="label">V · gameplay you can try right here</p>
+    <h2 class="title" style="color:var(--clay)">Try it yourself</h2>
+    <p class="lede">Strategy built on game theory, not timers.</p>
+    <p class="prose mut" style="margin-top:14px">Most of your time in Antonia goes into four things: taking cities, keeping promises, sharing land with your neighbors and running your kingdom while you're away. Each is built on a real idea from game theory, the study of how people decide when their choices affect each other. The four games below are small, playable versions. You can win or lose every one of them.</p>
+    <p class="prose mut" style="margin-top:10px">These were the first idea tests. The game has grown since: sieges are now short, hands-on battles, and the Steward is becoming a defence you lay out yourself. Newer demos, like the three-minute Siege of Lysa battle, live in the <a href="https://antonia-rise-and-fall-demo-hub.vercel.app/" target="_blank" rel="noopener">Antonia Demo Hub</a>.</p>
+
+    <div class="game" id="g-siege" role="group" aria-label="Game one, the siege clock">
+      <div class="ghead">
+        <div>
+          <p class="label">game one · the siege clock</p>
+          <h3>Every hour of war costs both sides</h3>
+          <p>You are camped outside the city of Lysa. You want tribute, and they want you gone. Every six-hour watch drains your supplies and their morale, so each rejected offer costs you both. Squeeze too hard and you starve first.</p>
+          <p class="theory">Built on the war of attrition and Rubinstein bargaining.</p>
+        </div>
+        <div class="how"><p class="label">your goal</p><p class="goal">Make the city of Lysa pay you tribute before your army runs out of supplies.</p><button class="howpill" type="button" data-how="siege">How to play</button></div>
+      </div>
+      <div class="stage board" id="siegeStage">
+        <div>
+          <canvas id="siege" width="760" height="330" role="img" aria-label="Your camp and the city of Lysa joined by a burning rope"></canvas>
+          <div class="meter"><span>your supplies</span><div class="bar"><i id="mSup"></i></div><b id="vSup">100</b></div>
+          <div class="meter"><span>their morale</span><div class="bar foe" id="bMor"><i id="mMor"></i></div><b id="vMor">?</b></div>
+          <div class="meter"><span>their food</span><div class="bar foe" id="bFood"><i id="mFood"></i></div><b id="vFood">?</b></div>
+          <button class="howpill" type="button" data-how="siege">How to play</button>
+        </div>
+        <div class="side">
+          <div class="score"><span>watch<b id="sWatch">1</b></span><span>hours<b id="sHours">0</b></span><span>their offer<b id="sLast">none</b></span></div>
+          <div class="offer"><label for="demand">Demand</label><input type="range" id="demand" min="5" max="45" value="25" aria-describedby="demandV"><b id="demandV">25%</b><button class="btn small" id="sOffer" type="button">Send offer</button></div>
+          <div class="acts">
+            <button class="btn small" id="sAccept" type="button" disabled>Accept their offer</button>
+            <button class="btn line small" id="sHold" type="button">Hold the siege</button>
+            <button class="btn line small" id="sAssault" type="button">Assault the walls</button>
+            <button class="btn line small" id="sScout" type="button">Send a scout</button>
+            <button class="btn line small" id="sBurn" type="button">Burn the bridges</button>
+            <button class="btn line small" id="sQuit" type="button">Withdraw</button>
+          </div>
+          <div class="log" id="sLog" role="log" aria-live="polite" tabindex="0" aria-label="Game log"></div>
+          <div class="result" id="sResult" hidden></div>
+          <div class="acts"><button class="btn small" id="sNew" type="button">New siege</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="game" id="g-oath" role="group" aria-label="Game two, oath stones">
+      <div class="ghead">
+        <div>
+          <p class="label">game two · oath stones</p>
+          <h3>Trust you can see. Betrayal that scars the map.</h3>
+          <p>You have sworn pacts with four neighbors for eight seasons. Each season you choose, pact by pact, whether to keep your word or break it for a quick windfall. Your neighbors remember, and each one answers betrayal in its own way.</p>
+          <p class="theory">Built on repeated games and tit-for-tat.</p>
+        </div>
+        <div class="how"><p class="label">your goal</p><p class="goal">Collect as much grain as you can in eight seasons by trading with four neighbors.</p><button class="howpill" type="button" data-how="oath">How to play</button></div>
+      </div>
+      <div class="stage board" id="oathStage">
+        <div><canvas id="oaths" width="760" height="420" role="img" aria-label="Your kingdom in the center, tied to four neighbors by glowing oath tethers"></canvas><button class="howpill" type="button" data-how="oath">How to play</button></div>
+        <div class="side">
+          <div class="score"><span>season<b id="oSeason">1 of 8</b></span><span>your grain<b id="oScore">0</b></span><span>mark<b id="oMark">none</b></span></div>
+          <div class="rowlist" id="oRows"></div>
+          <div class="acts"><button class="btn small" id="oEnd" type="button">End the season</button><button class="btn line small" id="oNew" type="button">Start over</button></div>
+          <div class="log" id="oLog" role="log" aria-live="polite" tabindex="0" aria-label="Game log"></div>
+          <div class="result" id="oResult" hidden></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="game" id="g-gran" role="group" aria-label="Game three, shared granaries">
+      <div class="ghead">
+        <div>
+          <p class="label">game three · shared granaries</p>
+          <h3>Take too much and the land turns on you</h3>
+          <p>Four kingdoms harvest one valley, blessed by Persephi. The land regrows a set amount each season. Take your fair share and it feeds everyone forever. Take more, and your neighbors will copy you until nothing is left.</p>
+          <p class="theory">Built on the tragedy of the commons.</p>
+        </div>
+        <div class="how"><p class="label">your goal</p><p class="goal">Gather as much grain as you can in ten seasons without killing the valley you share.</p><button class="howpill" type="button" data-how="gran">How to play</button></div>
+      </div>
+      <div class="stage board">
+        <div>
+          <canvas id="granary" width="760" height="340" role="img" aria-label="A mosaic valley that turns from green to brown as the shared granary is drained"></canvas>
+          <div class="meter"><span>the valley</span><div class="bar"><i id="mPool"></i></div><b id="vPool">140</b></div>
+          <button class="howpill" type="button" data-how="gran">How to play</button>
+        </div>
+        <div class="side">
+          <div class="score"><span>season<b id="gSeason">1 of 10</b></span><span>your grain<b id="gYou">0</b></span><span>regrows<b id="gRegrow">0</b></span></div>
+          <div class="offer"><label for="greed">Harvest</label><input type="range" id="greed" min="0" max="25" value="7" aria-describedby="gFair"><b id="greedV">7</b><span id="gFair" class="mut"></span></div>
+          <div class="takes" id="gTakes"></div>
+          <div class="acts"><button class="btn small" id="gGo" type="button">Harvest this season</button><button class="btn line small" id="gFest" type="button" disabled>Hold a festival (5 grain)</button><button class="btn line small" id="gNew" type="button">Start over</button></div>
+          <div class="log" id="gLog" role="log" aria-live="polite" tabindex="0" aria-label="Game log"></div>
+          <div class="result" id="gResult" hidden></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="game" id="g-stew" role="group" aria-label="Game four, the steward">
+      <div class="ghead">
+        <div>
+          <p class="label">game four · the steward</p>
+          <h3>Rule while you sleep</h3>
+          <p>Your Steward is a clay scribe that follows your decrees word for word while you are offline. Write three decrees, put them in order, then sleep. Four alarms will come in the night, and the Steward will answer each one exactly as you wrote it.</p>
+          <p class="theory">Rules run top to bottom. The first one that fits fires.</p>
+        </div>
+        <div class="how"><p class="label">your goal</p><p class="goal">Keep your kingdom safe overnight. Four attacks will come while you sleep.</p><button class="howpill" type="button" data-how="stew">How to play</button></div>
+      </div>
+      <div class="stage board">
+        <div>
+          <div id="stRules" role="group" aria-label="Your three decrees, in the order the Steward reads them"></div>
+          <div class="warn" id="stWarn" aria-live="polite"></div>
+          <button class="howpill" type="button" data-how="stew">How to play</button>
+        </div>
+        <div class="side">
+          <div class="score"><span>cavalry<b id="stCav">6,000</b></span><span>gold<b id="stGold">1,000</b></span><span>vassal loyalty<b id="stLoy">70</b></span></div>
+          <div class="acts"><button class="btn small" id="stSleep" type="button">Sleep through the night</button><button class="btn line small" id="stReset" type="button">Reset decrees</button></div>
+          <div class="log" id="stLog" role="log" aria-live="polite" tabindex="0" aria-label="Game log" style="height:230px"></div>
+          <div class="result" id="stResult" hidden></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EMPIRE -->
+<section class="sl" id="empire">
+  <div class="meander"></div>
+  <div class="wrap" data-rise>
+    <p class="label">VI · empire</p>
+    <h2 class="title">Rise. Rule. Fall.</h2>
+    <p class="lede">Conquest is the start of a relationship, and every empire is one bad ruler away from collapse.</p>
+    <div class="empire">
+      <div class="rota" id="rota" aria-hidden="true">
+        <button class="stop" style="--a:0deg" tabindex="-1">I</button>
+        <button class="stop" style="--a:72deg" tabindex="-1">II</button>
+        <button class="stop" style="--a:144deg" tabindex="-1">III</button>
+        <button class="stop" style="--a:216deg" tabindex="-1">IV</button>
+        <button class="stop" style="--a:288deg" tabindex="-1">V</button>
+        <div class="hub" id="hub">Siege</div>
+      </div>
+      <ol class="stages" id="stages">
+        <li><button type="button"><b>I Siege</b><span>Bargain, bluff or assault. Every kingdom has its own patience.</span></button></li>
+        <li><button type="button"><b>II Vassal</b><span>Set tribute from 5 to 30%. Fair rule builds loyalty. Greed breeds revolt.</span></button></li>
+        <li><button type="button"><b>III Province</b><span>Loyal vassals join your empire. Mistreated ones rise in a War of Liberation.</span></button></li>
+        <li><button type="button"><b>IV Overstretch</b><span>Every province strains the rest. No empire swallows the whole map.</span></button></li>
+        <li><button type="button"><b>V Challenger</b><span>A strong, unhappy province can claim your throne. Then the wheel turns again.</span></button></li>
+      </ol>
+    </div>
+
+    <div class="realm">
+      <div class="orb" aria-hidden="true"><div class="disc"><i class="ring r1"></i><i class="ring r2"></i><i class="ring r3"></i><i class="ring r4"></i></div></div>
+      <div class="prose">
+        <h3 style="font-size:clamp(30px,4vw,44px)">Play with others. Fight them only if you choose.</h3>
+        <p style="margin-top:10px">Each season brings a newly shaped map full of computer-controlled kingdoms with their own gods, memories and moods.</p>
+        <ul class="legend">
+          <li><i style="--c:var(--clay)"></i><span><strong>Safe rings.</strong> Villages and small kingdoms to conquer. Other players can't attack you here.</span></li>
+          <li><i style="--c:var(--clay-deep)"></i><span><strong>Free cities and garrisons.</strong> Tougher targets. Alliances team up to break Remian strongholds.</span></li>
+          <li><i style="--c:var(--tyrian)"></i><span><strong>The heartland.</strong> Opt-in player-versus-player. March in for the richest rewards, and expect company.</span></li>
+          <li><i style="--c:var(--glaze)"></i><span><strong>Remia.</strong> The empire's capital. Freeing it ends the season.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KINGDOM -->
+<section class="bf" id="kingdom">
+  <div class="meander rev"></div>
+  <div class="wrap" data-rise>
+    <p class="label">VII · life in your kingdom</p>
+    <h2 class="title">Cities grow on care</h2>
+    <p class="lede">Your city grows when your people are looked after, not when a timer runs out.</p>
+    <p class="prose mut" style="margin-top:14px">Supply your citizens and they climb through five ranks. No region can supply everything, so you'll need trade, conquest or diplomacy.</p>
+    <div class="temple" id="temple">
+      <div class="tier"><div class="txt"><h4>Peasants</h4><p>Labor and levies</p><p class="needs">grain · fish</p></div><div class="col" style="--h:60px"></div></div>
+      <div class="tier"><div class="txt"><h4>Plebeians</h4><p>Soldiers, the forge</p><p class="needs">bread · wine · temple</p></div><div class="col" style="--h:105px"></div></div>
+      <div class="tier"><div class="txt"><h4>Artisans</h4><p>Siege engines, legions</p><p class="needs">pottery · oil · baths</p></div><div class="col" style="--h:150px"></div></div>
+      <div class="tier"><div class="txt"><h4>Equites</h4><p>Cavalry, caravans</p><p class="needs">cloth · horses · arena</p></div><div class="col" style="--h:195px"></div></div>
+      <div class="tier"><div class="txt"><h4>Patricians</h4><p>Senate, divine warriors</p><p class="needs">marble · spices · theater</p></div><div class="col" style="--h:240px"></div></div>
+    </div>
+    <p class="prose" style="margin-top:34px">Between wars there are arena tournaments, a forge, board games against envoys, oracle trials, beast hunts and Senate debates. Every one of them feeds real power. Short on time? Auto-resolve for most of the reward.</p>
+  </div>
+</section>
+
+<!-- FACTIONS -->
+<section class="rf" id="factions">
+  <div class="meander"></div>
+  <div class="wrap" data-rise>
+    <p class="label">VIII · powers of book one</p>
+    <h2 class="title" style="color:var(--clay)">Friends and enemies</h2>
+    <p class="lede">Everyone in Antonia is compromised. Pick your company carefully.</p>
+    <div class="factions">
+      <div class="faction"><div class="shield" aria-hidden="true">Χ</div><div><h4>The Choir of the Tongue</h4><p>Priest-orators who carry Aerickleus's voice up from the Hollow, relayed through Emperor Corvus.</p><p class="mech">Defeat a Chorister to loosen Remia's grip on a region.</p></div></div>
+      <div class="faction"><div class="shield" aria-hidden="true">Σ</div><div><h4>The Senate of Remia</h4><p>Aristocrats sick of endless war and quietly open to talks.</p><p class="mech">Turn garrisons without a single siege.</p></div></div>
+      <div class="faction"><div class="shield" aria-hidden="true">Ω</div><div><h4>The Oathwardens</h4><p>Last keepers of the old peace. Neutral judges of every pact.</p><p class="mech">They settle claims and mark oathbreakers.</p></div></div>
+      <div class="faction"><div class="shield" aria-hidden="true">Α</div><div><h4>The Ashen Choir</h4><p>Worshippers of forgotten gods, drawn to blighted land.</p><p class="mech">Greed on the map summons them.</p></div></div>
+      <div class="faction"><div class="shield" aria-hidden="true">Υ</div><div><h4>The Unbound</h4><p>Warriors whose oaths shattered when their cities fell. They belong to no one, and want a cause worth an oath again.</p><p class="mech">Keep your promise and they become elite.</p></div></div>
+      <div class="faction"><div class="shield" aria-hidden="true">Λ</div><div><h4>The Free Leagues</h4><p>Merchant republics, hill clans and oracle cities, each with its own god.</p><p class="mech">Every one bargains differently.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAIR -->
+<section class="sl" id="fair">
+  <div class="meander rev"></div>
+  <div class="wrap" data-rise>
+    <p class="label">IX · fair by design</p>
+    <h2 class="title">Rule wider, not harder</h2>
+    <p class="lede">Spend on style. Never on power.</p>
+    <p class="prose mut" style="margin-top:14px">Everything for sale must pass one check: it changes how you look, never what you can do. A free player can always match a paying one.</p>
+    <div class="fair">
+      <div class="yes"><h3>What you can buy</h3><ul>
+        <li>Skins for your hero, your troops and your mounts</li>
+        <li>Banners, monuments and city decorations</li>
+        <li>The seasonal Book Pass, with a free track and cosmetic rewards</li>
+        <li>Founder's titles and seals</li>
+      </ul></div>
+      <div class="no"><h3>What we never sell</h3><ul>
+        <li>Troop power, attack buffs or stat multipliers</li>
+        <li>Mounts or companions. You earn those in play.</li>
+        <li>Extra vassal slots or trade routes</li>
+        <li>Speed-ups of any kind</li>
+        <li>Loot boxes or gacha for heroes or power</li>
+        <li>Ads that show a game we didn't make</li>
+      </ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- BACK -->
+<section class="bf" id="back">
+  <div class="meander"></div>
+  <div class="wrap" data-rise>
+    <p class="label">X · join the founding</p>
+    <h2 class="title">Back the Book</h2>
+    <p class="lede">Help write Book One. Founders get their names in the Book of Providence.</p>
+    <div class="pledges">
+      <div class="pledge tilt"><div class="amt">$10</div><h4>Initiate</h4><ul><li>Your name in the Book credits</li><li>Founder's chat seal</li></ul></div>
+      <div class="pledge tilt"><div class="amt">$25</div><h4>Legionary</h4><ul><li>Everything above</li><li>Season One Book Pass</li><li>Founder's banner</li></ul></div>
+      <div class="pledge feature tilt"><div class="amt">$60</div><h4>Senator</h4><ul><li>Everything above</li><li>Beta access</li><li>Name a village on a launch map</li></ul></div>
+      <div class="pledge tilt"><div class="amt">$150</div><h4>Consul</h4><ul><li>Everything above</li><li>Alpha access</li><li>Suggest a Toreboding for Book One</li></ul></div>
+      <div class="pledge tilt"><div class="amt">$500</div><h4>Oathwarden</h4><ul><li>Everything above</li><li>Become a character in the world</li><li>A call with the creator</li></ul></div>
+    </div>
+    <p class="note">Draft reward tiers. Final rewards, prices and dates will be set when the campaign launches.</p>
+    <div class="milestones">
+      <div><span class="mk">I</span><h4>Concept</h4><p>World, story and systems designed.</p></div>
+      <div class="now"><span class="mk">II</span><h4>Prototype</h4><p>First demos playable, starting with the Siege of Lysa battle. You are here.</p></div>
+      <div><span class="mk">III</span><h4>Alpha</h4><p>The open road, seeded maps, vassals and trade.</p></div>
+      <div><span class="mk">IV</span><h4>Book One</h4><p>Launch season: The Rise and Fall.</p></div>
+    </div>
+    <div class="risks">
+      <div>
+        <h3 id="risksTitle">Risks and challenges</h3>
+        <p>Antonia is at the early prototype stage. The world and story are written and the first small demos are playable, but there is no full game yet. Here is what could go wrong and how we plan for it.</p>
+        <ul>
+          <li><b>Scope</b>An online strategy game is a large project. We will build one loop at a time, starting with the siege battle and the vassal loop, and cut features before we cut quality.</li>
+          <li><b>Technology</b>Servers, shared maps and fair play between players are hard to build well. Book One starts with seeded maps and computer kingdoms. Player-versus-player stays opt-in and comes after the core works.</li>
+          <li><b>Schedule</b>Game schedules slip. We will share milestones as they are reached and will not promise a launch date before there is a prototype to show.</li>
+          <li><b>Funding</b>A campaign may cover only part of development. The campaign page will say plainly what each funding level pays for.</li>
+          <li><b>Fair play costs money</b>Refusing to sell power means earning less than pay-to-win games. We accept that. It is the reason this game exists.</li>
+        </ul>
+      </div>
+      <div class="faq">
+        <h3 id="faqTitle">Questions and answers</h3>
+        <details><summary>Can I play the game now?</summary><p>Not the full game yet. You can try early demos in the <a href="https://antonia-rise-and-fall-demo-hub.vercel.app/" target="_blank" rel="noopener">Antonia Demo Hub</a>, and the four mini-games on this page show some of the first ideas. None of them is the finished game.</p></details>
+        <details><summary>Can I pledge today?</summary><p>No. The campaign has not launched and this website collects no money. The reward tiers above are drafts and may change.</p></details>
+        <details><summary>What will it run on?</summary><p>Antonia is designed as a mobile game for phones and tablets. The exact platforms will be confirmed when the campaign launches.</p></details>
+        <details><summary>Is it pay-to-win?</summary><p>No. Everything for sale is cosmetic: it changes how you look, never what you can do. Mounts, companions and power are earned in play and never sold.</p></details>
+        <details><summary>Who is it for?</summary><p>The planned rating is Teen. Battles, fire and peril are shown, but never dwelt on, and there is no gore.</p></details>
+        <details><summary>Do I have to fight other players?</summary><p>No. You grow your empire against computer kingdoms on generated maps. Fighting other players is opt-in.</p></details>
+        <details><summary>Was AI used to make this?</summary><p>The story, world and game design are the creator's own work. AI tools assisted with research, drafting text, and building this website's code and illustrations, with the creator directing and reviewing the results.</p></details>
+        <details><summary>How do I get in touch?</summary><p>Write to <a href="mailto:Team@thiinkmediagraphics.com">Team@thiinkmediagraphics.com</a>.</p></details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="rf">
+  <div class="meander rev"></div>
+  <div class="wrap">
+    <h2 class="title">The pages are still writing.</h2>
+    <p class="mut">Antonia, Book One: The Rise and Fall. Game concept by Mustapha Acolatse Jr.</p>
+    <div class="cta" style="margin-top:26px"><a class="btn" href="#top">Back to the top</a></div>
+    <div class="legalrow"><span class="copy">© 2026 Mustapha C. A Jr. · Thiink Media Graphics. A game concept, not yet released.</span><button type="button" data-legal="privacy">Privacy</button><button type="button" data-legal="terms">Terms</button></div>
+  </div>
+</footer>
+
+<dialog class="research" id="resDlg" aria-labelledby="resTitle">
+<div class="rwrap">
+  <aside class="rside">
+    <h3 id="resTitle">Player research</h3>
+    <p>What players say about today's kingdom-building phone games, and how Antonia answers.</p>
+    <nav class="rnav" id="resNav" aria-label="Chapters"></nav>
+    <select class="rpick" id="resPick" aria-label="Choose a chapter"></select>
+  </aside>
+  <div class="rmain">
+    <div class="rtop"><span class="rwhere" id="resKind"></span><button type="button" class="rx" id="resClose">Close</button></div>
+    <div class="rbody" id="resBody">
+
+<section class="rch" id="r-tldr" data-kind="info" data-tag="TL;DR" data-nav="The short version">
+<h3>The short version</h3>
+<div class="rsum"><p>Players of today's biggest kingdom-building phone games love the alliances and the friends they make. Almost everything else frustrates them.</p></div>
+<ul>
+<li>Four complaints come up again and again: ads that show a different game, pressure to pay, daily chores, and support they don't trust.</li>
+<li>The games still earn a lot of money, so their makers have little reason to change. That gap is Antonia's opening.</li>
+<li>Antonia answers each complaint with a design rule built into the game, not a promise.</li>
+</ul>
+<h4>each problem and its answer</h4>
+<div class="rscroll"><table class="rtable">
+<tr><th>What players say</th><th>What Antonia does</th></tr>
+<tr><td>The ads show a game that doesn't exist. <button class="rgo" type="button" data-go="r-ads">Read more</button></td><td>Every ad shows real sieges, real bargaining, real gameplay. <button class="rgo" type="button" data-go="r-s-ads">Read more</button></td></tr>
+<tr><td>You can't compete without paying. <button class="rgo" type="button" data-go="r-pay">Read more</button></td><td>Money buys style. Never power. <button class="rgo" type="button" data-go="r-s-pay">Read more</button></td></tr>
+<tr><td>It feels like a second job. <button class="rgo" type="button" data-go="r-job">Read more</button></td><td>Battles take minutes. Your defences hold while you sleep. Diplomacy waits for you. <button class="rgo" type="button" data-go="r-s-time">Read more</button></td></tr>
+<tr><td>Support isn't fair or trusted. <button class="rgo" type="button" data-go="r-trust">Read more</button></td><td>Safe zones, opt-in battles between players, and moderation that ignores spending. <button class="rgo" type="button" data-go="r-s-fair">Read more</button></td></tr>
+</table></div>
+<p>We looked most closely at Kingshot, one of the top-earning games of this kind, and at its nearest rivals.</p>
+</section>
+
+<section class="rch" id="r-ads" data-kind="problem" data-tag="Problem 1" data-nav="The ads sell a different game" hidden>
+<h3>The ads sell a different game</h3>
+<div class="rsum"><p>The most common complaint about Kingshot is that its ads show a tower-defense game, while the real game is about building a kingdom and joining alliance wars.</p></div>
+<h4>what players say</h4>
+<ul>
+<li>Reviewers say they downloaded it for tower defense and found that part was a small side activity. One App Store reviewer called it "elementary at best."</li>
+<li>A Google Play review calling the ads misleading had been marked helpful by more than 2,700 people.</li>
+<li>One review-analysis site rates the overall mood as "Frustrated" across about 1.4 million ratings and names false advertising as the top concern.</li>
+<li>Industry analysts note that tower defense is a small share of the game and mostly serves the advertising.</li>
+</ul>
+<div class="rins"><h4>insight</h4><p>Players aren't angry at what the game is. They're angry that they were promised something else.</p></div>
+<p>Antonia's answer: <button class="rgo" type="button" data-go="r-s-ads">Advertise the real game</button></p>
+</section>
+
+<section class="rch" id="r-pay" data-kind="problem" data-tag="Problem 2" data-nav="You have to pay to keep up" hidden>
+<h3>You have to pay to keep up</h3>
+<div class="rsum"><p>Players say that competing, especially inside an alliance, becomes close to impossible without buying packs.</p></div>
+<h4>what players say</h4>
+<ul>
+<li>A review roundup reports that players find it nearly impossible to compete in alliances without premium packs.</li>
+<li>One long review says that once big spenders settle on a server, everyone else ends up serving them or avoiding them. It describes ordinary members as playing "attendance software with swords."</li>
+<li>An App Store reviewer said they are happy to pay for cosmetics or to remove ads, but felt this game asks you to pay just to compete.</li>
+<li>A 2026 review says the late game feels aggressive about money if you want to compete seriously.</li>
+</ul>
+<h4>the other side</h4>
+<p>Defenders point out that nothing in the game is locked behind a purchase. Money buys speed. The complaint is about how much that speed decides.</p>
+<div class="rins"><h4>insight</h4><p>Spending isn't the problem. The problem is that spending decides fights between players.</p></div>
+<p>Antonia's answer: <button class="rgo" type="button" data-go="r-s-pay">Sell convenience, never power</button></p>
+</section>
+
+<section class="rch" id="r-job" data-kind="problem" data-tag="Problem 3" data-nav="It feels like a second job" hidden>
+<h3>It feels like a second job</h3>
+<div class="rsum"><p>Daily checklists, timers and events at fixed hours make players feel they have to show up, whether or not they're having fun.</p></div>
+<h4>what players say</h4>
+<ul>
+<li>One Google Play reviewer wrote that it "feels more like a second job, not a fun game."</li>
+<li>Reviews describe constant check-ins and recurring events that punish you for missing them.</li>
+<li>A 2026 review recommends the game only to people ready to treat it as a long-term hobby, and tells casual players to skip it.</li>
+</ul>
+<div class="rins"><h4>insight</h4><p>Players who log in out of fear of falling behind are not enjoying themselves. Sooner or later they quit.</p></div>
+<p>Antonia's answer: <button class="rgo" type="button" data-go="r-s-time">Respect the player's time</button></p>
+</section>
+
+<section class="rch" id="r-trust" data-kind="problem" data-tag="Problem 4" data-nav="Support isn't trusted" hidden>
+<h3>Support isn't trusted</h3>
+<div class="rsum"><p>Some players believe big spenders get better treatment, and that leaving the game is made harder than it should be.</p></div>
+<h4>what players say</h4>
+<ul>
+<li>The publisher scores 2.0 out of 5 on Trustpilot. That is from only 11 reviews, so treat it as a signal, not a verdict.</li>
+<li>One of those reviewers claims that reports about bad behavior are handled according to a player's VIP level.</li>
+<li>A review-analysis site lists account deletion as a complaint, with users calling the process "intentionally convoluted."</li>
+</ul>
+<p>These are individual claims that we cannot verify. They matter because they show what players have come to expect.</p>
+<div class="rins"><h4>insight</h4><p>Fair treatment has to be visible. If players can't see that the rules apply to everyone, they assume the worst.</p></div>
+<p>Antonia's answer: <button class="rgo" type="button" data-go="r-s-fair">Keep the alliances, lose the bullying</button></p>
+</section>
+
+<section class="rch" id="r-stay" data-kind="info" data-tag="Finding" data-nav="Why players stay anyway" hidden>
+<h3>Why players stay anyway</h3>
+<div class="rsum"><p>People stay for other people. The alliances, rivalries and friendships are what these games get right.</p></div>
+<h4>what players say</h4>
+<ul>
+<li>One App Store reviewer said the only reason they still play is the friends they have made from around the world, even though they wish they had never downloaded the game.</li>
+<li>Reviewers praise the diplomacy, the timing of group attacks and the politics between alliances as stories no single-player game could script.</li>
+<li>Players also like that the game doesn't force them to watch ads.</li>
+</ul>
+<div class="rins"><h4>insight</h4><p>The social side is the product. A better game keeps it at the center and removes what poisons it.</p></div>
+</section>
+
+<section class="rch" id="r-data" data-kind="info" data-tag="Data" data-nav="The numbers" hidden>
+<h3>The numbers</h3>
+<div class="rsum"><p>Star ratings and revenue look healthy. The written reviews, and how many players stick around, tell a different story.</p></div>
+<div class="rscroll"><table class="rtable">
+<tr><th>What we looked at</th><th>Figure</th><th>Source</th></tr>
+<tr><td>Kingshot's overall rating and mood</td><td><b>4.37 of 5</b> from about 1.4 million ratings. Mood: "Frustrated"</td><td>Marlvel, Apr 2026</td></tr>
+<tr><td>Kingshot on Google Play</td><td><b>4.4 of 5</b> from 677,727 reviews</td><td>Grand-Screen, Sep 2025</td></tr>
+<tr><td>A top "misleading ads" review</td><td><b>2,724</b> people marked it helpful</td><td>Google Play</td></tr>
+<tr><td>Kingshot's US earnings rank</td><td><b>#26</b> top grossing</td><td>Marlvel, Apr 2026</td></tr>
+<tr><td>The publisher on Trustpilot</td><td><b>2.0 of 5</b> from 11 reviews</td><td>Trustpilot</td></tr>
+<tr><td>Thronefall on Android, a paid indie game that fans say the ads resemble</td><td><b>4.86 of 5</b> from 16,300 ratings</td><td>AppGoblin</td></tr>
+</table></div>
+<figure class="rfig">
+<svg viewBox="0 0 560 300" role="img" aria-label="Bar chart. Share of players still playing after 1, 7 and 30 days. Whiteout Survival: 42, 17 and 8 percent. Last War: 34, 11 and 4 percent.">
+<g stroke="rgba(23,18,15,.18)" stroke-width="1"><path d="M60 198H540M60 156H540M60 114H540M60 72H540M60 30H540"/></g>
+<path d="M60 240H540" stroke="#17120f" stroke-width="2"/>
+<g font-family="'Alegreya Sans SC',sans-serif" font-weight="700" font-size="14" fill="#584836" text-anchor="end"><text x="52" y="245">0%</text><text x="52" y="203">10%</text><text x="52" y="161">20%</text><text x="52" y="119">30%</text><text x="52" y="77">40%</text><text x="52" y="35">50%</text></g>
+<g fill="#1b7a94"><rect x="100" y="63.6" width="46" height="176.4"/><rect x="250" y="168.6" width="46" height="71.4"/><rect x="400" y="206.4" width="46" height="33.6"/></g>
+<g fill="#a84a24"><rect x="154" y="97.2" width="46" height="142.8"/><rect x="304" y="193.8" width="46" height="46.2"/><rect x="454" y="223.2" width="46" height="16.8"/></g>
+<g font-family="'Alegreya',serif" font-weight="700" font-size="16" fill="#17120f" text-anchor="middle"><text x="123" y="57">42%</text><text x="177" y="91">34%</text><text x="273" y="162">17%</text><text x="327" y="187">11%</text><text x="423" y="200">8%</text><text x="477" y="217">4%</text></g>
+<g font-family="'Alegreya Sans SC',sans-serif" font-weight="700" font-size="15" fill="#17120f" text-anchor="middle"><text x="150" y="262">after 1 day</text><text x="300" y="262">after 7 days</text><text x="450" y="262">after 30 days</text></g>
+<g font-family="'Alegreya Sans SC',sans-serif" font-weight="700" font-size="14" fill="#17120f"><rect x="330" y="20" width="14" height="14" fill="#1b7a94"/><text x="350" y="32">whiteout survival</text><rect x="330" y="42" width="14" height="14" fill="#a84a24"/><text x="350" y="54">last war</text></g>
+</svg>
+<figcaption>Share of new players still playing after 1, 7 and 30 days, US iPhone, for two of the genre's biggest games. Figures as reported in an industry analysis published by Baijing.</figcaption>
+</figure>
+<p>Whiteout Survival is made by Kingshot's publisher. Last War is its biggest rival. Both bring in huge numbers of players through ads, yet by day 30 fewer than one in ten is still playing.</p>
+<div class="rins"><h4>insight</h4><p>Ads can buy downloads. Only the game itself can keep players, and keeping them is where the genre is weakest.</p></div>
+</section>
+
+<section class="rch" id="r-s-ads" data-kind="solution" data-tag="Solution 1" data-nav="Advertise the real game" hidden>
+<h3>Advertise the real game</h3>
+<div class="rsum"><p>Antonia's rule: nothing appears in an ad that a new player can't do in their first hour.</p></div>
+<h4>how it works</h4>
+<ul>
+<li>The exciting parts are the main game. Sieges, bargaining against the clock and broken oaths are what you do every day, not a side mode.</li>
+<li>Those moments look good in a short clip: a rope burning between two cities, an oath tether snapping, a valley turning brown.</li>
+<li>You can try small versions of them on this page before you ever download the game.</li>
+</ul>
+<div class="rins"><h4>insight</h4><p>Honest ads bring in players who want the game we actually made, and those players stay.</p></div>
+<p>Answers: <button class="rgo" type="button" data-go="r-ads">The ads sell a different game</button></p>
+</section>
+
+<section class="rch" id="r-s-pay" data-kind="solution" data-tag="Solution 2" data-nav="Sell style, never power" hidden>
+<h3>Sell style, never power</h3>
+<div class="rsum"><p>Antonia's rule: money changes how your kingdom looks, never what it can do. A free player can always match a paying one.</p></div>
+<h4>how it works</h4>
+<ul>
+<li>Every product must pass one check: it changes looks, not power.</li>
+<li>For sale: skins for your hero, troops and mounts, banners, monuments and city decorations, and a seasonal Book Pass with a free track.</li>
+<li>Never for sale: troop power, mounts or companions, extra vassals or trade routes, speed-ups, or random loot boxes.</li>
+<li>We will track how often big spenders beat skilled free players and tighten the rules if the gap grows.</li>
+</ul>
+<div class="rins"><h4>insight</h4><p>Winning comes from bargaining, scouting and keeping your word. None of those can be bought.</p></div>
+<p>Answers: <button class="rgo" type="button" data-go="r-pay">You have to pay to keep up</button></p>
+</section>
+
+<section class="rch" id="r-s-time" data-kind="solution" data-tag="Solution 3" data-nav="Respect the player's time" hidden>
+<h3>Respect the player's time</h3>
+<div class="rsum"><p>Antonia's rule: the game should fit around your life, not the other way round.</p></div>
+<h4>how it works</h4>
+<ul>
+<li>Siege battles last about three minutes. Your walls, towers and garrisons defend you while you are offline, so a night's sleep doesn't cost you your kingdom.</li>
+<li>Diplomatic offers wait 8 to 12 hours for an answer. Nobody needs a 3 a.m. alarm.</li>
+<li>The daily list is three meaningful tasks, not twenty chores.</li>
+<li>Side activities can be skipped for most of the reward.</li>
+</ul>
+<div class="rins"><h4>insight</h4><p>Players who can step away without being punished come back because they want to.</p></div>
+<p>Answers: <button class="rgo" type="button" data-go="r-job">It feels like a second job</button></p>
+</section>
+
+<section class="rch" id="r-s-fair" data-kind="solution" data-tag="Solution 4" data-nav="Keep the alliances, lose the bullying" hidden>
+<h3>Keep the alliances, lose the bullying</h3>
+<div class="rsum"><p>Antonia's rule: playing with other people is the heart of the game. Being preyed on by them is a choice you opt into.</p></div>
+<h4>how it works</h4>
+<ul>
+<li>Most of the map is safe. You conquer computer-controlled kingdoms, and other players can't attack you there.</li>
+<li>Fighting other players happens only in the heartland, a zone you choose to enter for bigger rewards.</li>
+<li>Alliances still matter everywhere: shared sieges, trade, pacts and a server-wide goal.</li>
+<li>Reports are judged on what was said or done, never on how much someone has spent. Deleting your account is simple.</li>
+</ul>
+<div class="rins"><h4>insight</h4><p>The friendships are why people stay. Protecting new and casual players protects the friendships.</p></div>
+<p>Answers: <button class="rgo" type="button" data-go="r-trust">Support isn't trusted</button> and <button class="rgo" type="button" data-go="r-stay">Why players stay anyway</button></p>
+</section>
+
+<section class="rch" id="r-src" data-kind="info" data-tag="Sources" data-nav="Sources and method" hidden>
+<h3>Sources and method</h3>
+<div class="rsum"><p>This is desk research from November 2026. We read public store reviews, review roundups and industry analysis. It is not a survey.</p></div>
+<ul>
+<li>Quotes are individual opinions, kept short and in the reviewers' own words. Everything else is our summary.</li>
+<li>Figures are as each source reported them on the date shown, and they change over time.</li>
+<li>Some samples are small. We say so where it matters.</li>
+</ul>
+<h4>sources</h4>
+<ul>
+<li><a href="https://marlvel.ai/apps/kingshot">Marlvel: Kingshot report</a></li>
+<li><a href="https://grand-screen.com/games/kingshot/reviews/">Grand-Screen: Kingshot reviews from Google Play</a></li>
+<li><a href="https://apps.apple.com/us/app/6739554056">App Store: Kingshot listing and reviews</a></li>
+<li><a href="https://appireview.pages.dev/com.run.tower.defense">Appireview: Kingshot review roundup</a></li>
+<li><a href="https://orcz.com/kingshot-review-a-crown-polished-for-whales/">Orcz: Kingshot review</a></li>
+<li><a href="https://www.tonyreviewsthings.com/kingshot-ios-review-2025/">Tony Reviews Things: Kingshot in 2026</a></li>
+<li><a href="https://pl.trustpilot.com/review/centurygames.com">Trustpilot: Century Games</a></li>
+<li><a href="https://appgoblin.info/apps/com.doghowlgames.thronefall">AppGoblin: Thronefall on Android</a></li>
+<li><a href="https://www.baijing.cn/article/51639">Baijing: Last War and Whiteout Survival compared</a></li>
+<li><a href="https://www.baijing.cn/article/52005">Baijing: Kingshot analysis</a></li>
+</ul>
+</section>
+
+    </div>
+    <div class="rfoot"><button type="button" class="btn line small" id="resPrev">Previous</button><span id="resCount"></span><button type="button" class="btn small" id="resNext">Next</button></div>
+  </div>
+</div>
+</dialog>
+
+<dialog class="legal" id="legalDlg" aria-labelledby="legalTitle">
+  <div class="lhead">
+    <div class="ltabs" role="tablist" aria-label="Legal pages">
+      <button type="button" role="tab" id="ltab-privacy" aria-controls="lp-privacy" aria-selected="true">Privacy</button>
+      <button type="button" role="tab" id="ltab-terms" aria-controls="lp-terms" aria-selected="false">Terms</button>
+    </div>
+    <button type="button" class="x" id="legalX">Close</button>
+  </div>
+  <div class="lbody" id="legalBody" tabindex="0">
+    <div role="tabpanel" id="lp-privacy" aria-labelledby="ltab-privacy">
+      <h3 id="legalTitle">Privacy Policy</h3>
+      <p class="eff">Effective November 9, 2026</p>
+      <p class="short"><b>The short version:</b> this website does not ask for your name, email or payment details. It sets no cookies, runs no ads and uses no analytics or tracking. Your language choice is kept in the page address, not on your device. The mini-games run entirely in your browser and nothing you do in them is sent to us.</p>
+      <h4>Who we are</h4>
+      <p>This website presents the game concept "Antonia: The Rise and Fall" by Mustapha Acolatse Jr. of Thiink Media Graphics ("we", "us"). It is a concept pitch. The game has not been released.</p>
+      <h4>What we collect</h4>
+      <p>We do not collect personal information through this website. There are no accounts, sign-up forms, comment boxes or payment forms. Your choices in the mini-games and the research reader stay in your browser's memory and are gone when you close or reload the page.</p>
+      <h4>What other services receive</h4>
+      <p>This website is hosted by one outside company, Vercel. When your browser loads the page, Vercel receives technical details such as your IP address, browser type and the time of the request, and keeps standard server logs. Vercel handles that information under its own privacy policy.</p>
+      <p>The fonts, artwork and code are all served from this website. Nothing is loaded from other companies. We do not sell or share personal information.</p>
+      <h4>Cookies and tracking</h4>
+      <p>This website sets no cookies and stores nothing on your device. We do not use advertising or analytics tools, and we do not track you across other websites.</p>
+      <h4>Children</h4>
+      <p>This website is meant for a general audience and is not directed to children under 13. We do not knowingly collect personal information from anyone, including children.</p>
+      <h4>If you contact us</h4>
+      <p>If you write to us at <a href="mailto:Team@thiinkmediagraphics.com">Team@thiinkmediagraphics.com</a>, we use your message and contact details only to reply. You can ask us to delete that correspondence at any time.</p>
+      <h4>Your rights</h4>
+      <p>Depending on where you live, laws such as the GDPR in Europe or the CCPA in California give you the right to see, correct or delete personal information held about you. Because this website collects none, there is usually nothing to provide, but you are welcome to ask.</p>
+      <h4>What will change later</h4>
+      <p>If we add a newsletter, a crowdfunding campaign or a playable release, we will update this policy before collecting anything. A crowdfunding platform such as Kickstarter would handle pledges and payments under its own privacy policy. The game itself would ship with its own privacy policy covering accounts, purchases, chat and age requirements, as the app stores require.</p>
+      <h4>Changes and contact</h4>
+      <p>We will post any changes on this page with a new effective date. Questions can be sent to <a href="mailto:Team@thiinkmediagraphics.com">Team@thiinkmediagraphics.com</a>.</p>
+    </div>
+    <div role="tabpanel" id="lp-terms" aria-labelledby="ltab-terms" hidden>
+      <h3>Terms of Use</h3>
+      <p class="eff">Effective November 9, 2026</p>
+      <p class="short"><b>The short version:</b> this is a pitch for a game that is still a concept. Nothing here is for sale and no money is collected on this website. Features, prices, rewards and dates are plans and may change.</p>
+      <h4>What this website is</h4>
+      <p>This website describes a game concept, "Antonia: The Rise and Fall", and the thinking behind it. By using the website you agree to these terms. If you do not agree, please do not use it.</p>
+      <h4>Nothing here is an offer or a sale</h4>
+      <p>The pledge levels, rewards, prices, milestones and timeline shown on this website are drafts that illustrate a possible crowdfunding campaign. No campaign is live, no pledges are accepted here, and nothing on this website is a promise to deliver a product.</p>
+      <h4>If a crowdfunding campaign opens</h4>
+      <p>Pledges would be made on the crowdfunding platform, such as Kickstarter, under that platform's terms and the details on the campaign page. Backing a project supports its creation. It is not the same as buying a finished product from a store. Games are hard to make, schedules slip and plans change. A campaign page would set out the risks, what backers receive and when.</p>
+      <h4>The mini-games are demonstrations</h4>
+      <p>The playable sections are small demonstrations built for this website to explain ideas in the design. They are not the game, a beta or a prototype of the final product, and the finished game may look and play differently.</p>
+      <h4>Plans can change</h4>
+      <p>Statements about features, pricing, monetization, fairness rules and release plans describe what we intend today. They are not guarantees.</p>
+      <h4>Research and other companies' games</h4>
+      <p>The research section summarizes public player feedback and published sources about existing games. It reflects our reading of those sources and is offered as opinion and commentary. Names of other games and companies are the trademarks of their owners. We are not affiliated with, sponsored by or endorsed by any of them.</p>
+      <h4>Ownership</h4>
+      <p>The story, characters, names, text and artwork of Antonia on this website are © 2026 Mustapha C. A Jr. and Thiink Media Graphics. All rights reserved. You may share links to the website and quote short passages with credit. Please do not copy, republish or make products from the material without written permission.</p>
+      <h4>Use of AI</h4>
+      <p>The story, world and game design are the creator's own work. AI tools assisted with research, drafting text, and building this website's code and illustrations, with the creator directing and reviewing the results.</p>
+      <h4>Acceptable use</h4>
+      <p>Please do not try to disrupt the website, break into it, or use it to mislead other people.</p>
+      <h4>No warranties</h4>
+      <p>The website is provided as it is, without warranties of any kind. We try to keep it accurate and working, but we do not promise that it is free of errors or always available.</p>
+      <h4>Limit of liability</h4>
+      <p>To the extent the law allows, we are not liable for losses that result from using this website or relying on what it says.</p>
+      <h4>Governing law</h4>
+      <p>These terms are governed by the laws of the State of Georgia, United States, without regard to its conflict-of-law rules. Any dispute about this website or these terms will be brought in the state or federal courts located in Atlanta, Georgia.</p>
+      <h4>Changes and contact</h4>
+      <p>We may update these terms and will post the new version here with a new effective date. Translations of this website are provided for convenience. If a translation and the English version differ, the English version applies. Questions can be sent to <a href="mailto:Team@thiinkmediagraphics.com">Team@thiinkmediagraphics.com</a>.</p>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="howto" id="howDlg" aria-labelledby="howTitle"><div class="in" id="howIn"></div></dialog>
+
+<script src="vendor/three.min.js"></script>
+<script>
+(function(){
+const RM=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const CLAY='#d4733f',DEEP='#a84a24',GLAZE='#17120f',SLIP='#f1e3c4',GOLD='#f0b93a',AEG='#1b7a94',TYR='#8a2552',PINK='#e57aa3';
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const MO={paused:false};
+(function(){const b=document.getElementById('motionBtn');if(!b)return;if(RM){b.hidden=true;return}
+  const ic=b.querySelector('.ic'),tx=b.querySelector('.tx');
+  function set(p){MO.paused=p;document.documentElement.classList.toggle('paused',p);if(p){const lf=document.getElementById('leaf');if(lf)lf.classList.remove('turn')}dispatchEvent(new Event('scroll'));b.setAttribute('aria-pressed',p);ic.textContent=p?'▶':'❚❚';tx.textContent=p?'Play motion':'Pause motion'}
+  b.onclick=()=>set(!MO.paused);
+})();
+
+/* ---------- scroll: progress, sliding meanders, tablets tilting up ---------- */
+const rise=[...document.querySelectorAll('[data-rise]')],prog=document.getElementById('prog'),flatMQ=matchMedia('(max-width:900px),(pointer:coarse)');
+function onScroll(){
+  const y=scrollY,max=document.documentElement.scrollHeight-innerHeight;
+  prog.style.width=(max>0?y/max*100:0)+'%';
+  if(RM)return;
+  if(typeof MO!=='undefined'&&MO.paused){for(const el of rise)el.style.transform='none';return}
+  document.documentElement.style.setProperty('--mx',(y*.25).toFixed(1)+'px');
+  const vh=innerHeight;
+  for(const el of rise){const r=el.parentElement.getBoundingClientRect();if(r.top>vh)continue;if(r.bottom<0){el.style.transform='none';continue}
+    const p=clamp((vh-r.top)/(vh*.6),0,1),e=1-Math.pow(1-p,3);
+    el.style.transform=e>=1?'none':flatMQ.matches?`translateY(${((1-e)*40).toFixed(1)}px)`:`perspective(1300px) rotateX(${((1-e)*11).toFixed(2)}deg) translateY(${((1-e)*60).toFixed(1)}px)`;}
+}
+addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);onScroll();
+/* keep the tilt in step even when the page moves without a scroll event (fonts loading, reloads, content changing height) */
+addEventListener('load',onScroll);addEventListener('pageshow',onScroll);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(onScroll);
+if(window.ResizeObserver)new ResizeObserver(onScroll).observe(document.body);
+(function(){let ly=-1,lh=-1,n=0;(function tick(){n++;if(scrollY!==ly||innerHeight!==lh||n%30===0){ly=scrollY;lh=innerHeight;onScroll()}requestAnimationFrame(tick)})()})();
+
+/* one-shot reveals */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('struck');e.target.classList.remove('low');io.unobserve(e.target)}}),{threshold:.45});
+document.querySelectorAll('.fix').forEach((f,i)=>{f.querySelector('q').style.setProperty('transition-delay',(i*.25+.2)+'s');io.observe(f)});
+if(!RM){const tp=document.getElementById('temple');tp.classList.add('low');io.observe(tp)}
+
+/* coins flip on tap as well as hover */
+document.querySelectorAll('.coinbox').forEach(b=>b.addEventListener('click',()=>b.firstElementChild.classList.toggle('flip')));
+/* 3D tilt on plaques */
+if(!RM&&matchMedia('(hover:hover)').matches)document.querySelectorAll('.tilt').forEach(c=>{
+  c.addEventListener('pointermove',e=>{const r=c.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;c.style.transform=`rotateY(${px*14}deg) rotateX(${-py*12}deg) translateZ(14px)`});
+  c.addEventListener('pointerleave',()=>c.style.transform='');});
+
+/* ---------- the painted amphora ---------- */
+function hoplite(x,cx,by,h,d,dev){
+  x.fillStyle=GLAZE;x.strokeStyle=GLAZE;x.lineCap='round';x.lineJoin='round';
+  const hip=by-h*.46,sh=by-h*.78;
+  x.lineWidth=h*.022;x.beginPath();x.moveTo(cx-d*h*.36,by-h*.36);x.lineTo(cx+d*h*.4,by-h*1.04);x.stroke();
+  x.beginPath();x.moveTo(cx+d*h*.4,by-h*1.04);x.lineTo(cx+d*h*.47,by-h*1.16);x.lineTo(cx+d*h*.34,by-h*1.08);x.closePath();x.fill();
+  x.lineWidth=h*.075;x.beginPath();x.moveTo(cx,hip);x.lineTo(cx+d*h*.17,by-h*.22);x.lineTo(cx+d*h*.2,by-h*.02);x.stroke();
+  x.beginPath();x.moveTo(cx,hip);x.lineTo(cx-d*h*.13,by-h*.2);x.lineTo(cx-d*h*.24,by-h*.02);x.stroke();
+  x.lineWidth=h*.05;x.beginPath();x.moveTo(cx+d*h*.2,by-h*.025);x.lineTo(cx+d*h*.31,by-h*.025);x.moveTo(cx-d*h*.24,by-h*.025);x.lineTo(cx-d*h*.14,by-h*.025);x.stroke();
+  x.beginPath();x.moveTo(cx-h*.08,hip+h*.1);x.lineTo(cx+h*.08,hip+h*.1);x.lineTo(cx+h*.1,sh);x.lineTo(cx-h*.1,sh);x.closePath();x.fill();
+  x.beginPath();x.moveTo(cx-h*.1,hip-h*.02);x.lineTo(cx+h*.1,hip-h*.02);x.lineTo(cx+h*.13,hip+h*.12);x.lineTo(cx-h*.13,hip+h*.12);x.closePath();x.fill();
+  const hx=cx+d*h*.02,hy=by-h*.86;x.beginPath();x.arc(hx,hy,h*.075,0,7);x.fill();
+  x.lineWidth=h*.045;x.strokeStyle=TYR;x.beginPath();x.arc(hx-d*h*.02,hy,h*.125,Math.PI*1.05,Math.PI*1.95);x.stroke();
+  x.beginPath();x.moveTo(hx-d*h*.14,hy-h*.02);x.lineTo(hx-d*h*.17,hy+h*.1);x.stroke();x.strokeStyle=GLAZE;
+  const sx=cx+d*h*.11,sy=by-h*.6,r=h*.19;x.beginPath();x.arc(sx,sy,r,0,7);x.fill();
+  x.strokeStyle=CLAY;x.fillStyle=SLIP;x.lineWidth=h*.014;x.beginPath();x.arc(sx,sy,r*.82,0,7);x.stroke();
+  if(dev===0){x.beginPath();x.moveTo(sx,sy-r*.55);x.bezierCurveTo(sx+r*.5,sy,sx+r*.38,sy+r*.5,sx,sy+r*.5);x.bezierCurveTo(sx-r*.38,sy+r*.5,sx-r*.5,sy,sx,sy-r*.55);x.fill()}
+  else if(dev===1){x.strokeStyle=SLIP;x.lineWidth=h*.018;x.beginPath();x.arc(sx,sy,r*.45,0,7);x.stroke();for(let i=0;i<6;i++){const a=i/6*Math.PI*2;x.beginPath();x.moveTo(sx,sy);x.lineTo(sx+Math.cos(a)*r*.45,sy+Math.sin(a)*r*.45);x.stroke()}}
+  else if(dev===2){x.beginPath();x.moveTo(sx-r*.55,sy+r*.1);x.lineTo(sx+r*.1,sy-r*.45);x.lineTo(sx+r*.55,sy-r*.1);x.lineTo(sx+r*.15,sy+r*.05);x.lineTo(sx+r*.3,sy+r*.5);x.lineTo(sx-r*.1,sy+r*.15);x.closePath();x.fill()}
+  else{x.strokeStyle=SLIP;x.lineWidth=h*.02;for(let i=0;i<4;i++){const a=i/4*Math.PI;x.beginPath();x.moveTo(sx-Math.cos(a)*r*.55,sy-Math.sin(a)*r*.55);x.lineTo(sx+Math.cos(a)*r*.55,sy+Math.sin(a)*r*.55);x.stroke()}}
+}
+function paintVase(c,seed){
+  const x=c.getContext('2d'),W=c.width,H=c.height;let s=(seed*9301+49297)%2147483647;const R=()=>{s=(s*16807)%2147483647;return s/2147483647};
+  const Y=t=>Math.round(t*H),band=(a,b,col)=>{x.fillStyle=col||GLAZE;x.fillRect(0,Y(a),W,Y(b)-Y(a))};
+  x.fillStyle=CLAY;x.fillRect(0,0,W,H);
+  for(let i=0;i<900;i++){x.fillStyle=R()<.5?`rgba(110,45,15,${R()*.08})`:`rgba(255,205,160,${R()*.08})`;x.fillRect(R()*W,R()*H,R()*46+6,R()*5+2)}
+  band(0,.21);
+  const n1=28;x.fillStyle=CLAY;for(let i=0;i<n1;i++){const cx=(i+.5)*W/n1,w=W/n1*.34;x.beginPath();x.moveTo(cx,Y(.105));x.lineTo(cx+w,Y(.19));x.lineTo(cx-w,Y(.19));x.closePath();x.fill();x.beginPath();x.arc(cx+W/n1/2,Y(.125),5,0,7);x.fill()}
+  const n2=56,tw=W/n2,alt=R()<.5;for(let i=0;i<n2;i++){x.fillStyle=i%2?(alt?TYR:GLAZE):GLAZE;x.beginPath();const tx=i*tw+tw*.18;x.moveTo(tx,Y(.215));x.lineTo(tx+tw*.64,Y(.215));x.lineTo(tx+tw*.64,Y(.28));x.arc(tx+tw*.32,Y(.28),tw*.32,0,Math.PI);x.closePath();x.fill()}
+  band(.305,.32);band(.60,.615);
+  const nf=6+Math.floor(R()*3),meet=R()<.6,by=Y(.60),fh=H*.245;
+  for(let i=0;i<nf;i++){const cx=(i+.5)*W/nf,d=meet?(i<nf/2?1:-1):1;hoplite(x,cx,by,fh,d,Math.floor(R()*4));
+    const rx=(i+1)*W/nf-10,ry=Y(.37+R()*.12);x.fillStyle=GLAZE;for(let k=0;k<7;k++){const a=k/7*Math.PI*2;x.beginPath();x.arc(rx+Math.cos(a)*13,ry+Math.sin(a)*13,5,0,7);x.fill()}x.fillStyle=TYR;x.beginPath();x.arc(rx,ry,6,0,7);x.fill()}
+  const nT=24,tW=W/nT,y0=Y(.625),tH=Y(.695)-y0,kp=[[0,21],[19,21],[19,3],[5,3],[5,15],[13,15],[13,9]];
+  x.strokeStyle=GLAZE;x.lineWidth=9;x.lineCap='butt';x.lineJoin='miter';
+  if(R()<.55){for(let i=0;i<nT;i++){x.beginPath();kp.forEach((p,k)=>{const px=i*tW+p[0]/24*tW,py=y0+p[1]/24*tH;k?x.lineTo(px,py):x.moveTo(px,py)});x.stroke();x.beginPath();x.moveTo(i*tW+19/24*tW-4,y0+21/24*tH);x.lineTo((i+1)*tW+4,y0+21/24*tH);x.stroke()}}
+  else{x.beginPath();for(let i=0;i<=nT*2;i++){const px=i*tW/2,py=y0+(i%2?tH*.15:tH*.85);i?x.lineTo(px,py):x.moveTo(px,py)}x.stroke();x.fillStyle=TYR;for(let i=0;i<nT;i++){x.beginPath();x.arc(i*tW+tW/2,y0+tH*.72,7,0,7);x.fill()}}
+  band(.705,.72);
+  const n3=36;x.fillStyle=GLAZE;for(let i=0;i<n3;i++){const cx=(i+.5)*W/n3;x.beginPath();x.moveTo(cx,Y(.728));x.lineTo(cx+W/n3*.3,Y(.822));x.lineTo(cx-W/n3*.3,Y(.822));x.closePath();x.fill()}
+  band(.82,1);
+}
+(function vase(){
+  const cv=document.getElementById('vase'),stage=cv.parentElement,btn=document.getElementById('reshape');
+  const tx=document.createElement('canvas');tx.width=2048;tx.height=1024;let seed=3;paintVase(tx,seed);
+  function flat(){const c=cv.getContext('2d');if(!c)return;const draw=()=>{const w=stage.clientWidth,h=stage.clientHeight;cv.width=w;cv.height=h;const sh=w/2;c.clearRect(0,0,w,h);c.drawImage(tx,0,0,1024,1024,0,(h-sh*2)/2+20,w,sh*2*.9)};draw();addEventListener('resize',draw);btn.onclick=()=>{paintVase(tx,++seed);draw()}}
+  if(!window.THREE)return flat();
+  let renderer;try{renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true})}catch(e){return flat()}
+  renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+  const scene=new THREE.Scene(),cam=new THREE.PerspectiveCamera(32,1,.1,100);cam.position.set(0,1.2,15);cam.lookAt(0,-.5,0);
+  const tex=new THREE.CanvasTexture(tx);tex.wrapS=THREE.RepeatWrapping;tex.anisotropy=renderer.capabilities.getMaxAnisotropy();
+  const prof=[[.001,0],[.78,0],[.82,.1],[.6,.24],[.7,.5],[1.25,1.3],[1.58,2.2],[1.5,2.95],[1.12,3.5],[.6,3.9],[.48,4.3],[.52,4.7],[.76,4.96],[.78,5.06],[.62,5.08]].map(p=>new THREE.Vector2(p[0],p[1]));
+  const pts=new THREE.SplineCurve(prof).getSpacedPoints(110);pts.forEach(p=>{p.x=Math.max(p.x,.001)});
+  const grp=new THREE.Group();
+  const body=new THREE.Mesh(new THREE.LatheGeometry(pts,128),new THREE.MeshStandardMaterial({map:tex,roughness:.48,metalness:.04,side:THREE.DoubleSide}));grp.add(body);
+  const black=new THREE.MeshStandardMaterial({color:0x17120f,roughness:.35,metalness:.1});
+  [1,-1].forEach(g=>{const c=new THREE.CatmullRomCurve3([new THREE.Vector3(g*1.18,3.38,0),new THREE.Vector3(g*1.78,3.72,0),new THREE.Vector3(g*1.74,4.4,0),new THREE.Vector3(g*1.15,4.74,0),new THREE.Vector3(g*.5,4.62,0)]);grp.add(new THREE.Mesh(new THREE.TubeGeometry(c,48,.11,14,false),black))});
+  const wood=new THREE.MeshStandardMaterial({color:0x7a4426,roughness:.85});
+  const wheel=new THREE.Mesh(new THREE.CylinderGeometry(2.75,2.95,.32,80),wood);wheel.position.y=-.16;grp.add(wheel);
+  const rim=new THREE.Mesh(new THREE.TorusGeometry(2.78,.07,10,80),black);rim.rotation.x=Math.PI/2;rim.position.y=.01;grp.add(rim);
+  const hub=new THREE.Mesh(new THREE.CylinderGeometry(.55,1,1.7,36),wood);hub.position.y=-1.15;grp.add(hub);
+  grp.position.y=-2.5;scene.add(grp);
+  scene.add(new THREE.HemisphereLight(0xffe9c9,0x1a0f0a,.8));
+  const key=new THREE.DirectionalLight(0xffe2b8,1.15);key.position.set(4,6,7);scene.add(key);
+  const rimL=new THREE.PointLight(0x2aa7cc,1.5,40);rimL.position.set(-7,3,-5);scene.add(rimL);
+  const top=new THREE.PointLight(0xf0b93a,.7,24);top.position.set(0,7,3);scene.add(top);
+  const N=220,pos=new Float32Array(N*3),spd=new Float32Array(N);
+  for(let i=0;i<N;i++){const a=Math.random()*Math.PI*2,r=2.2+Math.random()*3.2;pos[i*3]=Math.cos(a)*r;pos[i*3+1]=Math.random()*9-4.5;pos[i*3+2]=Math.sin(a)*r-1;spd[i]=.004+Math.random()*.012}
+  const mg=new THREE.BufferGeometry();mg.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  scene.add(new THREE.Points(mg,new THREE.PointsMaterial({color:0xf0b93a,size:.07,transparent:true,opacity:.85,depthWrite:false})));
+  let base=1;function size(){const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();base=w<380?.86:1}
+  size();new ResizeObserver(size).observe(stage);
+  const REST=RM?0:.0045;let vel=REST,drag=false,lx=0,sq=0,live=true,t=0;
+  cv.addEventListener('pointerdown',e=>{drag=true;lx=e.clientX;try{cv.setPointerCapture(e.pointerId)}catch(_){}} );
+  cv.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-lx;lx=e.clientX;vel=dx*.007;grp.rotation.y+=vel});
+  ['pointerup','pointercancel','pointerleave'].forEach(k=>cv.addEventListener(k,()=>{drag=false}));
+  btn.onclick=()=>{paintVase(tx,++seed);tex.needsUpdate=true;vel=.42;sq=.14};
+  new IntersectionObserver(es=>{live=es[0].isIntersecting}).observe(stage);
+  function loop(){requestAnimationFrame(loop);if(!live)return;t+=.016;
+    if(!drag&&!MO.paused){grp.rotation.y+=vel;vel+=(REST-vel)*.025}
+    sq*=.94;const w=1+sq*Math.sin(t*22);grp.scale.set(base/Math.sqrt(w),base*w,base/Math.sqrt(w));
+    grp.rotation.x=clamp(scrollY*.0005,0,.35);
+    if(!RM&&!MO.paused){for(let i=0;i<N;i++){pos[i*3+1]+=spd[i];if(pos[i*3+1]>4.6)pos[i*3+1]=-4.6}mg.attributes.position.needsUpdate=true}
+    renderer.render(scene,cam)}
+  loop();
+})();
+
+/* ---------- first hours: the marching hoplite ---------- */
+(function(){const btns=[...document.querySelectorAll('#steps button')],run=document.getElementById('runner');let cur=0,auto=!RM,tm;
+  function set(i){cur=i;btns.forEach((b,j)=>b.setAttribute('aria-pressed',j===i));run.style.left=(i*20+10)+'%'}
+  btns.forEach((b,i)=>{b.onclick=()=>{auto=false;clearInterval(tm);set(i)};b.onmouseenter=()=>{auto=false;clearInterval(tm);set(i)}});
+  set(0);if(auto)tm=setInterval(()=>{if(!MO.paused)set((cur+1)%btns.length)},3200);
+})();
+
+/* ---------- the Book of Providence ---------- */
+const chapters=[
+ ["The Note","✉","The Note in the Box","Found in the barn rafters, in a stranger's hand, the ink faintly blue, as if written in water. To the mother who drank from the well, and the father who dug it: Your daughter lives. She is safe, for now. This child is not. Raise the child as your own. Tell the child nothing of where they came from, or who, until the child finds this by no hand of yours. If you break this, you will lose each other. Keep it, and your fields will never fail you. There is no name. Where a name would be, the paper is stained with a single drop of water that never dried."],
+ ["The First Page","P","Get Up","Hush, little one. Listen. I cannot see your face. I have not seen it since the night I gave you to the water. But I can feel you. Tonight something broke you. Tell me nothing. I felt it. I am your mother. My name is Persephi. I am somewhere no sun has ever risen, with a book whose pages never end, and I will send you its pages, one by one, as it lets me. Here is the first thing it teaches. A frightened prayer is a thread. A prayer given freely is a rope. The world is held together by rope, and someone has been cutting it. They took your home. They will try to take the rest. Things were taken from you before you could remember, too, and they are waiting for you, all across Antonia. Get up. Go and find them."],
+ ["Page I","I","The Clay and the Wheel","Before the first dawn there was only Toaa, “The One Above All,” whose true name no tongue may shape. Whoever tries is unmade, as if never born. From Toaa's body and spit, or so we say, for our minds can grasp no better, came the Living Clay. From the clay came the mountains, the seas, and the beasts, the first and oldest of them so terrible that the Book will only say they were put somewhere deep and shut away. Then Toaa shaped Cassius in his own image. Toaa does not err, yet the likeness was not perfect, and the Book is silent on why. After Cassius came his brothers and sisters, each with a domain: harvest, sea, love, war, death, and others the Book has not named. To Cassius, the eldest, Toaa gave the Wheel. Cassius bowed, and believed himself chosen to rule. A gift from Toaa is never only a gift."],
+ ["Page II","II","The Flood and the Tear","The gods owed worship to Toaa, as rivers owe water to the sea. So Cassius sat at the Wheel and shaped the first people from the clay. He wanted them perfect. They came out as flawed as their maker, or worse, and in his fury he drowned them all. Then Toaa wept. Only once. Where that tear fell, the Book says, something waited to be born. Cassius tried again with his wife, Hemera, and this time each heart was made to believe. Mortals prayed to the gods, the gods prayed to Toaa, and the cities kept the Concord of Many Altars, swearing their peace on stones of clay. Cassius kept a ledger of every prayer, and let no god read the last page. It was a golden age. Golden ages are the first thing the Book teaches us to mourn."],
+ ["Page III","III","The Golden Tongue","Of all the children of Cassius and Hemera, the fairest was Aerickleus, whose words could light loyalty in any heart. And he burned with envy, for his father's praise always seemed to fall on someone else. So he wrapped himself in a mortal's shape and walked among people as a wandering hero. He slew beasts, broke sieges, saved cities. Once, outside Remia, he killed a beast that had mauled a tanner's boy, and the boy followed him ever after, carrying his shield. The boy's name was Corvus. The mortals sang the hero's name, and the songs filled him like wine. One song was not enough. Neither were a hundred."],
+ ["Still Writing","…","The Pages to Come","The rest of the Book is not here yet. Its pages rise one at a time through the wells of Antonia, and each comes only after you have earned it: after the forge, after the walls of Lysa, after your first oath, and further. They tell of a market and a well, a stolen field, a fall into the dark, and an emperor who never stopped believing. Read them in the game. The pages are still writing. What they show is only what may be. What will be is yours to choose."]
+];
+(function(){const tabs=document.getElementById('tabs'),leaf=document.getElementById('leaf');let cur=0;
+  chapters.forEach((c,i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('role','tab');b.textContent=c[1];b.setAttribute('aria-label',c[0]+': '+c[2]);b.onclick=()=>show(i,true);tabs.appendChild(b)});
+  function show(i,anim){cur=(i+chapters.length)%chapters.length;const c=chapters[cur];
+    document.getElementById('lch').textContent=c[0];document.getElementById('ltitle').textContent=c[2];document.getElementById('ltext').textContent=c[3];
+    document.getElementById('lcount').textContent='page '+(cur+1)+' of '+chapters.length;
+    [...tabs.children].forEach((b,j)=>b.setAttribute('aria-selected',j===cur));
+    document.getElementById('next').textContent=cur===chapters.length-1?'Begin again':'Turn the page';
+    leaf.classList.remove('turn');if(anim&&!MO.paused){void leaf.offsetWidth;leaf.classList.add('turn')}}
+  document.getElementById('next').onclick=()=>show(cur+1,true);document.getElementById('prev').onclick=()=>show(cur-1,true);show(0,false);
+})();
+
+/* ---------- chain rays + coin sigils ---------- */
+(function(){const g=document.getElementById('rays');let h='';for(let i=0;i<16;i++){const a=i/16*Math.PI*2,r1=42,r2=i%2?54:62;h+=`<line x1="${(210+Math.cos(a)*r1).toFixed(1)}" y1="${(70+Math.sin(a)*r1).toFixed(1)}" x2="${(210+Math.cos(a)*r2).toFixed(1)}" y2="${(70+Math.sin(a)*r2).toFixed(1)}"/>`}g.innerHTML=h})();
+document.querySelectorAll('canvas[data-sigil]').forEach(c=>{const x=c.getContext('2d'),k=c.dataset.sigil,m=76;
+  x.strokeStyle=GOLD;x.fillStyle=GOLD;x.lineWidth=3.5;x.lineCap='round';x.lineJoin='round';
+  const ring=r=>{x.beginPath();x.arc(m,m,r,0,7);x.stroke()};
+  if(k==='toaa'){const g=x.createRadialGradient(m,m,0,m,m,66);g.addColorStop(0,'#fff6d8');g.addColorStop(.35,GOLD);g.addColorStop(1,'rgba(240,185,58,0)');x.fillStyle=g;x.fillRect(0,0,152,152);ring(44);ring(60)}
+  if(k==='cassius'){ring(50);for(let i=0;i<12;i++){const a=i/12*Math.PI*2;x.beginPath();x.moveTo(m+Math.cos(a)*15,m+Math.sin(a)*15);x.lineTo(m+Math.cos(a)*50,m+Math.sin(a)*50);x.stroke()}ring(15);x.strokeStyle='#0d0a08';x.lineWidth=8;x.beginPath();x.arc(m,m,50,-.42,-.1);x.stroke()}
+  if(k==='hemera'){x.beginPath();x.arc(m,m+12,28,Math.PI,0);x.stroke();for(let i=0;i<7;i++){const a=Math.PI+i/6*Math.PI;x.beginPath();x.moveTo(m+Math.cos(a)*36,m+12+Math.sin(a)*36);x.lineTo(m+Math.cos(a)*50,m+12+Math.sin(a)*50);x.stroke()}x.beginPath();x.moveTo(m-48,m+12);x.lineTo(m+48,m+12);x.moveTo(m-30,m+28);x.lineTo(m+30,m+28);x.stroke()}
+  if(k==='aer'){x.beginPath();x.moveTo(m-30,m-12);x.quadraticCurveTo(m,m+34,m+30,m-12);x.stroke();x.beginPath();x.moveTo(m,m+12);x.lineTo(m,m+46);x.moveTo(m-14,m+46);x.lineTo(m+14,m+46);x.stroke();x.strokeStyle=PINK;for(let i=-1;i<=1;i++){x.beginPath();x.moveTo(m+i*17,m-46);x.lineTo(m+i*12,m-24);x.stroke()}}
+  if(k==='persephi'){x.beginPath();x.moveTo(m,m-40);x.bezierCurveTo(m+30,m,m+22,m+34,m,m+34);x.bezierCurveTo(m-22,m+34,m-30,m,m,m-40);x.fill();x.strokeStyle=GOLD;x.beginPath();x.moveTo(m-44,m+48);x.quadraticCurveTo(m,m+36,m+44,m+48);x.stroke()}
+  if(k==='corvus'){x.strokeStyle=PINK;ring(56);x.fillStyle=GOLD;x.beginPath();x.moveTo(m-44,m+4);x.lineTo(m-6,m-30);x.lineTo(m+22,m-26);x.lineTo(m+44,m-10);x.lineTo(m+18,m-8);x.lineTo(m+10,m+34);x.lineTo(m-6,m+4);x.closePath();x.fill();x.fillStyle='#0d0a08';x.beginPath();x.arc(m+18,m-17,3.5,0,7);x.fill()}
+  if(k==='you'){x.fillStyle='#fff6d8';x.beginPath();x.ellipse(m,m,8,15,0,0,7);x.fill();ring(30);ring(48);for(let i=0;i<8;i++){const a=i/8*Math.PI*2+.39;x.beginPath();x.moveTo(m+Math.cos(a)*54,m+Math.sin(a)*54);x.lineTo(m+Math.cos(a)*64,m+Math.sin(a)*64);x.stroke()}}
+});
+
+/* ---------- shared helpers for the four games ---------- */
+const $=id=>document.getElementById(id);
+const LABEL='700 15px "Alegreya Sans SC",sans-serif';
+function logTo(box,text,cls){const p=document.createElement('p');if(cls)p.className=cls;p.textContent=text;box.appendChild(p);box.scrollTop=box.scrollHeight}
+function showResult(box,title,text){box.innerHTML='';const b=document.createElement('b');b.textContent=title;box.appendChild(b);box.appendChild(document.createTextNode(text));box.hidden=false;
+  const g=box.closest('.game'),ae=document.activeElement;if(g&&(g.contains(ae)||ae===document.body)){box.tabIndex=-1;box.focus({preventScroll:true});box.scrollIntoView({block:'nearest'})}}
+const pct=(i,v)=>{i.style.width=clamp(v,0,100)+'%'};
+
+/* ---------- research reader ---------- */
+(function(){
+  const dlg=$('resDlg'),all=[...dlg.querySelectorAll('.rch')],nav=$('resNav'),pick=$('resPick'),body=$('resBody');let cur=0,opener=null;
+  const GROUPS=[['Start here','#f0b93a',s=>s.id==='r-tldr'],['The problems','#e57aa3',s=>s.dataset.kind==='problem'],['The evidence','#f0b93a',s=>s.id==='r-stay'||s.id==='r-data'],['Antonia\'s answers','#5fb6cf',s=>s.dataset.kind==='solution'],['Sources','#c9b896',s=>s.id==='r-src']];
+  const meta=new Map(),btns=[];
+  GROUPS.forEach(g=>{const mine=all.filter(g[2]),wrap=document.createElement('div'),h=document.createElement('h4'),ol=document.createElement('ol'),og=document.createElement('optgroup');
+    wrap.className='rgroup';wrap.style.setProperty('--gc',g[1]);h.textContent=g[0];og.label=g[0];
+    mine.forEach((s,k)=>{const idx=all.indexOf(s),numbered=mine.length>2;meta.set(s,{group:g[0],pos:k+1,of:mine.length});
+      const li=document.createElement('li'),b=document.createElement('button'),n=document.createElement('i'),t=document.createElement('span');b.type='button';n.textContent=numbered?k+1:'';t.textContent=s.dataset.nav;
+      b.append(n,t);b.onclick=()=>show(idx);btns[idx]=b;li.appendChild(b);ol.appendChild(li);
+      const o=document.createElement('option');o.value=idx;o.textContent=(numbered?(k+1)+'. ':'')+s.dataset.nav;og.appendChild(o)});
+    wrap.append(h,ol);nav.appendChild(wrap);pick.appendChild(og)});
+  function show(i){cur=clamp(i,0,all.length-1);all.forEach((s,j)=>s.hidden=j!==cur);const s=all[cur],m=meta.get(s);
+    btns.forEach((b,j)=>b.setAttribute('aria-current',j===cur));pick.value=cur;
+    $('resKind').textContent=m.group+(m.of>2?' · '+m.pos+' of '+m.of:'');
+    $('resCount').textContent='page '+(cur+1)+' of '+all.length;$('resPrev').disabled=cur===0;$('resNext').disabled=cur===all.length-1;body.scrollTop=0}
+  function close(){if(dlg.close)dlg.close();else dlg.removeAttribute('open');if(opener)opener.focus()}
+  dlg.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{const t=all.indexOf($(b.dataset.go));if(t>=0)show(t)});
+  pick.onchange=()=>show(+pick.value);$('resPrev').onclick=()=>show(cur-1);$('resNext').onclick=()=>show(cur+1);$('resClose').onclick=close;
+  dlg.addEventListener('click',e=>{if(e.target===dlg)close()});
+  $('resOpen').onclick=e=>{opener=e.currentTarget;show(0);if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','')};
+  show(0);
+})();
+
+/* ---------- how to play pop-ups ---------- */
+(function(){
+  const HOW={
+   siege:{title:'The Siege Clock',goal:'Make the city of Lysa pay you tribute before your army runs out of supplies.',
+    steps:['Drag the slider to choose how much tribute to ask for, then press Send offer.','If Lysa says no, six hours pass. You lose supplies, they lose morale, and their envoy tells you what they would pay.','Ask again, or press Accept to take the amount they offered.'],
+    more:[['Hold the siege','Wait six hours. Both sides get hungrier.'],['Assault the walls','Attack. It hurts them a lot and costs you a lot.'],['Send a scout','See their real morale and food for a short time. Without one you only see a rough guess.'],['Burn the bridges','Frighten them into giving in sooner. You can no longer retreat.'],['Withdraw','Give up and go home with nothing.']],
+    win:'Lysa agrees to pay. The more supplies you have left, the better the win.',lose:'Your supplies reach zero.',tip:'Start high, then lower your demand. The weaker Lysa gets, the more it will pay.'},
+   oath:{title:'Oath Stones',goal:'Collect as much grain as you can in eight seasons by trading with four neighbors.',
+    steps:['You have a pact with each neighbor. Every season, each pact starts on "Will keep".','To betray a neighbor this season, press their button so it reads "Will break".','Press End the season to see what everyone did and how much grain you earned.'],
+    more:[['You both keep','You each earn steady grain, and it grows the longer the pact lasts.'],['You break, they keep','You earn a lot once. They earn nothing and will remember it.'],['They break, you keep','You earn nothing that season.'],['The mark','Break any pact and you are an oathbreaker for three seasons. Trade pays less while you are marked.']],
+    win:'You finish with more grain than a ruler who kept every promise. The game shows you that number at the end.',lose:'You finish with less.',tip:'Read the line under each neighbor\'s name. It tells you how they react to betrayal.'},
+   gran:{title:'Shared Granaries',goal:'Gather as much grain as you can in ten seasons without killing the valley you share.',
+    steps:['Drag the slider to choose how much grain to take this season.','Press Harvest this season.','Check the valley bar and see how much each neighbor took.'],
+    more:[['Fair share','The valley grows back a little each season. The "fair share" number is what you can safely take.'],['Greed spreads','If you take more than your share, your neighbors copy you next season.'],['An empty valley','If the valley runs out, it never grows back.'],['Festival','Spend 5 grain to help the valley recover and calm your neighbors.']],
+    win:'You hold at least as much grain as the fair-share ruler and the valley is still alive.',lose:'The valley dies, or greed leaves everyone with less.',tip:'Slow and steady wins. Watch what your neighbors do after you take a big harvest.'},
+   stew:{title:'The Steward',goal:'Keep your kingdom safe overnight. Four attacks will come while you sleep.',
+    steps:['Each clay tablet is one order: "When this happens, do that." Tap a dark word to change it.','The Steward reads the tablets from top to bottom and follows the first one that fits. Use the arrows to change the order.','Press Sleep through the night, then read the ledger to see what happened.'],
+    more:[['Your forces','6,000 cavalry, 1,000 gold and 2 infantry escorts.'],['Used is gone','Anything sent out stays out for the rest of the night.'],['Cavalry','Wins when it is at least half the size of the enemy.'],['Escorts','Good against small bandit raids on caravans. Useless against armies.']],
+    win:'All four alarms are handled by morning.',lose:'Alarms go unanswered, or your forces run out too early.',tip:'Put orders for big armies above orders for any attack, so the big ones get your full cavalry.'}};
+  const dlg=$('howDlg'),box=$('howIn');let opener=null;
+  const mk=(tag,text,cls)=>{const e=document.createElement(tag);if(text)e.textContent=text;if(cls)e.className=cls;return e};
+  function close(){if(dlg.close)dlg.close();else dlg.removeAttribute('open');if(opener)opener.focus()}
+  function open(k,btn){const h=HOW[k];if(!h)return;opener=btn;box.innerHTML='';
+    const top=mk('div','','top'),t=mk('h3',h.title);t.id='howTitle';const x=mk('button','Close','x');x.type='button';x.onclick=close;top.append(t,x);
+    const ol=mk('ol');h.steps.forEach(st=>ol.appendChild(mk('li',st)));
+    const dl=mk('dl');h.more.forEach(m=>{const d=mk('div');d.append(mk('dt',m[0]+': '),mk('dd',m[1]));dl.appendChild(d)});
+    const wl=mk('div','','wl'),w=mk('p'),l=mk('p');w.append(mk('b','You win when: '),h.win);l.append(mk('b','You lose when: '),h.lose);wl.append(w,l);
+    const go=mk('button','Got it, let me play','btn small');go.type='button';go.onclick=close;
+    box.append(top,mk('h4','your goal'),mk('p',h.goal,'goal'),mk('h4','what you do each turn'),ol,mk('h4','good to know'),dl,wl,mk('p','Tip: '+h.tip,'tip'),go);
+    if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','');dlg.scrollTop=0}
+  dlg.addEventListener('click',e=>{if(e.target===dlg)close()});
+  document.querySelectorAll('[data-how]').forEach(b=>b.addEventListener('click',()=>open(b.dataset.how,b)));
+})();
+
+/* ---------- game one: the siege clock ---------- */
+(function(){
+  const cv=$('siege'),x=cv.getContext('2d'),box=$('sLog'),res=$('sResult'),dEl=$('demand');let S;
+  const say=(t,c)=>logTo(box,t,c);
+  const will=()=>clamp(Math.round(4+(100-S.mor)*.3*S.pat+(100-S.food)*.12+(S.burned?5:0)),3,45);
+  function reset(){S={turn:0,sup:100,mor:100,food:100,pat:.75+Math.random()*.5,burned:false,scout:0,relief:-1,here:false,assaults:0,over:false,last:0,noise:Math.random()*20-10};
+    box.innerHTML='';res.hidden=true;say('Lysa shuts its gates. Send your first demand.');render()}
+  function end(title,text,cls){S.over=true;say(title,cls);showResult(res,title,text);render()}
+  function win(d,how){const hours=S.turn*6,left=Math.round(S.sup);
+    const kind=d>=25?'Full surrender: Lysa\'s soldiers join your ranks and its trade is yours.':'Partial surrender: fewer soldiers and less trade than a full one.';
+    const verdict=left<25?'A costly win. Your camp is nearly starved, and the next attacker will find you weak.':(d>=25&&left>=45?'A masterful siege. You took a rich tribute and kept your army strong.':'A fair bargain. You left with tribute and an army that can still march.');
+    end('Lysa surrenders at '+d+'% tribute',' '+how+' It took '+hours+' hours and you have '+left+' supplies left. '+kind+' '+verdict,'good')}
+  function pass(kind){S.turn++;if(S.scout>0)S.scout--;
+    let burn=7+(S.here?7:0);if(kind==='assault')burn+=14;S.sup=Math.max(0,S.sup-burn);
+    const press=S.burned?1.25:1;
+    if(kind==='assault'){const hit=Math.round(14+Math.random()*12);S.mor=Math.max(0,S.mor-hit*press);S.food=Math.max(0,S.food-5);S.assaults++;say('Your ladders hit the walls. Their morale drops by '+Math.round(hit*press)+'. You spend '+burn+' supplies.','me')}
+    else{S.mor=Math.max(0,S.mor-6*press);S.food=Math.max(0,S.food-8)}
+    if(S.relief>0){S.relief--;if(S.relief===0){S.here=true;say('Thera\'s army reaches your camp. You now fight two armies and burn supplies twice as fast.','bad')}else say('Thera\'s relief army is '+S.relief+' watch away.','bad')}
+    else if(!S.here&&S.relief<0&&S.turn>=3&&Math.random()<.3){S.relief=2;say('Riders left Lysa in the night. Its ally Thera is marching to break your siege. It arrives in 2 watches.','bad')}
+    if(S.mor<=0||S.food<=0){const d=Math.max(will(),35);return win(d,S.food<=0?'The city ran out of food and opened its gates.':'The defenders lost the will to fight.')}
+    if(S.sup<=0){if(S.burned)return end('Your army is destroyed','You burned the bridges, so there was no retreat when the supplies ran out. You lose everything you committed.','bad');
+      return end('You are forced to withdraw','Your supplies ran out. You pay Lysa damages for '+S.turn*6+' hours of siege and sign a treaty banning you from the city.','bad')}
+    render()}
+  function render(){const w=will(),known=S.scout>0||S.over;
+    $('sWatch').textContent=S.turn+1;$('sHours').textContent=S.turn*6;$('sLast').textContent=S.last?S.last+'%':'none';
+    pct($('mSup'),S.sup);$('vSup').textContent=Math.round(S.sup);
+    const fog=v=>{const c=clamp(Math.round((v+S.noise)/5)*5,0,100);return Math.max(0,c-15)+' to '+Math.min(100,c+15)};
+    pct($('mMor'),S.mor);pct($('mFood'),S.food);
+    $('bMor').classList.toggle('fog',!known);$('bFood').classList.toggle('fog',!known);
+    if(!known){pct($('mMor'),clamp(S.mor+S.noise,5,100));pct($('mFood'),clamp(S.food-S.noise,5,100))}
+    $('vMor').textContent=known?Math.round(S.mor):fog(S.mor);$('vFood').textContent=known?Math.round(S.food):fog(S.food);
+    $('demandV').textContent=dEl.value+'%';
+    $('sAccept').disabled=S.over||!S.last;$('sAccept').textContent=S.last?'Accept their '+S.last+'%':'Accept their offer';
+    ['sOffer','sHold','sAssault'].forEach(i=>$(i).disabled=S.over);
+    $('sScout').disabled=S.over||S.sup<=4;$('sBurn').disabled=S.over||S.burned;$('sQuit').disabled=S.over||S.burned;
+    $('sBurn').textContent=S.burned?'Bridges burned':'Burn the bridges';draw()}
+  function city(x0,y0,col,hp,label){x.save();x.translate(x0,y0);x.fillStyle=col;x.globalAlpha=.3+.7*hp;
+    [[-52,-34,22,34],[-28,-58,24,58],[-2,-44,20,44],[20,-28,24,28]].forEach(b=>{const cr=(1-hp)*b[3]*.55;x.fillRect(b[0],b[1]+cr,b[2],b[3]-cr);x.fillRect(b[0]-2,b[1]+cr-5,6,5);x.fillRect(b[0]+b[2]-4,b[1]+cr-5,6,5)});
+    x.beginPath();x.moveTo(-34,-58+(1-hp)*32);x.lineTo(-16,-76+(1-hp)*32);x.lineTo(2,-58+(1-hp)*32);x.fill();
+    x.globalAlpha=1;x.fillStyle=SLIP;x.font=LABEL;x.textAlign='center';x.fillText(label,-4,24);x.restore()}
+  function draw(){const w=cv.width,h=cv.height,dem=+dEl.value,gy=h*.66;x.fillStyle='#100c0a';x.fillRect(0,0,w,h);x.fillStyle='#231a14';x.fillRect(0,gy,w,h);x.fillStyle=CLAY;x.fillRect(0,gy,w,3);
+    city(120,gy,GOLD,S.sup/100,'your camp');city(w-110,gy,SLIP,S.mor/100,'lysa');
+    const x1=190,x2=w-190,y=h*.4,len=(x2-x1)/2,l=x1+len*(1-S.sup/100)*.97,r=x2-len*(1-S.mor/100)*.97;
+    x.strokeStyle='rgba(241,227,196,.16)';x.lineWidth=8;x.lineCap='round';x.beginPath();x.moveTo(x1,y);x.lineTo(x2,y);x.stroke();
+    if(r>l){x.strokeStyle=CLAY;x.setLineDash([10,5]);x.beginPath();x.moveTo(l,y);x.lineTo(r,y);x.stroke();x.setLineDash([]);
+      x.strokeStyle=`rgba(229,122,163,${.2+dem/70})`;x.lineWidth=2;x.beginPath();for(let xx=l;xx<=r;xx+=6)x.lineTo(xx,y+Math.sin(xx*.08+performance.now()/90)*dem/11);x.stroke()}
+    if(S.turn>0&&!S.over&&!RM)[l,r].forEach(px=>{for(let i=0;i<9;i++){x.fillStyle=`rgba(240,${130+Math.random()*90|0},40,${Math.random()})`;x.beginPath();x.arc(px+(Math.random()-.5)*12,y-Math.random()*26,Math.random()*3.5+1,0,7);x.fill()}});
+    x.fillStyle=SLIP;x.font='30px "Caesar Dressing",fantasy';x.textAlign='center';x.fillText('you demand '+dem+'%',w/2,y-28);
+    x.fillStyle='#c9b896';x.font='500 16px "Alegreya Sans SC",sans-serif';x.fillText(S.last?'their envoy offers '+S.last+'%':'no offer from lysa yet',w/2,y+40);
+    if(S.burned){x.fillStyle=PINK;x.fillText('bridges burned · no retreat',130,gy+52)}
+    if(S.relief>0||S.here){const ax=S.here?250:w-250+S.relief*70,ay=70;x.fillStyle=PINK;for(let i=0;i<5;i++)x.fillRect(ax+i*13,ay-(i%2?16:22),9,i%2?16:22);x.font=LABEL;x.fillText(S.here?'thera\'s army attacks your camp':'thera\'s army · '+S.relief+' watch away',ax+30,ay+20)}}
+  $('sOffer').onclick=()=>{const d=+dEl.value,w=will();say('You demand '+d+'% tribute.','me');
+    if(d<=w)return win(d,'Lysa\'s council accepted your terms.');
+    const c=Math.max(3,w-2-Math.floor(Math.random()*2));S.last=Math.max(S.last,c);
+    say('Envoy: "'+d+'% is robbery. Lysa offers '+S.last+'%." The talks cost a watch.');pass('hold')};
+  $('sAccept').onclick=()=>win(S.last,'You accepted their envoy\'s offer.');
+  $('sHold').onclick=()=>{say('You hold the siege for another watch. Both sides go hungry.','me');pass('hold')};
+  $('sAssault').onclick=()=>pass('assault');
+  $('sScout').onclick=()=>{S.sup-=4;S.scout=2;say('Your scout slips inside for 4 supplies. Morale '+Math.round(S.mor)+', food '+Math.round(S.food)+'. They would settle for about '+will()+'% right now.','me');render()};
+  $('sBurn').onclick=()=>{S.burned=true;say('You burn the bridges behind your army. Lysa sees you cannot retreat, and its nerve cracks faster. Neither can you withdraw.','me');render()};
+  $('sQuit').onclick=()=>end('You withdraw','You lift the siege after '+S.turn*6+' hours, pay Lysa damages for '+S.assaults+' assaults and sign a treaty keeping you away. You leave with '+Math.round(S.sup)+' supplies and no tribute.','bad');
+  $('sNew').onclick=reset;dEl.oninput=()=>{$('demandV').textContent=dEl.value+'%';draw()};
+  reset();if(!RM)(function l(){if(!MO.paused)draw();requestAnimationFrame(l)})();
+})();
+
+/* ---------- game two: oath stones ---------- */
+(function(){
+  const cv=$('oaths'),x=cv.getContext('2d'),box=$('oLog'),res=$('oResult'),rows=$('oRows');let G;
+  const ME=[380,205],SEASONS=8;
+  const DEF=[['Thera','mirror','Honorable. Treats you the way you treated her last season.',[130,80]],['Doros','grudge','Unforgiving. Betray him once and he never trusts you again.',[630,80]],['Kallos','snake','Opportunist. Betrays when he smells weakness or thinks he can get away with it.',[130,340]],['Mira','dove','Trusting. Always keeps her word, but walks away from a traitor.',[630,340]]];
+  function reset(){G={season:1,score:0,mark:0,over:false,rolls:Array.from({length:SEASONS},()=>Math.random()),scars:[],snap:[],
+    n:DEF.map(d=>({name:d[0],type:d[1],note:d[2],pos:d[3],streak:0,yours:'keep',theirs:'keep',intent:'keep',burned:false,alive:true,got:0}))};
+    box.innerHTML='';res.hidden=true;logTo(box,'Four pacts are sworn on Oath Stones. Choose what to do with each, then end the season.');render()}
+  function theirMove(n,marked,season,roll){if(!n.alive)return'none';
+    if(n.type==='mirror')return n.yours;if(n.type==='grudge')return n.burned?'break':'keep';
+    if(n.type==='snake')return(marked||season===SEASONS||roll<.18)?'break':'keep';return'keep'}
+  function pay(mine,theirs,streak,marked){if(mine==='keep'&&theirs==='keep')return marked?2:3+(streak>=6?2:streak>=3?1:0);if(mine==='break'&&theirs==='keep')return 6;if(mine==='break')return 1;return 0}
+  function baseline(){let t=0;DEF.forEach(d=>{let st=0,bu=false;for(let s=1;s<=SEASONS;s++){const th=d[1]==='snake'?((s===SEASONS||G.rolls[s-1]<.18)?'break':'keep'):'keep';t+=pay('keep',th,st,false);st=th==='keep'?st+1:0}});return t}
+  function endSeason(){if(G.over)return;const marked=G.mark>0;let broke=false;const lines=[];
+    G.n.forEach(n=>{if(!n.alive)return;const th=theirMove(n,marked,G.season,G.rolls[G.season-1]),mine=n.intent,g=pay(mine,th,n.streak,marked);
+      n.got+=g;G.score+=g;
+      if(mine==='break'){broke=true;n.burned=true;G.scars.push(n.pos);G.snap.push({pos:n.pos,t:0})}
+      if(mine==='keep'&&th==='keep'){n.streak++;lines.push([n.name+' and you both keep faith. +'+g+' grain.',''])}
+      else{n.streak=0;
+        if(mine==='break'&&th==='keep')lines.push(['You break your oath with '+n.name+' and loot the border. +'+g+' grain.','me']);
+        else if(mine==='keep')lines.push([n.name+' breaks the oath while you keep it. You get nothing.','bad']);
+        else lines.push(['You and '+n.name+' betray each other. +'+g+' grain.','bad'])}
+      n.yours=mine;n.theirs=th;n.intent='keep';
+      if(n.type==='dove'&&mine==='break'){n.alive=false;lines.push(['Mira dissolves the pact and closes her roads to you for good.','bad'])}});
+    logTo(box,'Season '+G.season+(marked?' (you carry the oathbreaker mark: honest trade pays 2)':'')+':');lines.forEach(l=>logTo(box,l[0],l[1]));
+    if(G.mark>0)G.mark--;if(broke){G.mark=3;logTo(box,'The Oathwardens mark you an oathbreaker for three seasons. Every kingdom can see it.','bad');
+      const sg=$('oathStage');sg.classList.remove('shake');void sg.offsetWidth;if(!RM)sg.classList.add('shake')}
+    if(G.season>=SEASONS){G.over=true;const b=baseline(),d=G.score-b;
+      showResult(res,'You finish with '+G.score+' grain',' A ruler who kept every oath would have earned '+b+'. '+(d>0?'You beat them by '+d+'. Betrayal paid this time, but look at the scars it left and who still trusts you.':d===0?'You matched them exactly.':'You fell short by '+(-d)+'. The quick windfalls cost more than they paid: dimmer tethers, a mark on your name and neighbors who paid you back in kind.'))}
+    else G.season++;render()}
+  function render(){$('oSeason').textContent=Math.min(G.season,SEASONS)+' of '+SEASONS;$('oScore').textContent=G.score;$('oMark').textContent=G.mark?G.mark+' seasons':'none';
+    const fi=[...rows.querySelectorAll('button')].indexOf(document.activeElement);$('oEnd').disabled=G.over;rows.innerHTML='';
+    G.n.forEach((n,i)=>{const r=document.createElement('div');r.className='nrow'+(n.alive?'':' gone');
+      const last=!n.alive?'Pact dissolved.':G.season===1&&!G.over?'Pact sworn.':'Last season: you '+(n.yours==='keep'?'kept':'broke')+', '+n.name+' '+(n.theirs==='keep'?'kept':'broke')+'.';
+      const d=document.createElement('div');d.innerHTML='<b></b><small></small><small></small>';d.children[0].textContent=n.name+' · '+n.got+' grain';d.children[1].textContent=n.note;d.children[2].textContent=last;
+      const b=document.createElement('button');b.type='button';b.className='btn small';b.disabled=G.over||!n.alive;b.setAttribute('aria-pressed',n.intent==='break');b.textContent=n.intent==='break'?'Will break':'Will keep';b.setAttribute('aria-label',(n.intent==='break'?'Will break':'Will keep')+' the oath with '+n.name+'. Press to change.');
+      b.onclick=()=>{n.intent=n.intent==='keep'?'break':'keep';render()};r.appendChild(d);r.appendChild(b);rows.appendChild(r)});if(fi>=0){const nb=rows.querySelectorAll('button')[fi];if(nb&&!nb.disabled)nb.focus()}draw(performance.now())}
+  function shield(p,col,r){x.fillStyle=col;x.beginPath();x.arc(p[0],p[1],r,0,7);x.fill();x.strokeStyle='#100c0a';x.lineWidth=2.5;x.beginPath();x.arc(p[0],p[1],r*.62,0,7);x.stroke();x.fillStyle='#100c0a';x.beginPath();x.arc(p[0],p[1],r*.2,0,7);x.fill()}
+  function draw(now){const tt=now/1000;x.fillStyle='#100c0a';x.fillRect(0,0,cv.width,cv.height);x.lineCap='round';
+    G.scars.forEach(p=>{x.strokeStyle='#3a0f24';x.lineWidth=12;x.beginPath();x.moveTo(ME[0],ME[1]);for(let i=1;i<=10;i++){const f=i/10;x.lineTo(ME[0]+(p[0]-ME[0])*f+Math.sin(i*2.3)*9,ME[1]+(p[1]-ME[1])*f+Math.cos(i*1.7)*9)}x.stroke();x.strokeStyle=PINK;x.lineWidth=1.5;x.stroke()});
+    G.n.forEach(n=>{if(!n.alive)return;const p=n.pos,a=clamp(n.streak/6,0,1);
+      if(n.intent==='break'){x.strokeStyle=PINK;x.lineWidth=3;x.setLineDash([8,8]);x.beginPath();x.moveTo(ME[0],ME[1]);x.lineTo(p[0],p[1]);x.stroke();x.setLineDash([])}
+      else{x.strokeStyle=`rgba(240,185,58,${.3+a*.65})`;x.lineWidth=1.5+a*6;x.shadowColor=GOLD;x.shadowBlur=6+a*18;x.beginPath();x.moveTo(ME[0],ME[1]);x.lineTo(p[0],p[1]);x.stroke();x.shadowBlur=0;
+        if(!RM){const f=(tt*.3+p[0]*.001)%1;x.fillStyle='#fff6d8';x.beginPath();x.arc(ME[0]+(p[0]-ME[0])*f,ME[1]+(p[1]-ME[1])*f,2.6,0,7);x.fill()}}});
+    G.snap=G.snap.filter(s=>s.t<1);G.snap.forEach(s=>{s.t+=.03;const mx=(ME[0]+s.pos[0])/2,my=(ME[1]+s.pos[1])/2;x.strokeStyle=`rgba(229,122,163,${1-s.t})`;x.lineWidth=4;x.beginPath();x.arc(mx,my,10+s.t*60,0,7);x.stroke()});
+    G.n.forEach(n=>{shield(n.pos,n.alive?CLAY:'#4a4038',16);x.font=LABEL;x.textAlign='center';x.fillStyle=n.alive?SLIP:'#857a66';x.fillText(n.name.toLowerCase(),n.pos[0],n.pos[1]+40);
+      x.fillStyle=n.theirs==='break'?PINK:'#c9b896';x.fillText(!n.alive?'gone':n.theirs==='break'?'broke faith':'tether '+['new','new','new','bright','bright','bright','blazing'][Math.min(n.streak,6)],n.pos[0],n.pos[1]+58)});
+    if(G.mark>0){x.strokeStyle=PINK;x.lineWidth=2;for(let s=0;s<16;s++){const a=s/16*Math.PI*2+(RM?0:tt);x.beginPath();x.moveTo(ME[0]+Math.cos(a)*26,ME[1]+Math.sin(a)*26);x.lineTo(ME[0]+Math.cos(a)*38,ME[1]+Math.sin(a)*38);x.stroke()}}
+    shield(ME,G.mark>0?'#857a66':GOLD,22);x.font=LABEL;x.textAlign='center';x.fillStyle=G.mark>0?PINK:SLIP;x.fillText(G.mark>0?'you · oathbreaker':'you',ME[0],ME[1]+52)}
+  $('oEnd').onclick=endSeason;$('oNew').onclick=reset;reset();if(!RM)(function l(n){if(!MO.paused)draw(n||0);requestAnimationFrame(l)})();
+})();
+
+/* ---------- game three: shared granaries ---------- */
+(function(){
+  const cv=$('granary'),x=cv.getContext('2d'),box=$('gLog'),res=$('gResult'),gEl=$('greed'),K=200,R=.6,SEASONS=10,cw=20,cells=[];let G;
+  for(let y=0;y<cv.height;y+=cw)for(let xx=0;xx<cv.width;xx+=cw)cells.push({x:xx,y,n:Math.random()});
+  const CITY={You:[560,180],Thera:[130,80],Doros:[320,150],Kallos:[210,285]};
+  const grow=p=>R*p*(1-p/K);
+  function reset(){G={season:1,pool:140,you:0,last:7,fest:0,over:false,dead:false,worst:'',n:[{name:'Thera',take:7,grain:0},{name:'Doros',take:7,grain:0},{name:'Kallos',take:7,grain:0}],shown:[7,7,7,7]};
+    gEl.value=7;box.innerHTML='';res.hidden=true;logTo(box,'The valley is full. The land regrows about '+Math.round(grow(G.pool))+' grain this season, so a fair share is about '+Math.round(grow(G.pool)/4)+' each.');render()}
+  function baseline(){let p=140,t=0;for(let s=0;s<SEASONS;s++){const each=Math.min(7,p/4);t+=each;p-=each*4;p=clamp(p+grow(p),0,K)}return Math.round(t)}
+  function step(){if(G.over)return;const mine=+gEl.value,excess=Math.max(0,G.last-8);
+    G.n.forEach((n,i)=>{let t=7+Math.round(excess*(.7+i*.15));if(G.pool<70)t+=3;if(G.fest>0)t=Math.min(t,7);n.take=clamp(t,0,22)});
+    const want=[mine,...G.n.map(n=>n.take)],sum=want.reduce((a,b)=>a+b,0),k=sum>G.pool?G.pool/sum:1,got=want.map(v=>Math.round(v*k*10)/10);
+    G.you+=got[0];G.n.forEach((n,i)=>n.grain+=got[i+1]);G.pool=Math.max(0,G.pool-got.reduce((a,b)=>a+b,0));G.shown=got;
+    logTo(box,'Season '+G.season+': you harvest '+got[0]+'. Thera '+got[1]+', Doros '+got[2]+', Kallos '+got[3]+'.'+(k<1?' There was not enough to go around.':''),mine>8?'me':'');
+    if(mine>8&&excess===0)logTo(box,'Your neighbors notice you took more than a fair share. Expect them to do the same next season.','bad');
+    if(G.pool<70&&!G.dead&&G.pool>=5)logTo(box,'The valley is running low. Your neighbors start grabbing what they can before it is gone.','bad');
+    const names=['You','Thera','Doros','Kallos'],top=got.indexOf(Math.max(...got));G.worst=names[top];
+    if(G.pool<50&&got[top]>0){if(top===0){const lost=Math.min(8,G.you);G.you-=lost;logTo(box,'Blight spreads from your fields. Ashen Choir raiders strike the greediest kingdom, yours, and carry off '+lost+' grain.','bad')}
+      else{G.n[top-1].grain=Math.max(0,G.n[top-1].grain-8);logTo(box,'Blight draws Ashen Choir raiders. They hit '+names[top]+', the greediest kingdom this season.','bad')}}
+    if(G.pool<5&&!G.dead){G.dead=true;G.pool=0;logTo(box,'The valley is stripped bare. Nothing will regrow.','bad')}
+    else G.pool=clamp(G.pool+grow(G.pool),0,K);
+    G.last=mine;if(G.fest>0)G.fest--;
+    if(G.season>=SEASONS){G.over=true;const b=baseline(),y=Math.round(G.you);
+      showResult(res,'Ten seasons: you hold '+y+' grain',' Kingdoms that all kept to a fair share would each hold about '+b+'. '+(G.dead?'You and your neighbors stripped the valley bare. The early windfalls ended in famine for everyone, including you.':y>=b&&G.pool>=100?'You prospered and the valley is still green. Restraint paid, because your neighbors followed your lead.':y>b?'You came out ahead on grain, but you leave a damaged valley and neighbors who learned to grab.':'Greed spread faster than grain. Everyone, including you, ended with less than a fair share would have given.'))}
+    else G.season++;render()}
+  function render(){$('gSeason').textContent=Math.min(G.season,SEASONS)+' of '+SEASONS;$('gYou').textContent=Math.round(G.you);
+    const rg=Math.round(grow(G.pool));$('gRegrow').textContent=rg;$('gFair').textContent='fair share is about '+Math.round(rg/4);
+    pct($('mPool'),G.pool/K*100);$('vPool').textContent=Math.round(G.pool);$('greedV').textContent=gEl.value;
+    $('gGo').disabled=G.over;$('gFest').disabled=G.over||G.dead||G.you<5;
+    const t=$('gTakes');t.innerHTML='';['You','Thera','Doros','Kallos'].forEach((nm,i)=>{const d=document.createElement('div');d.innerHTML='<span></span><div class="bar"><i></i></div><span></span>';d.children[0].textContent=nm;
+      d.querySelector('i').style.width=clamp(G.shown[i]/25*100,0,100)+'%';if(i)d.querySelector('.bar').classList.add('foe');d.children[2].textContent='took '+G.shown[i]+' · has '+Math.round(i?G.n[i-1].grain:G.you);t.appendChild(d)});draw()}
+  const L=(a,b,t)=>a+(b-a)*t;
+  function draw(){const hl=G.pool/K,src=CITY[G.worst]||CITY.You,bl=clamp(1-G.pool/90,0,1);x.fillStyle='#100c0a';x.fillRect(0,0,cv.width,cv.height);
+    cells.forEach(c=>{const d=Math.hypot(c.x-src[0],c.y-src[1])/700,lo=clamp(hl*1.25-(bl*(1-d))*.7,0,1),j=c.n*22-11;x.fillStyle=`rgb(${L(176,96,lo)+j|0},${L(128,140,lo)+j|0},${L(78,58,lo)+j*.5|0})`;x.fillRect(c.x+1,c.y+1,cw-2,cw-2)});
+    x.strokeStyle=`rgb(${L(120,27,hl)|0},${L(96,122,hl)|0},${L(70,148,hl)|0})`;x.lineWidth=2+hl*14;x.lineCap='round';x.setLineDash([14,3]);x.beginPath();x.moveTo(0,260);x.bezierCurveTo(200,210,300,320,460,250);x.bezierCurveTo(560,210,640,270,760,230);x.stroke();x.setLineDash([]);
+    Object.keys(CITY).forEach(k=>{const c=CITY[k];x.fillStyle=GLAZE;x.fillRect(c[0]-12,c[1]-12,24,24);x.fillStyle=k==='You'?GOLD:SLIP;x.fillRect(c[0]-7,c[1]-7,14,14);x.fillStyle=GLAZE;x.fillRect(c[0]-36,c[1]+14,72,22);x.fillStyle=SLIP;x.font=LABEL;x.textAlign='center';x.fillText(k.toLowerCase(),c[0],c[1]+30)});
+    if(G.pool<50){x.fillStyle=GLAZE;x.fillRect(src[0]-124,src[1]-54,248,24);x.fillStyle=PINK;x.font=LABEL;x.fillText(G.dead?'the valley is dead':'ashen choir raiders sighted',src[0],src[1]-37)}}
+  $('gGo').onclick=step;$('gNew').onclick=reset;gEl.oninput=()=>{$('greedV').textContent=gEl.value};
+  $('gFest').onclick=()=>{G.you-=5;G.pool=clamp(G.pool+22,0,K);G.fest=2;G.last=Math.min(G.last,7);logTo(box,'You hold a festival of Persephi for 5 grain. The fields recover a little and your neighbors agree to fair shares for two seasons.','good');render()};
+  reset();
+})();
+
+/* ---------- game four: the steward ---------- */
+(function(){
+  const WHEN=['my vassal is attacked','my capital is besieged','my caravan is raided'],SIZE=['by any force','by more than 2,000','by more than 5,000','by more than 10,000'],THR=[0,2000,5000,10000],
+    THEN=['send half my cavalry','send all my cavalry','offer 15% tribute','send an infantry escort','lock the gates','burn the bridges'];
+  const box=$('stLog'),res=$('stResult'),wrap=$('stRules'),warn=$('stWarn');let rules,busy=false;
+  const fmt=n=>n.toLocaleString('en-US');
+  function defaults(){rules=[{w:0,s:2,t:1},{w:0,s:0,t:0},{w:2,s:0,t:3}]}
+  function check(){warn.innerHTML='';const dead=new Set();
+    rules.forEach((r,j)=>{for(let i=0;i<j;i++)if(rules[i].w===r.w&&THR[rules[i].s]<=THR[r.s]){dead.add(j);const p=document.createElement('p');p.textContent='Decree '+(j+1)+' can never fire: Decree '+(i+1)+' always answers first. Move it up or change it.';warn.appendChild(p);break}});
+    [0,1,2].forEach(w=>{if(!rules.some(r=>r.w===w)){const p=document.createElement('p');p.textContent='No decree covers "'+WHEN[w]+'". '+(w===1?'The Steward will fall back to locking the gates in a hurry, and the farms outside will be looted.':'The Steward will do nothing.');warn.appendChild(p)}});
+    if(!warn.children.length){const p=document.createElement('p');p.className='ok';p.textContent='No conflicts. Every decree can fire.';warn.appendChild(p)}return dead}
+  function render(){const dead=check();const fk=document.activeElement&&wrap.contains(document.activeElement)?document.activeElement.dataset.k:null;wrap.innerHTML='';
+    rules.forEach((r,i)=>{const c=document.createElement('div');c.className='tablet'+(dead.has(i)?' dead':'');
+      const h=document.createElement('div');h.className='thead';const sp=document.createElement('span');sp.textContent='decree '+(i+1)+(dead.has(i)?' · never fires':'');h.appendChild(sp);const ar=document.createElement('span');
+      [['▲',-1,'Move decree '+(i+1)+' up'],['▼',1,'Move decree '+(i+1)+' down']].forEach(a=>{const b=document.createElement('button');b.type='button';b.textContent=a[0];b.setAttribute('aria-label',a[2]);b.dataset.k='m'+(i+a[1])+(a[1]<0?'u':'d');b.disabled=busy||i+a[1]<0||i+a[1]>=rules.length;b.onclick=()=>{const t=rules[i];rules[i]=rules[i+a[1]];rules[i+a[1]]=t;render()};ar.appendChild(b)});
+      h.appendChild(ar);c.appendChild(h);const band=document.createElement('div');band.className='band';
+      const pill=(key,list)=>{const b=document.createElement('button');b.type='button';b.className='pill';b.textContent=list[r[key]];b.dataset.k='p'+i+key;b.title='Press to change';b.disabled=busy;b.onclick=()=>{r[key]=(r[key]+1)%list.length;render()};return b};
+      band.append('When ',pill('w',WHEN),' ',pill('s',SIZE),', ',pill('t',THEN),'.');c.setAttribute('role','group');c.setAttribute('aria-label','Decree '+(i+1));c.appendChild(band);wrap.appendChild(c)});
+    if(fk){let nb=wrap.querySelector('[data-k="'+fk+'"]');if(nb&&nb.disabled)nb=nb.parentNode.querySelector('button:not(:disabled)');if(nb)nb.focus()}}
+  function night(){const ev=[{type:0,n:1500+Math.floor(Math.random()*11)*1000}];
+    for(let i=0;i<3;i++){const t=Math.random();ev.push(t<.4?{type:0,n:1500+Math.floor(Math.random()*11)*1000}:t<.7?{type:1,n:4000+Math.floor(Math.random()*11)*1000}:{type:2,n:200+Math.floor(Math.random()*8)*100})}
+    for(let i=ev.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[ev[i],ev[j]]=[ev[j],ev[i]]}return ev}
+  function resolve(e,st){const who=['Your vassal is attacked by ','Your capital is besieged by ','Your caravan is raided by '][e.type]+fmt(e.n)+(e.type===2?' bandits.':' troops.');
+    const out={head:who,lines:[],ok:false};
+    for(let i=0;i<rules.length;i++){const r=rules[i];if(r.w!==e.type||e.n<=THR[r.s])continue;const tag='Decree '+(i+1)+': '+THEN[r.t]+'. ';
+      if(r.t===0||r.t===1||r.t===5){if(st.cav<=0){out.lines.push([tag+'No cavalry is left in the stables. The order fails.','bad']);continue}
+        const sent=r.t===0?Math.min(3000,st.cav):st.cav,power=sent*(r.t===5?1.25:1);st.cav-=sent;
+        if(e.type===2){out.ok=true;out.lines.push([tag+fmt(sent)+' riders scatter the bandits. The caravan is safe, but those riders are gone for the night.','good'])}
+        else if(power>=e.n*.5){out.ok=true;if(e.type===0)st.loy+=5;out.lines.push([tag+fmt(sent)+' riders break the attack.'+(e.type===0?' Your vassal\'s loyalty rises.':' The siege is lifted.'),'good'])}
+        else{if(r.t===5){out.lines.push([tag+fmt(sent)+' riders fight with no retreat and are wiped out.','bad'])}else out.lines.push([tag+fmt(sent)+' riders are too few and are driven off.','bad']);
+          if(e.type===0)st.loy-=15;else st.gold-=300;out.lines.push([e.type===0?'Your vassal is sacked. Its loyalty falls.':'The capital pays 300 gold in ransom.','bad'])}
+        return out}
+      if(r.t===2){if(st.gold<150){out.lines.push([tag+'The treasury is empty. The order fails.','bad']);continue}st.gold-=150;out.ok=true;out.lines.push([tag+'The attackers take 150 gold and leave.','good']);return out}
+      if(r.t===3){if(st.esc<=0){out.lines.push([tag+'No escorts are left. The order fails.','bad']);continue}st.esc--;
+        if(e.type===2&&e.n<=700){out.ok=true;out.lines.push([tag+'The escort drives off the bandits.','good'])}
+        else{out.lines.push([tag+(e.type===2?'The escort is overrun by so many bandits. The caravan is lost with 80 gold.':'An escort cannot stop an army.'),'bad']);if(e.type===2)st.gold-=80;if(e.type===0)st.loy-=15;if(e.type===1)st.gold-=300}return out}
+      if(r.t===4){if(e.type===1){out.ok=true;out.lines.push([tag+'The walls hold until dawn.','good'])}
+        else{out.lines.push([tag+(e.type===0?'You locked your own gates while your vassal burned. Its loyalty falls.':'The gates are locked, but the caravan was outside them. 80 gold lost.'),'bad']);if(e.type===0)st.loy-=15;else st.gold-=80}return out}}
+    if(e.type===1){st.gold-=120;out.lines.push(['No decree answered. "My Liege, I had no orders, so I locked the gates and await your command." The walls hold, but the besiegers loot the farms outside them. 120 gold lost.','bad'])}
+    else if(e.type===0){st.loy-=20;out.lines.push(['No decree answered. Your vassal is sacked and feels abandoned. Its loyalty falls sharply.','bad'])}
+    else{st.gold-=80;out.lines.push(['No decree answered. The caravan is lost with 80 gold.','bad'])}
+    return out}
+  function sleep(){if(busy)return;busy=true;$('stSleep').disabled=true;render();box.innerHTML='';res.hidden=true;
+    const st={cav:6000,gold:1000,esc:2,loy:70},ev=night(),times=['11 PM','1 AM','3 AM','5 AM'];let handled=0,i=0;
+    logTo(box,'You sleep. The Steward takes the watch.');
+    const stats=()=>{$('stCav').textContent=fmt(st.cav);$('stGold').textContent=fmt(Math.max(0,st.gold));$('stLoy').textContent=clamp(st.loy,0,100)};stats();
+    const next=()=>{if(i>=ev.length){busy=false;$('stSleep').disabled=false;$('stSleep').textContent='Sleep another night';render();
+        showResult(res,'Morning report: '+handled+' of 4 alarms handled',' Cavalry at home: '+fmt(st.cav)+'. Gold: '+fmt(Math.max(0,st.gold))+'. Vassal loyalty: '+clamp(st.loy,0,100)+'. '+(handled===4?'A quiet morning. Your decrees covered everything the night threw at you.':handled>=2?'Not bad. Read the ledger, then adjust your decrees and their order.':'A rough night. Check which decrees never fired and what ran out first.'));return}
+      const o=resolve(ev[i],st);logTo(box,times[i]+'. '+o.head,'me');o.lines.forEach(l=>logTo(box,l[0],l[1]));if(o.ok)handled++;stats();i++;setTimeout(next,RM?0:900)};
+    setTimeout(next,RM?0:600)}
+  $('stSleep').onclick=sleep;$('stReset').onclick=()=>{if(busy)return;defaults();render()};
+  defaults();render();logTo(box,'Tonight\'s dangers are unknown. Write your decrees, then sleep.');
+})();
+
+/* ---------- the wheel of empire ---------- */
+(function(){const rota=document.getElementById('rota'),stops=[...rota.querySelectorAll('.stop')],items=[...document.querySelectorAll('#stages button')],hub=document.getElementById('hub');
+  const names=['Siege','Vassal','Province','Overstretch','Challenger'];let cur=0,turn=0,tm;
+  function set(i){turn+=((i-cur)%5+5)%5;cur=i;rota.style.setProperty('--rot',(-72*turn)+'deg');stops.forEach((s,j)=>s.classList.toggle('on',j===i));items.forEach((b,j)=>b.classList.toggle('on',j===i));hub.textContent=names[i]}
+  const pick=i=>{clearInterval(tm);set(i)};
+  items.forEach((b,i)=>b.onclick=()=>pick(i));stops.forEach((s,i)=>s.onclick=()=>pick(i));
+  set(0);if(!RM)tm=setInterval(()=>{if(!MO.paused)set((cur+1)%5)},3600);
+})();
+})();
+
+/* ---------- privacy and terms ---------- */
+(function(){
+  const dlg=document.getElementById('legalDlg');if(!dlg)return;
+  const body=document.getElementById('legalBody'),tabs={privacy:document.getElementById('ltab-privacy'),terms:document.getElementById('ltab-terms')},
+        panes={privacy:document.getElementById('lp-privacy'),terms:document.getElementById('lp-terms')};let opener=null;
+  function pick(k){for(const n in tabs){const on=n===k;tabs[n].setAttribute('aria-selected',on);tabs[n].tabIndex=on?0:-1;panes[n].hidden=!on}
+    dlg.setAttribute('aria-labelledby',k==='privacy'?'legalTitle':'ltab-terms');body.scrollTop=0}
+  function open(k,btn){opener=btn||null;pick(k);if(!dlg.open){if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','')}}
+  function close(){if(dlg.close)dlg.close();else dlg.removeAttribute('open')}
+  dlg.addEventListener('close',()=>{if(opener)opener.focus();if(/^#(privacy|terms)$/.test(location.hash))history.replaceState(null,'',location.pathname+location.search)});
+  dlg.addEventListener('click',e=>{if(e.target===dlg)close()});
+  document.getElementById('legalX').onclick=close;
+  for(const n in tabs){tabs[n].onclick=()=>pick(n);
+    tabs[n].addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){const o=n==='privacy'?'terms':'privacy';pick(o);tabs[o].focus()}})}
+  document.querySelectorAll('[data-legal]').forEach(b=>b.addEventListener('click',()=>open(b.dataset.legal,b)));
+  const fromHash=()=>{const m=/^#(privacy|terms)$/.exec(location.hash);if(m)open(m[1])};
+  window.addEventListener('hashchange',fromHash);fromHash();
+})();
+</script>
+</body>
+</html>
