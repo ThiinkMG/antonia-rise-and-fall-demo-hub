@@ -598,11 +598,11 @@ function hpBar(x,y,w,f,show){if(!show)return;ctx.fillStyle="rgba(29,24,38,.7)";c
 /* ---- spearman sprite sheets (Blender + Mixamo, 64px frames, 8 per row) ---- */
 const SPR={};for(const k of ["spearman","archer","officer","levy"])for(const t of ["a","d"]){const im=new Image();im.src=`sprites/${k}_${t}.png`;SPR[k+"_"+t]=im}
 const RAM=new Image();RAM.src="sprites/ram_a.png";
-/* ram sheet: 128px frames, rows idle/move/strike/wreck, ground anchor at (69,84) */
+/* ram sheet: 128px frames, rows idle/move/strike/wreck, ground anchor at (71,83) */
 function ramSprite(row,fr,x,y,face,alpha,flash){if(!RAM.complete||!RAM.naturalWidth)return false;const sc=.56,w=128*sc;
   ctx.save();if(alpha!=null)ctx.globalAlpha=alpha;ctx.translate(x,y);if(face<0)ctx.scale(-1,1);
-  ctx.drawImage(RAM,(fr|0)*128,row*128,128,128,-69*sc,-84*sc,w,w);
-  if(flash){ctx.globalCompositeOperation="source-atop";ctx.globalAlpha=.35;ctx.fillStyle="#fff";ctx.fillRect(-69*sc,-84*sc,w,w)}
+  ctx.drawImage(RAM,(fr|0)*128,row*128,128,128,-71*sc,-83*sc,w,w);
+  if(flash){ctx.globalCompositeOperation="source-atop";ctx.globalAlpha=.35;ctx.fillStyle="#fff";ctx.fillRect(-71*sc,-83*sc,w,w)}
   ctx.restore();return true}
 const CAV={};for(const t of ["a","d"]){const im=new Image();im.src=`sprites/cavalry_${t}.png`;CAV[t]=im}
 /* cavalry sheet: 96px frames, rows idle/walk/gallop/charge/hit/death, ground anchor at (46,74) */
