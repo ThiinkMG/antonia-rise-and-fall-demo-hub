@@ -23,3 +23,4 @@ Add an entry to `LIBRARY.games` in `index.html`. Give it a `route` once the demo
 ## Demos
 
 - `siege/` · **The Siege of Lysa** (demo I): a three-minute siege. Break the walls, then bargain from strength.
+- `siege-command/` · **Siege Command** (prototype): the siege rebuilt to test control. Tap-and-drag or lanes (chosen on first launch, switchable in Settings), Charge/Hold/Fall back stances, ram, siege tower, ladders and boiling oil. Uses the sprites in `siege/sprites/`.
