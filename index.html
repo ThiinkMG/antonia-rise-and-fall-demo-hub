@@ -221,14 +221,17 @@ const LIBRARY = {
      plan:"The v1 version is archived. It will be redesigned after the core loop."},
     {id:"ranks",num:"VI",name:"City of Five Ranks",desc:"Raise peasants to patricians with care.",status:"planned",statusLabel:"Planned",color:C.umber,emblem:"ranks",
      body:"Supply your citizens and they climb from Peasants to Plebeians, Artisans, Equites and Patricians, unlocking new troops. No region supplies everything.",
-     plan:"Planned."}
+     plan:"Planned."},
+    {id:"road",num:"VII",name:"The Open Road",desc:"Ride the countryside, walk the city, fight what roams.",status:"planned",statusLabel:"Planned",color:C.sage,emblem:"road",
+     body:"Roam a 3D corner of Antonia on foot or on horseback, from the hill farms to the streets of Lysa. Switch between sword, bow and magic in a moment, and face the bandits, patrols and beasts that wander the roads.",
+     plan:"Planning. Working title; engine and scope still to be decided."}
   ],
   codex:[
-    {id:"book",num:"VII",name:"The Book of Providence",desc:"Your mother tells the story of Book One.",status:"open",statusLabel:"Open",color:C.night,emblem:"book",route:"book"},
-    {id:"deck",num:"VIII",name:"The Character Deck",desc:"The gods, the empire, and you.",status:"open",statusLabel:"Open",color:C.plum,emblem:"cards",route:"deck"},
-    {id:"world",num:"IX",name:"The Known World",desc:"Orthys above, Antonia between, the Hollow below.",status:"soon",statusLabel:"Coming soon",color:C.lapis,emblem:"realms",
+    {id:"book",num:"VIII",name:"The Book of Providence",desc:"Your mother tells the story of Book One.",status:"open",statusLabel:"Open",color:C.night,emblem:"book",route:"book"},
+    {id:"deck",num:"IX",name:"The Character Deck",desc:"The gods, the empire, and you.",status:"open",statusLabel:"Open",color:C.plum,emblem:"cards",route:"deck"},
+    {id:"world",num:"X",name:"The Known World",desc:"Orthys above, Antonia between, the Hollow below.",status:"soon",statusLabel:"Coming soon",color:C.lapis,emblem:"realms",
      body:"An interactive map of the three realms, the empires and the Free Leagues.",plan:"Coming soon."},
-    {id:"factions",num:"X",name:"Powers of Book One",desc:"Friends, enemies and everyone between.",status:"soon",statusLabel:"Coming soon",color:C.wine,emblem:"banner",
+    {id:"factions",num:"XI",name:"Powers of Book One",desc:"Friends, enemies and everyone between.",status:"soon",statusLabel:"Coming soon",color:C.wine,emblem:"banner",
      body:"The Choir of the Tongue, the Senate of Remia, the Oathwardens, the Ashen Choir, the Unbound and the Free Leagues.",plan:"Coming soon."}
   ]
 };
@@ -320,6 +323,7 @@ function emblem(k){
     case "corvus": return `<g ${s}><path d="M-34 6C-20-10 0-14 14-10l18-4-12 10c4 10-2 22-16 26l-24 2 8-10-22-4Z"/><circle cx="12" cy="-2" r="2.5" fill="${GOLD}"/></g><path d="M-30-34l6 8 6-10 6 10 6-8" ${s}/>`;
     case "you": return `<g ${s}><path d="M-36 38a36 36 0 0 1 72 0"/><path d="M0 26V-14"/></g><path d="M0-42 6-26 22-24 9-14 13 2 0-6-13 2-9-14-22-24-6-26Z" ${f}/>`;
     case "chain": return `<g ${s}><ellipse cx="-22" cy="0" rx="14" ry="9"/><ellipse cx="0" cy="0" rx="14" ry="9"/><ellipse cx="22" cy="0" rx="14" ry="9"/></g><path d="M0-40v14M0 26v14" ${s}/>`;
+    case "road": return `<g ${s}><path d="M-44 4q16-14 30-6t30-2 28-4"/><path d="M-6 38C-2 26 14 22 10 12S-8 2-2-4"/><path d="M14 38C18 26 30 22 26 12S10 2 2-4"/></g><circle cx="22" cy="-26" r="9" ${f}/>`;
     case "hollow": return `<g ${s}><path d="M-40-30h80"/><path d="M-30-30 0 36 30-30"/><path d="M-14-6h28M-6 14h12"/></g>`;
   }
   return "";
