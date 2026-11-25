@@ -206,7 +206,7 @@ const LIBRARY = {
   games:[
     {id:"siege",num:"I",name:"The Siege of Lysa",desc:"Break the walls, then bargain from strength.",status:"play",statusLabel:"Play now",color:C.wine,emblem:"siege",href:"siege/",
      body:"A short siege battle of about three minutes. Place your troops, break walls and towers, and use your general's ability at the right moment. Every gain strengthens your hand, so you can stop at any point and demand terms.",
-     plan:"First v2 demo, playable now."},
+     plan:"Playable now. Its new controls (tap-and-drag or lanes, stances, ladders and siege engines built in the field) are being tested in the Siege Command prototype. Coming after that: fighting the siege over a few short days, deciding at each dusk whether to rest or push on."},
     {id:"command",num:"Ib",name:"Siege Command",desc:"Prototype: steer every squad, beat the oil.",status:"play",statusLabel:"Prototype",color:C.wine,emblem:"siege",href:"siege-command/",
      body:"A rebuild of the siege that tests control. Choose tap-and-drag or lanes (switch any time in Settings), give squads Charge, Hold or Fall back, ram the gate, dock the siege tower, raise ladders, and pin the defenders so their boiling oil heats slowly.",
      plan:"Prototype for playtesting control and the ram, tower and oil loop. Morale, masons, day and night, and bargaining come next."},
@@ -224,79 +224,80 @@ const LIBRARY = {
      plan:"The v1 version is archived. It will be redesigned after the core loop."},
     {id:"ranks",num:"VI",name:"City of Five Ranks",desc:"Raise peasants to patricians with care.",status:"planned",statusLabel:"Planned",color:C.umber,emblem:"ranks",
      body:"Supply your citizens and they climb from Peasants to Plebeians, Artisans, Equites and Patricians, unlocking new troops. No region supplies everything.",
-     plan:"Planned."}
+     plan:"Planned."},
+    {id:"road",num:"VII",name:"The Open Road",desc:"Ride the countryside, walk the city, fight what roams.",status:"planned",statusLabel:"Planned",color:C.sage,emblem:"road",
+     body:"Roam a 3D corner of Antonia on foot or on horseback, from the hill farms above Lysa to the city streets. Switch between sword, bow and magic in a moment, and face the bandits, patrols and beasts that wander the roads. Some of those beasts have been twisted by the Corruption. Beat one and you choose: absorb its power, at a price, or tame it and ride it.",
+     plan:"Planning. This is also where Book One begins. Working title; engine and scope still to be decided."}
   ],
   codex:[
-    {id:"book",num:"VII",name:"The Book of Providence",desc:"Your mother tells the story of Book One.",status:"open",statusLabel:"Open",color:C.night,emblem:"book",route:"book"},
-    {id:"deck",num:"VIII",name:"The Character Deck",desc:"The gods, the empire, and you.",status:"open",statusLabel:"Open",color:C.plum,emblem:"cards",route:"deck"},
-    {id:"world",num:"IX",name:"The Known World",desc:"Orthys above, Antonia between, the Hollow below.",status:"soon",statusLabel:"Coming soon",color:C.lapis,emblem:"realms",
-     body:"An interactive map of the three realms, the empires and the Free Leagues.",plan:"Coming soon."},
-    {id:"factions",num:"X",name:"Powers of Book One",desc:"Friends, enemies and everyone between.",status:"soon",statusLabel:"Coming soon",color:C.wine,emblem:"banner",
+    {id:"book",num:"VIII",name:"The Book of Providence",desc:"Your mother tells the story of Book One.",status:"open",statusLabel:"Open",color:C.night,emblem:"book",route:"book"},
+    {id:"deck",num:"IX",name:"The Character Deck",desc:"The gods, the empire, and you.",status:"open",statusLabel:"Open",color:C.plum,emblem:"cards",route:"deck"},
+    {id:"world",num:"X",name:"The Known World",desc:"Orthys above, Antonia between, the Hollow below.",status:"soon",statusLabel:"Coming soon",color:C.lapis,emblem:"realms",
+     body:"An interactive map of the three realms: Orthys, home of the gods; Antonia, the mortal land where you play; and the Hollow, where forgotten gods and unmourned souls wait to climb back up.",plan:"Coming soon."},
+    {id:"factions",num:"XI",name:"Powers of Book One",desc:"Friends, enemies and everyone between.",status:"soon",statusLabel:"Coming soon",color:C.wine,emblem:"banner",
      body:"The Choir of the Tongue, the Senate of Remia, the Oathwardens, the Ashen Choir, the Unbound and the Free Leagues.",plan:"Coming soon."}
   ]
 };
 
 const BOOK = [
- {num:"Prologue",title:"The Book Opens",emblem:"book",text:"Hush, little one. Listen. Here in the Hollow Palace, where no sun has ever risen, your mother has one gift left to give you: the truth, or as much of it as the Book will show. This is the Book of Providence. Its pages never end, and they write themselves for whoever asks. I asked it about you. Every word it gives me is what may be, not what must be. So listen, and remember, because soon you must go where I cannot follow."},
- {num:"Chapter I",title:"The Body of Toaa",emblem:"toaa",text:"Before the first dawn there was only Toaa, “The One Above All,” whose true name no tongue may shape. Whoever tries is unmade and forgotten, as if never born. Toaa needed nothing. Yet Toaa gave of himself. From his body and his spit, or so we say, for our minds can grasp no better, came the Living Clay. From the clay came the world, its mountains and seas, and the beasts that roamed it long before any god drew breath. Then Toaa shaped Cassius in his own image. Toaa does not err, yet the likeness was not perfect, and the Book is silent on why. After Cassius came his brothers and sisters, and each was given a domain: the fields and the harvest, the deep sea, love, war, death, and powers the Book has not yet named. To Cassius, the eldest, Toaa gave the Wheel and the teaching of the clay. Cassius bowed and believed himself chosen to rule. He did not see that a gift from Toaa is never only a gift."},
- {num:"Chapter II",title:"The Chain of Devotion",emblem:"chain",text:"The gods were great, but they were not free. Each owed worship to Toaa, as a river owes its water to the sea. And worship must come from somewhere. So Cassius sat at the Wheel and shaped the first humans. He longed to be as perfect as Toaa, and he wanted his creations perfect too. But they came out as flawed as their maker, or worse. They grew arrogant and corrupt, and Cassius in his fury drowned them all in a great flood. Then Toaa wept. Where that single tear fell, the Book says, something waited to be born. From that day Toaa made a promise no one heard. Cassius tried again with his wife, Hemera, and together they shaped a second age of mortals, each with a heart made to believe. Mortals prayed to the gods, the gods prayed to Toaa, and the chain held. In those days the cities kept the Concord of Many Altars. They swore oaths on sacred clay and honored every god in turn. It was a golden age, my child. Golden ages are the first thing the Book teaches us to mourn."},
- {num:"Chapter III",title:"The Envious Son",emblem:"aerickleus",text:"Of all the children of Cassius and Hemera, the fairest was Aerickleus of the golden tongue, whose words could light loyalty in any heart. Yet he burned with envy. His father's temples were vast, and his father's love seemed always to go to his brothers and sisters. So Aerickleus wrapped himself in a mortal's shape and walked among men as a wandering hero. He slew beasts, broke sieges and saved cities. The mortals sang his name, and their songs filled him like wine. One song was not enough. Neither were a hundred. He wanted more."},
- {num:"Chapter IV",title:"Tears of Toaa",emblem:"persephi",text:"In the city of Remia he found me: Persephi, a farmer's daughter, or so I believed. My parents had long prayed to Toaa for a child and been given none. Then my mother was shown a vision of water sleeping under our field, and she begged my father to dig. He dug a well, she drank from it, and I was born. I did not know then what I was. Even now the Book will not say it plainly. I first saw him in the market, a wandering hero standing on a cart, boasting of the beasts he had slain and the cities he had saved. He saw me in the crowd and lost his place in his own story. Later, when we were alone, he showed me what he truly was: a god. We fell in love. Something in me that I did not yet understand made my belief worth more to him than a thousand temples. Even that was not enough. Then I saw his arrogance, and his cruelty to anyone who would not kneel. When I turned away, he would not let me go. He stole me off from my father's fields and kept me in his halls. There I wept and prayed, and Toaa answered with a gift: a child. You. Then Aerickleus made Remia bow to him alone. At his side stood Corvus, his dearest friend and most faithful believer. The prayers of Remia no longer rose to the gods, and the chain of devotion broke."},
- {num:"Chapter V",title:"The Fall into the Hollow",emblem:"hollow",text:"Cassius felt the chain break. Without Remia's prayers, he could not pay what he owed to Toaa. His anger shook Orthys. He tore away part of his son's godhood and hurled Aerickleus into the deepest pit of the Hollow, bound there for all eternity. Me he locked in this palace, far from him, where no god or mortal could reach me. But Cassius did not know I already carried you, the child Toaa gave me in my captivity. Toaa's miraculous child: that is what the world will call you. Who your father is, the Book will tell you when you are ready to bear it."},
- {num:"Chapter VI",title:"The Voice of Corvus",emblem:"corvus",text:"Cassius took much from Aerickleus, but not all of it. What godhood remained kept his golden tongue alive, and from the depths of the Hollow it still reaches the one who never stopped believing: Corvus, now emperor of Remia in his master's name. Through Corvus, Aerickleus speaks and commands. The legions march, the Choir of the Tongue preaches, and city after city is made to kneel. Every prayer they take feeds the prisoner below. When he is strong enough, he will break his chains, cast down Cassius, defy even Toaa and rule the world as its emperor."},
- {num:"Chapter VII",title:"Sent Away",emblem:"you",text:"The Book turns its pages and shows me what waits for you. Your father would claim you. Cassius would destroy you. Corvus would use you. You are the weight that can tip the scales of heaven and earth, and so every hand will reach for you. I cannot keep you here, where the Hollow would swallow you, and I cannot follow you into the light. So I will send you up, my child, before anyone learns you exist. Do not hate me for it. The pages are still writing. What they show is only what may be. What will be is yours to choose."}
+ {num:"The Note",pip:"✉",title:"The Note in the Box",emblem:"note",text:"Found in a box in the barn rafters, in a stranger's hand, the ink faintly blue, as if written in water. To the mother who drank from the well, and the father who dug it: Your daughter lives. She is safe, for now. This child is not. Raise the child as your own. Tell the child nothing of where they came from, or who, until the child finds this by no hand of yours. If you break this, you will lose each other. Keep it, and your fields will never fail you. There is no name. Where a name would be, the paper is stained with a single drop of water that never dried."},
+ {num:"The First Page",pip:"P",title:"Get Up",emblem:"book",text:"Hush, little one. Listen. I cannot see your face. I have not seen it since the night I gave you to the water. But I can feel you. Tonight something broke you. Tell me nothing. I felt it. I am your mother. My name is Persephi. I am somewhere no sun has ever risen, with a book whose pages never end, and I will send you its pages, one by one, as it lets me. Here is the first thing it teaches. A frightened prayer is a thread. A prayer given freely is a rope. The world is held together by rope, and someone has been cutting it. They took your home. They will try to take the rest. Things were taken from you before you could remember, too, and they are waiting for you, all across Antonia. Get up. Go and find them."},
+ {num:"Page I",pip:"I",title:"The Clay and the Wheel",emblem:"toaa",text:"Before the first dawn there was only Toaa, “The One Above All,” whose true name no tongue may shape. Whoever tries is unmade, as if never born. From Toaa's body and spit, or so we say, for our minds can grasp no better, came the Living Clay. From the clay came the mountains, the seas, and the beasts, the first and oldest of them so terrible that the Book will only say they were put somewhere deep and shut away. Then Toaa shaped Cassius in his own image. Toaa does not err, yet the likeness was not perfect, and the Book is silent on why. After Cassius came his brothers and sisters, each with a domain: harvest, sea, love, war, death, and others the Book has not named. To Cassius, the eldest, Toaa gave the Wheel. Cassius bowed, and believed himself chosen to rule. A gift from Toaa is never only a gift."},
+ {num:"Page II",pip:"II",title:"The Flood and the Tear",emblem:"chain",text:"The gods owed worship to Toaa, as rivers owe water to the sea. So Cassius sat at the Wheel and shaped the first people from the clay. He wanted them perfect. They came out as flawed as their maker, or worse, and in his fury he drowned them all. Then Toaa wept. Only once. Where that tear fell, the Book says, something waited to be born. Cassius tried again with his wife, Hemera, and this time each heart was made to believe. Mortals prayed to the gods, the gods prayed to Toaa, and the cities kept the Concord of Many Altars, swearing their peace on stones of clay. Cassius kept a ledger of every prayer, and let no god read the last page. It was a golden age. Golden ages are the first thing the Book teaches us to mourn."},
+ {num:"Page III",pip:"III",title:"The Golden Tongue",emblem:"aerickleus",text:"Of all the children of Cassius and Hemera, the fairest was Aerickleus, whose words could light loyalty in any heart. And he burned with envy, for his father's praise always seemed to fall on someone else. So he wrapped himself in a mortal's shape and walked among people as a wandering hero. He slew beasts, broke sieges, saved cities. Once, outside Remia, he killed a beast that had mauled a tanner's boy, and the boy followed him ever after, carrying his shield. The boy's name was Corvus. The mortals sang the hero's name, and the songs filled him like wine. One song was not enough. Neither were a hundred."},
+ {num:"Still Writing",pip:"…",title:"The Pages to Come",emblem:"hollow",text:"The rest of the Book is not here yet. Its pages rise one at a time through the wells of Antonia, and each one comes only after you have earned it: after the forge, after the walls of Lysa, after your first oath, and further. They tell of a market and a well, a stolen field, a fall into the dark, and an emperor who never stopped believing. Read them in the game. The pages are still writing. What they show is only what may be. What will be is yours to choose."}
 ];
 
 const CHARS = [
  {id:"toaa",num:"0",name:"Toaa",tier:"Above all",epithet:"“The One Above All”",color:C.night,emblem:"toaa",
-  quote:"Whoever tries is unmade and forgotten, as if never born.",quoteBy:"The Book of Providence, Chapter I",
+  quote:"A gift from Toaa is never only a gift.",quoteBy:"The Book of Providence, Page I",
   facts:[["Realm","Beyond all realms"],["Worshipped by","The gods themselves"],["Temples","None. Mortals build it none."]],
-  overview:"Toaa made existence itself and shaped the Living Clay from which the world was formed. Its true name erases anyone who tries to speak it. Good and evil do not concern it.",
-  role:"Every god owes worship to Toaa, as a river owes its water to the sea. When that chain of devotion breaks, the world begins to fray.",
+  overview:"Toaa was before the first dawn. From Toaa came the Living Clay, and from the clay came the world, its beasts and its gods. Its true name unmakes anyone who tries to speak it.",
+  role:"Every god owes worship to Toaa, as rivers owe water to the sea. Toaa has vowed never to interfere directly. Strange things still happen. People call them Torebodings.",
   traits:["Has vowed never to interfere directly","Gives only through nudges, miracles and chains of events","Speaks through the Book of Providence","Called he, they or it"],
-  bonds:[["cassius","Shaped in its image"],["persephi","Answered her prayers"],["you","Gave you as a gift"]],chapters:[1,2,4]},
+  bonds:[["cassius","Shaped in its image"],["persephi","Heard her family's prayers"]],chapters:[2,3]},
  {id:"cassius",num:"I",name:"Cassius",tier:"God of Orthys",epithet:"King of the gods · Keeper of the Wheel",color:C.lapis,emblem:"cassius",
-  quote:"He did not see that a gift from Toaa is never only a gift.",quoteBy:"The Book of Providence, Chapter I",
-  facts:[["Realm","Orthys"],["Holds","The Wheel"],["Rank","Firstborn of the gods"]],
-  overview:"The eldest of the gods, shaped in Toaa's image, though the likeness was not perfect and the Book is silent on why. To him Toaa gave the Wheel and the teaching of the clay.",
-  role:"Cassius shapes the world anew each age, which is why every season brings a new map. He guards a secret only a few gods know.",
-  traits:["Longs to be as perfect as Toaa","Drowned the first, flawed mortals in a great flood","With Hemera shaped the second age of mortals","Cast Aerickleus into the Pit"],
-  bonds:[["hemera","His wife"],["aerickleus","His son"],["toaa","Owes it worship"]],chapters:[1,2,5]},
+  quote:"Cassius kept a ledger of every prayer, and let no god read the last page.",quoteBy:"The Book of Providence, Page II",
+  facts:[["Realm","Orthys"],["Holds","The Wheel and the ledger"],["Rank","Firstborn of the gods"]],
+  overview:"The eldest of the gods, shaped in Toaa's image, though the likeness was not perfect and the Book is silent on why. To him Toaa gave the Wheel.",
+  role:"In Book One he is far from his throne, with a small band of gods, holding back something very old that has started to wake. Some of it has already got loose.",
+  traits:["Longs to be as perfect as Toaa","Drowned the first, flawed people in a great flood","With Hemera shaped mortals with hearts made to believe","Keeps a ledger no other god may read"],
+  bonds:[["hemera","His wife"],["aerickleus","His son"],["toaa","Owes it worship"]],chapters:[2,3]},
  {id:"hemera",num:"II",name:"Hemera",tier:"Goddess of Orthys",epithet:"Wife of Cassius",color:C.sage,emblem:"hemera",
-  quote:"Together they shaped a second age of mortals, each with a heart made to believe.",quoteBy:"The Book of Providence, Chapter II",
+  quote:"This time each heart was made to believe.",quoteBy:"The Book of Providence, Page II",
   facts:[["Realm","Orthys"],["Shaped","The second age of mortals"],["Child","Aerickleus"]],
   overview:"Queen beside Cassius in Orthys. With him she shaped the second age of mortals, who prayed to the gods and kept the chain of devotion whole.",
-  role:"The mortals of the Concord, who honoured every god in turn, are her work as much as Cassius's.",
+  role:"The cities of the Concord, who honoured every god in turn, are her work as much as Cassius's.",
   traits:["Co-maker of believing mortals","Mother of Aerickleus","Honoured at the altars of the Concord"],
-  bonds:[["cassius","Her husband"],["aerickleus","Her son"]],chapters:[2,3]},
+  bonds:[["cassius","Her husband"],["aerickleus","Her son"]],chapters:[3,4]},
  {id:"aerickleus",num:"III",name:"Aerickleus",tier:"Chained god",epithet:"The Golden Tongue",color:C.clay,emblem:"aerickleus",
-  quote:"One song was not enough. Neither were a hundred. He wanted more.",quoteBy:"The Book of Providence, Chapter III",
+  quote:"One song was not enough. Neither were a hundred.",quoteBy:"The Book of Providence, Page III",
   facts:[["Realm","The Pit, deepest part of the Hollow"],["Faith","The Aerinant Remisan Orthodoxy"],["Followers","Reminants"]],
-  overview:"The fairest child of Cassius and Hemera, whose words could light loyalty in any heart. Burning with envy, he walked among mortals as a wandering hero, then made the city of Remia worship him alone.",
-  role:"Chained in the Pit, he still speaks through Corvus. Every city the empire takes feeds him, until he is strong enough to break free.",
-  traits:["Persuasion beyond any mortal's","Envy of his brothers and sisters","Stole Persephi from her father's fields","Partly stripped of his godhood"],
-  bonds:[["corvus","His voice in the world"],["persephi","Took her captive"],["cassius","His father"]],chapters:[3,4,5,6]},
+  overview:"The fairest child of Cassius and Hemera, whose words could light loyalty in any heart. He wanted to be loved more than anything, and no amount of love was ever enough. So he made the city of Remia worship him alone.",
+  role:"Chained in the Pit, he still speaks through Corvus. Every city the empire forces to kneel feeds him. But worship taken by force burns bright and fades, so he must keep taking.",
+  traits:["Persuasion beyond any mortal's","A hunger to be loved that is never filled","Walked among mortals as a wandering hero","Partly stripped of his godhood"],
+  bonds:[["corvus","His first believer"],["cassius","His father"],["hemera","His mother"]],chapters:[4]},
  {id:"persephi",num:"IV",name:"Persephi",tier:"Your mother",epithet:"Keeper of the Book",color:C.teal,emblem:"persephi",
-  quote:"What they show is only what may be. What will be is yours to choose.",quoteBy:"The Book of Providence, Chapter VII",
-  facts:[["Realm","The Hollow Palace"],["Holds","The Book of Providence"],["Born of","A well her father dug"]],
-  overview:"A farmer's daughter, born after her mother drank from a well shown to her in a vision. There is more to her than she knows. Her belief was worth more to a god than a thousand temples.",
-  role:"Locked in the Hollow Palace, where no god or mortal can reach her, she reads you the Book and sends you up into the light.",
-  traits:["Her belief carries a power no one can explain","Turned away from a god's cruelty","Narrates the Book of Providence"],
-  bonds:[["you","Her child"],["aerickleus","Her captor"],["toaa","Heard her prayers"]],chapters:[0,4,5,7]},
+  quote:"A frightened prayer is a thread. A prayer given freely is a rope.",quoteBy:"The Book of Providence, The First Page",
+  facts:[["Realm","A palace in the Hollow"],["Holds","The Book of Providence"],["Born of","A well her father dug"]],
+  overview:"A farmer's daughter, born after her mother drank from a well shown to her in a vision. There is more to her than she knows. She cannot see your face, but she can always feel you.",
+  role:"Sealed away somewhere no sun has ever risen, she is anything but idle. She sends you the Book's pages, one at a time, up through the wells of Antonia.",
+  traits:["Her belief carries a power no one can explain","Bargains with things the world forgot","Narrates the Book of Providence"],
+  bonds:[["you","Her child"],["toaa","Her parents prayed to it"]],chapters:[0,1]},
  {id:"corvus",num:"V",name:"Corvus",tier:"The enemy",epithet:"Proxy Emperor of Remia",color:C.wine,emblem:"corvus",
   quote:"The empire is his. The voice is not.",quoteBy:"Powers of Book One",
-  facts:[["Seat","Remia, heart of the empire"],["Rules","The Remian Empire"],["Serves","Aerickleus"]],
-  overview:"Aerickleus's oldest friend and truest believer. He stood beside the Golden Tongue when Remia bowed, and never stopped believing.",
-  role:"As emperor he sends the legions and the Choir of the Tongue to make city after city kneel. Freeing Remia ends the season.",
+  facts:[["Seat","Remia, heart of the empire"],["Rules","The Remian Empire"],["Born","A tanner's son, Remia's poor quarter"]],
+  overview:"Saved from a beast as a boy by a wandering hero, he carried that hero's shield ever after. He became Aerickleus's oldest friend and first believer, and he never stopped believing.",
+  role:"As emperor he sends the legions and the Choir of the Tongue to make city after city kneel. His faith is the one prayer in the empire that was never forced.",
   traits:["Unshakeable faith in his master","Commands the Remian legions","Speaks with a voice that is not his own"],
-  bonds:[["aerickleus","His master and friend"],["you","Would use you"]],chapters:[4,6,7]},
+  bonds:[["aerickleus","His master and friend"],["you","His legions took your home"]],chapters:[4]},
  {id:"you",num:"VI",name:"You",tier:"The player",epithet:"Toaa's miraculous child",color:C.plum,emblem:"you",
-  quote:"You are the weight that can tip the scales of heaven and earth.",quoteBy:"The Book of Providence, Chapter VII",
-  facts:[["Born in","The Hollow Palace"],["Sent to","Antonia, the middle realm"],["Goal","Claim your birthright"]],
-  overview:"Persephi's child, born in the Hollow and sent up into the light before anyone learns you exist. Who your father is, the Book will tell you when you are ready to bear it.",
-  role:"Every power in Antonia will reach for you. Rise as a god among the gods, or as emperor of Antonia.",
-  traits:["Born in the prison under the world","Starts as the smallest power on the map","Every choice is yours: the pages are still writing"],
-  bonds:[["persephi","Your mother"],["cassius","Would destroy you"],["corvus","Would use you"]],chapters:[5,7]}
+  quote:"Things were taken from you before you could remember, and they are waiting for you, all across Antonia.",quoteBy:"The Book of Providence, The First Page",
+  facts:[["Raised","On a farm in the hills above Lysa"],["Speaks","Never. Others answer you."],["Goal","Find what was taken from you"]],
+  overview:"You grew up on a hill farm, loved, and knowing nothing of where you came from. Then you found a note that was never meant to be found by any hand but yours, and everything you knew was burned away.",
+  role:"Every piece of yourself you reclaim makes you stronger, and draws the gods' eyes. Some will help you. Some will not. Win cities by siege or by bargain, and decide what kind of ruler you become.",
+  traits:["No fixed gender: the story only ever says you","Fights with sword, bow and magic","Can absorb a beast's power, or tame it","Every choice is yours: the pages are still writing"],
+  bonds:[["persephi","Your mother"],["corvus","Burned your home"]],chapters:[0,1,5]}
 ];
 
 /* ================= SVG ART ================= */
@@ -323,6 +324,8 @@ function emblem(k){
     case "corvus": return `<g ${s}><path d="M-34 6C-20-10 0-14 14-10l18-4-12 10c4 10-2 22-16 26l-24 2 8-10-22-4Z"/><circle cx="12" cy="-2" r="2.5" fill="${GOLD}"/></g><path d="M-30-34l6 8 6-10 6 10 6-8" ${s}/>`;
     case "you": return `<g ${s}><path d="M-36 38a36 36 0 0 1 72 0"/><path d="M0 26V-14"/></g><path d="M0-42 6-26 22-24 9-14 13 2 0-6-13 2-9-14-22-24-6-26Z" ${f}/>`;
     case "chain": return `<g ${s}><ellipse cx="-22" cy="0" rx="14" ry="9"/><ellipse cx="0" cy="0" rx="14" ry="9"/><ellipse cx="22" cy="0" rx="14" ry="9"/></g><path d="M0-40v14M0 26v14" ${s}/>`;
+    case "road": return `<g ${s}><path d="M-44 4q16-14 30-6t30-2 28-4"/><path d="M-6 38C-2 26 14 22 10 12S-8 2-2-4"/><path d="M14 38C18 26 30 22 26 12S10 2 2-4"/></g><circle cx="22" cy="-26" r="9" ${f}/>`;
+    case "note": return `<g ${s}><rect x="-32" y="-24" width="64" height="48" rx="3"/><path d="M-32-24 0 4 32-24"/></g><circle cx="0" cy="10" r="5" ${f}/>`;
     case "hollow": return `<g ${s}><path d="M-40-30h80"/><path d="M-30-30 0 36 30-30"/><path d="M-14-6h28M-6 14h12"/></g>`;
   }
   return "";
@@ -396,7 +399,7 @@ function viewHome(){
     <p class="shelf-note">The story, the characters and the world of Antonia.</p>
     <div class="grid">${LIBRARY.codex.map(tile).join("")}</div>
   </section>
-  <p class="colophon"><b>Antonia: The Rise and Fall</b><br>Thiink Media Graphics · Demo hall v2 · card art is placeholder</p>`;
+  <p class="colophon"><b>Antonia: The Rise and Fall</b><br>Thiink Media Graphics · Demo hall v2 · Planned rating: Teen · Free to play, cosmetics only, never power · card art is placeholder</p>`;
   app.querySelectorAll(".tile").forEach(b=>b.addEventListener("click",()=>openItem(b.dataset.id)));
 }
 function openItem(id){
@@ -425,7 +428,7 @@ function viewBook(n){
   crumb.textContent="The Book of Providence";
   if(!app.querySelector(".book")){
     app.innerHTML=`<div class="book-stage">
-      <p class="book-intro">Told by your mother, Persephi, in the Hollow Palace. Eight short pages.</p>
+      <p class="book-intro">Your mother, Persephi, sends these pages up through the wells of Antonia. The first few are here. The rest wait in the game.</p>
       <div class="book" id="book"></div>
       <div class="book-nav"><button class="btn ghost" id="prev">‹ Previous</button><div class="pips" id="pips"></div><button class="btn" id="next">Turn the page ›</button></div>
     </div>`;
@@ -444,7 +447,7 @@ function renderPage(dir){
       <div class="num">${esc(p.num)}</div><h2>${esc(p.title)}</h2></div>
     <div class="leaf-text">${splitText(p.text).map(x=>`<p>${esc(x)}</p>`).join("")}
       <div class="foot"><span>${esc(p.num)}</span><span>Page ${bookPage+1} of ${BOOK.length}</span></div></div></article>`;
-  document.getElementById("pips").innerHTML=BOOK.map((b,i)=>`<button class="pip" aria-label="${esc(b.num)}: ${esc(b.title)}" aria-current="${i===bookPage}" data-i="${i}">${i===0?"P":["I","II","III","IV","V","VI","VII"][i-1]}</button>`).join("");
+  document.getElementById("pips").innerHTML=BOOK.map((b,i)=>`<button class="pip" aria-label="${esc(b.num)}: ${esc(b.title)}" aria-current="${i===bookPage}" data-i="${i}">${esc(b.pip)}</button>`).join("");
   document.querySelectorAll(".pip").forEach(b=>b.onclick=()=>go(+b.dataset.i));
   document.getElementById("prev").disabled=bookPage===0;
   const nx=document.getElementById("next");
