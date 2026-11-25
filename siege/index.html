@@ -207,7 +207,7 @@ function newGame(){
   [["spear",160,170],["spear",240,170],["archer",130,190],["archer",270,190],["cav",120,80],["cav",280,80]].forEach(([k,x,y])=>U.push(mkUnit(k,"d",x,y,f,true)));
   const reserve={};ORDER.forEach(k=>reserve[k]=TYPES[k].count);
   let totalHp=0;ORDER.forEach(k=>totalHp+=TYPES[k].hp*TYPES[k].count);
-  G={t:0,S,U,proj:[],parts:[],floats:[],reserve,totalHp,alarm:false,kills:0,lost:0,deployed:0,
+  G={t:0,S,U,proj:[],parts:[],dead:[],floats:[],reserve,totalHp,alarm:false,kills:0,lost:0,deployed:0,
      parleys:0,refusals:0,scout:document.getElementById("scoutBox").checked?1:0,
      theraSide:Math.random()<.5?-1:1,theraHere:false,horn:false,rallyUsed:false,
      shake:0,over:false,musters:0,paused:true,tips:{},leverage:0,maxLev:0,hintAt:{}};
@@ -294,7 +294,10 @@ function structDamage(att,s){
   return att.dmg*m*(0.9+Math.random()*.2)*(att.rally>0?1.6:1);
 }
 function hitUnit(o,d,from){
-  o.hp-=d;o.flash=.12;
+  const n0=Math.max(0,Math.ceil(o.figs*Math.max(0,o.hp)/o.max));
+  o.hp-=d;
+  if(o.kind==="spear"){const n1=Math.max(0,Math.ceil(o.figs*Math.max(0,o.hp)/o.max)),P=formation(o.kind,Math.max(1,n0));
+    for(let i=n1;i<n0&&i<P.length;i++)G.dead.push({x:o.x+P[i][0],y:o.y+P[i][1],team:o.team,face:o.face,t:0})}o.flash=.12;
   chips(o.x,o.y,o.team==="a"?COL.lapisHi:COL.wineHi,3);
   if(o.hp<=0){
     chips(o.x,o.y,COL.clay,12);
@@ -321,7 +324,7 @@ function step(u,gx,gy,dt,bs){
   const dx=tx-u.x,dy=ty-u.y,d=Math.hypot(dx,dy);
   if(d<1)return true;
   const sp=u.speed*(u.rally>0?1.25:1)*dt;
-  u.x+=dx/d*Math.min(sp,d);u.y+=dy/d*Math.min(sp,d);
+  u.x+=dx/d*Math.min(sp,d);u.y+=dy/d*Math.min(sp,d);u.moving=true;
   if(Math.abs(dx)>2)u.face=dx>0?1:-1;
   return true;
 }
@@ -344,7 +347,7 @@ function update(dt){
     if(G.musterT<=0){G.musterT=18;G.musters++;const k=G.musters%2?"spear":"archer";G.U.push(mkUnit(k,"d",200+(Math.random()-.5)*60,150,LEVELS[level].f));float(200,140,"Lysa musters")}}
   for(const u of G.U){
     if(u.hp<=0)continue;
-    u.cd-=dt;u.flash=Math.max(0,u.flash-dt);
+    u.cd-=dt;u.flash=Math.max(0,u.flash-dt);u.moving=false;
     if(u.rally>0){u.rally-=dt;u.hp=Math.min(u.max,u.hp+u.max*.05*dt)}
     if(u.idle)continue;
     // retarget every so often
@@ -359,11 +362,11 @@ function update(dt){
         u.cd=u.rate;
         if(isU){
           if(u.range>40)shoot(u.x,u.y-8,t.x,t.y-6,u.team);
-          else u.lunge=.15;
+          else {u.lunge=.15;u.atk=.45}
           hitUnit(t,damage(u,t),u);
         } else {
           if(u.range>40)shoot(u.x,u.y-8,t.cx,t.cy-8,u.team);
-          else u.lunge=.15;
+          else {u.lunge=.15;u.atk=.45}
           hitStruct(t,structDamage(u,t));
           if(u.kind==="ram"){G.shake=Math.max(G.shake,.12)}
         }
@@ -376,6 +379,7 @@ function update(dt){
       }
     }
     if(u.lunge)u.lunge=Math.max(0,u.lunge-dt);
+    if(u.atk)u.atk=Math.max(0,u.atk-dt);
   }
   // towers and keep shoot
   for(const s of G.S){
@@ -402,6 +406,7 @@ function update(dt){
     for(const s of G.S){if(s.kind==="keep"&&s.hp>0||s.kind==="tower"&&s.hp>0){const d=Math.hypot(u.x-s.cx,u.y-s.cy),m=s.r+u.r*.5;if(d<m){u.x=s.cx+(u.x-s.cx)/d*m;u.y=s.cy+(u.y-s.cy)/d*m}}}
   }
   G.U=G.U.filter(u=>u.hp>0);
+  for(const c of G.dead)c.t+=dt; G.dead=G.dead.filter(c=>c.t<5);
   // effects
   for(const p of G.proj)p.t+=dt; G.proj=G.proj.filter(p=>p.t<p.dur);
   for(const p of G.parts){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=p.g*dt;p.life-=dt} G.parts=G.parts.filter(p=>p.life>0);
@@ -484,6 +489,7 @@ function draw(){
   const list=[];
   for(const st of G.S)list.push({y:st.kind==="keep"?st.cy+30:(isSeg(st)?WALL_B:st.cy+st.r*.6),f:()=>drawStruct(st)});
   for(const u of G.U)list.push({y:u.y,f:()=>drawUnit(u)});
+  drawCorpses();
   list.sort((a,b)=>a.y-b.y).forEach(o=>o.f());
   // projectiles
   for(const p of G.proj){const k=p.t/p.dur,x=p.x+(p.tx-p.x)*k,y=p.y+(p.ty-p.y)*k-Math.sin(k*Math.PI)*24;
@@ -588,6 +594,21 @@ function rubble(x,y,w){
   ctx.fillStyle="rgba(205,176,136,.9)";for(let i=0;i<6;i++){const px=x-w/2+((i*53)%w),py=y+((i*7)%8)-6;ctx.fillRect(px,py,5,4)}
 }
 function hpBar(x,y,w,f,show){if(!show)return;ctx.fillStyle="rgba(29,24,38,.7)";ctx.fillRect(x-w/2-1,y-1,w+2,5);ctx.fillStyle=f>.5?"#8fbf6a":f>.25?"#DDBB6E":"#d0644a";ctx.fillRect(x-w/2,y,w*Math.max(0,f),3)}
+/* ---- spearman sprite sheets (Blender + Mixamo, 64px frames, 8 per row) ---- */
+const SPR={a:new Image(),d:new Image()};SPR.a.src="sprites/spearman_a.png";SPR.d.src="sprites/spearman_d.png";
+const ANIM={idle:0,march:1,run:2,thrust:3,slash:4,block:5,hit:6,death:7,cheer:8},SF=64,SS=.66;
+function sprite(team,row,fr,x,y,face,alpha){const im=SPR[team];if(!im.complete||!im.naturalWidth)return false;
+  const w=SF*SS;ctx.save();if(alpha!=null)ctx.globalAlpha=alpha;ctx.translate(x,y);if(face<0)ctx.scale(-1,1);
+  ctx.drawImage(im,(fr|0)*SF,row*SF,SF,SF,-w/2,-51*SS,w,w);ctx.restore();return true}
+function spearFrame(u,i){
+  if(u.lunge>0||u.atk>0){const k=1-Math.max(0,u.atk||0)/.45;return [i%2?ANIM.slash:ANIM.thrust,Math.min(7,k*8)]}
+  if(u.flash>0)return [ANIM.hit,2];
+  if(u.moving)return [ANIM.march,(G.t*12+u.phase*3+i*2)%8];
+  return [ANIM.idle,(G.t*2+u.phase+i)%8];
+}
+function drawCorpses(){for(const c of G.dead){const k=Math.min(7,c.t/.9*7),al=c.t<4?1:Math.max(0,1-(c.t-4));
+  ctx.fillStyle="rgba(60,40,20,.22)";ctx.beginPath();ctx.ellipse(c.x,c.y+2,7,2.5,0,0,7);ctx.fill();
+  sprite(c.team,ANIM.death,k,c.x,c.y,c.face,al)}}
 function drawUnit(u){
   const T=TYPES[u.kind],n=Math.max(1,Math.ceil(T.figs*u.hp/u.max)),a=u.team==="a";
   const shield=a?COL.lapis:COL.wine,rim=a?COL.giltHi:COL.bronze,crest=a?"#EFE6D2":"#1D1826";
@@ -603,6 +624,8 @@ function drawUnit(u){
     const x=u.x+dx+lx,y=u.y+dy;
     ctx.fillStyle="rgba(60,40,20,.28)";ctx.beginPath();ctx.ellipse(x,y+2,u.kind==="cav"?8:u.kind==="ram"?14:5,u.kind==="ram"?5:2.5,0,0,7);ctx.fill();
     const fl=u.flash>0;
+    if(u.kind==="spear"){const [row,fr]=spearFrame(u,Math.abs(dx+dy*2));
+      if(sprite(u.team,row,((fr%8)+8)%8,x,y,u.face))continue}
     if(u.kind==="ram"){
       ctx.fillStyle=fl?"#fff":COL.timber;ctx.fillRect(x-13,y-14,26,13);
       ctx.fillStyle=a?COL.lapis:COL.wine;ctx.beginPath();ctx.moveTo(x-15,y-14);ctx.lineTo(x,y-24);ctx.lineTo(x+15,y-14);ctx.fill();
