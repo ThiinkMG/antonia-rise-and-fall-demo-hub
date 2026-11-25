@@ -296,8 +296,8 @@ function structDamage(att,s){
 function hitUnit(o,d,from){
   const n0=Math.max(0,Math.ceil(o.figs*Math.max(0,o.hp)/o.max));
   o.hp-=d;
-  if(o.kind==="spear"){const n1=Math.max(0,Math.ceil(o.figs*Math.max(0,o.hp)/o.max)),P=formation(o.kind,Math.max(1,n0));
-    for(let i=n1;i<n0&&i<P.length;i++)G.dead.push({x:o.x+P[i][0],y:o.y+P[i][1],team:o.team,face:o.face,t:0})}o.flash=.12;
+  if(o.kind==="spear"||o.kind==="archer"){const n1=Math.max(0,Math.ceil(o.figs*Math.max(0,o.hp)/o.max)),P=formation(o.kind,Math.max(1,n0));
+    for(let i=n1;i<n0&&i<P.length;i++)G.dead.push({x:o.x+P[i][0],y:o.y+P[i][1],team:o.team,face:o.face,kind:o.kind==="archer"?"archer":"spearman",t:0})}o.flash=.12;
   chips(o.x,o.y,o.team==="a"?COL.lapisHi:COL.wineHi,3);
   if(o.hp<=0){
     chips(o.x,o.y,COL.clay,12);
@@ -361,11 +361,11 @@ function update(dt){
       if(u.cd<=0){
         u.cd=u.rate;
         if(isU){
-          if(u.range>40)shoot(u.x,u.y-8,t.x,t.y-6,u.team);
+          if(u.range>40){shoot(u.x,u.y-8,t.x,t.y-6,u.team);u.atk=.6;u.face=t.x>=u.x?1:-1}
           else {u.lunge=.15;u.atk=.45}
           hitUnit(t,damage(u,t),u);
         } else {
-          if(u.range>40)shoot(u.x,u.y-8,t.cx,t.cy-8,u.team);
+          if(u.range>40){shoot(u.x,u.y-8,t.cx,t.cy-8,u.team);u.atk=.6;u.face=t.cx>=u.x?1:-1}
           else {u.lunge=.15;u.atk=.45}
           hitStruct(t,structDamage(u,t));
           if(u.kind==="ram"){G.shake=Math.max(G.shake,.12)}
@@ -595,9 +595,9 @@ function rubble(x,y,w){
 }
 function hpBar(x,y,w,f,show){if(!show)return;ctx.fillStyle="rgba(29,24,38,.7)";ctx.fillRect(x-w/2-1,y-1,w+2,5);ctx.fillStyle=f>.5?"#8fbf6a":f>.25?"#DDBB6E":"#d0644a";ctx.fillRect(x-w/2,y,w*Math.max(0,f),3)}
 /* ---- spearman sprite sheets (Blender + Mixamo, 64px frames, 8 per row) ---- */
-const SPR={a:new Image(),d:new Image()};SPR.a.src="sprites/spearman_a.png";SPR.d.src="sprites/spearman_d.png";
+const SPR={};for(const k of ["spearman","archer"])for(const t of ["a","d"]){const im=new Image();im.src=`sprites/${k}_${t}.png`;SPR[k+"_"+t]=im}
 const ANIM={idle:0,march:1,run:2,thrust:3,slash:4,block:5,hit:6,death:7,cheer:8},SF=64,SS=.66;
-function sprite(team,row,fr,x,y,face,alpha){const im=SPR[team];if(!im.complete||!im.naturalWidth)return false;
+function sprite(team,row,fr,x,y,face,alpha,kind="spearman"){const im=SPR[kind+"_"+team];if(!im.complete||!im.naturalWidth)return false;
   const w=SF*SS;ctx.save();if(alpha!=null)ctx.globalAlpha=alpha;ctx.translate(x,y);if(face<0)ctx.scale(-1,1);
   ctx.drawImage(im,(fr|0)*SF,row*SF,SF,SF,-w/2,-51*SS,w,w);ctx.restore();return true}
 function spearFrame(u,i){
@@ -606,9 +606,16 @@ function spearFrame(u,i){
   if(u.moving)return [ANIM.march,(G.t*12+u.phase*3+i*2)%8];
   return [ANIM.idle,(G.t*2+u.phase+i)%8];
 }
+const AANIM={idle:0,walk:1,run:2,draw:3,aim:4,shoot:5,hit:6,death:7,cheer:8};
+function archerFrame(u,i){
+  if(u.atk>0){const k=1-u.atk/.6;return k<.5?[AANIM.draw,3+k*2*5]:[AANIM.shoot,(k-.5)*2*8]}
+  if(u.flash>0)return [AANIM.hit,2];
+  if(u.moving)return [AANIM.walk,(G.t*12+u.phase*3+i*2)%8];
+  return [AANIM.idle,(G.t*2+u.phase+i)%8];
+}
 function drawCorpses(){for(const c of G.dead){const k=Math.min(7,c.t/.9*7),al=c.t<4?1:Math.max(0,1-(c.t-4));
   ctx.fillStyle="rgba(60,40,20,.22)";ctx.beginPath();ctx.ellipse(c.x,c.y+2,7,2.5,0,0,7);ctx.fill();
-  sprite(c.team,ANIM.death,k,c.x,c.y,c.face,al)}}
+  sprite(c.team,c.kind==="archer"?AANIM.death:ANIM.death,k,c.x,c.y,c.face,al,c.kind||"spearman")}}
 function drawUnit(u){
   const T=TYPES[u.kind],n=Math.max(1,Math.ceil(T.figs*u.hp/u.max)),a=u.team==="a";
   const shield=a?COL.lapis:COL.wine,rim=a?COL.giltHi:COL.bronze,crest=a?"#EFE6D2":"#1D1826";
@@ -626,6 +633,8 @@ function drawUnit(u){
     const fl=u.flash>0;
     if(u.kind==="spear"){const [row,fr]=spearFrame(u,Math.abs(dx+dy*2));
       if(sprite(u.team,row,((fr%8)+8)%8,x,y,u.face))continue}
+    if(u.kind==="archer"){const [row,fr]=archerFrame(u,Math.abs(dx+dy*2));
+      if(sprite(u.team,row,Math.min(7,((fr%8)+8)%8),x,y,u.face,null,"archer"))continue}
     if(u.kind==="ram"){
       ctx.fillStyle=fl?"#fff":COL.timber;ctx.fillRect(x-13,y-14,26,13);
       ctx.fillStyle=a?COL.lapis:COL.wine;ctx.beginPath();ctx.moveTo(x-15,y-14);ctx.lineTo(x,y-24);ctx.lineTo(x+15,y-14);ctx.fill();
